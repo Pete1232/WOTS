@@ -1,4 +1,4 @@
-package com.qa.FXSamples
+package com.qa.SFXSamples
 
 import scalafx.Includes._
 import scalafx.application.JFXApp

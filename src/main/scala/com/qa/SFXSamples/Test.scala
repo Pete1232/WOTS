@@ -1,4 +1,4 @@
-package com.qa.FXSamples
+package com.qa.SFXSamples
 
 import javafx.application.Application
 import javafx.scene.Scene
