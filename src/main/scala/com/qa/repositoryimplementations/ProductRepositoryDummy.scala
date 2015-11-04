@@ -1,6 +1,6 @@
 package com.qa.repositoryimplementations
 
-import repositories.GenericRepository
+import com.qa.repositories.GenericRepository
 import com.qa.entities.Product
 
 /**

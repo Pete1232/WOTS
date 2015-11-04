@@ -1,4 +1,4 @@
-package repositories
+package com.qa.repositories
 
 /**
  * @author pnewman
