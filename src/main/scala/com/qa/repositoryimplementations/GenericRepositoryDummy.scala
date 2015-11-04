@@ -3,10 +3,8 @@ package com.qa.repositoryimplementations
 import com.qa.repositories.GenericRepository
 import com.qa.dummydata.DummyData
 import com.qa.dummydata.DummyBuilder
-import scala.util.Random
 import com.qa.entities.Product
 import com.typesafe.scalalogging.Logger
-import com.typesafe.scalalogging.LazyLogging
 import org.slf4j.LoggerFactory
 
 /**
@@ -28,8 +26,8 @@ class GenericRepositoryDummy[E] extends GenericRepository[E]{
    * This method returns all entities in the given DummyData array
    * TODO This is redundant (see above) - remove?
    */
-  def findAll(entity:E):Array[E]={
+  def findAll[E](entity:E):Array[E]={
     logger.debug("Calling findAll with Entity type {}",entity.getClass.getSimpleName)
-    getEntityList[E](entity:E)
+    getEntityList(entity:E)
   }
 }

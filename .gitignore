@@ -6,3 +6,4 @@
 .project
 .cache-main
 .settings/
+.cache-tests

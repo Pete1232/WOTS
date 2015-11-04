@@ -9,7 +9,7 @@ package com.qa.repositories
    * This method returns a list of all entities in a table
    * @return
    */
-  def findAll(entity:E):Array[E]
+  def findAll[E](entity:E):Array[E]
   /**
    * This method persists a list of entities
    * @param entities

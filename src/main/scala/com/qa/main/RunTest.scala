@@ -1,6 +1,7 @@
 
 
-import com.qa.dummydata.DummyData
+package com.qa.main
+
 import com.qa.repositoryimplementations.ProductRepositoryDummy
 import com.qa.entities.Product
 /* 
