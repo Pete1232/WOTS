@@ -18,6 +18,7 @@ class Product(
   val porousware : Boolean
   )
 {
+  def this()=this(1,"1",1,1,"1","1",1,"1",false,1,false,false)
   def this(productId:Int,productName:String,stockLevel:Int,price:Float,category:String,productDescription:String,image:String,porousware:Boolean)=
     this(productId,productName,stockLevel,price,category,productDescription,0,image,false,0,false,porousware)
 }

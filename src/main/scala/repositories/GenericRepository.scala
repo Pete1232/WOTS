@@ -4,6 +4,7 @@ package repositories
  * @author pnewman
  */
  trait GenericRepository[E] {
+  //TODO Uncomment and implement all methods
   /**
    * This method returns a list of all entities in a table
    * @return

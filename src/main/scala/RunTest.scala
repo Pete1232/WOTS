@@ -8,13 +8,9 @@ import com.qa.entities.Product
  */
 object RunTest {
   def main(args:Array[String]){
-/*    val dummy = new DummyData(10)
-    dummy.buildProduct(0)
-    for(thing<-dummy.databaseProduct.databaseArray)
-    println(thing.productId+" "+thing.productName+" £"+thing.price+" "+thing.porousware)*/
-    val prd: ProductRepositoryDummy = new ProductRepositoryDummy()
-    val array:Array[Product]=prd.findAll(new Product(1,"1",1,1,"1","1","1",true))
-    for(thing<-array)
-    println(thing.productId+" "+thing.productName+" £"+thing.price+" "+thing.porousware)
+    val productRepositoryDummy: ProductRepositoryDummy = new ProductRepositoryDummy()
+    val array:Array[Product]=productRepositoryDummy.findAll(new Product())
+    for(product<-array)
+    println(product.productId+" "+product.productName+" £"+product.price+" "+product.porousware)
   }
 }
