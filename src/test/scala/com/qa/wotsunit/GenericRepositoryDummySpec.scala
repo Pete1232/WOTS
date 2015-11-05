@@ -51,13 +51,13 @@ class GenericRepositoryDummySpec extends UnitSpec{
     grdCO.GenericRepositoryDummy.determineArray(new Array[Employee](3)) should be (true)  
   }
   "Calling determineClass with parameter entity" should "return a new entity of the same type" in{
-    grdP.GenericRepositoryDummy.determineClass(new Product).getClass should be ((new Product).getClass)
-    grdP.GenericRepositoryDummy.determineClass(new Employee).getClass should be ((new Employee).getClass)
-    grdP.GenericRepositoryDummy.determineClass(new CustomerOrder).getClass should be ((new CustomerOrder).getClass)
-    grdP.GenericRepositoryDummy.determineClass(new PurchaseOrder).getClass should be ((new PurchaseOrder).getClass)
-    grdPO.GenericRepositoryDummy.determineClass(new Product).getClass should be ((new Product).getClass)
-    grdPO.GenericRepositoryDummy.determineClass(new Employee).getClass should be ((new Employee).getClass)
-    grdCO.GenericRepositoryDummy.determineClass(new CustomerOrder).getClass should be ((new CustomerOrder).getClass)
-    grdCO.GenericRepositoryDummy.determineClass(new PurchaseOrder).getClass should be ((new PurchaseOrder).getClass)
+    grdP.GenericRepositoryDummy.executeByClass(new Product,null).getClass should be ((new Product).getClass)
+    grdP.GenericRepositoryDummy.executeByClass(new Employee,null).getClass should be ((new Employee).getClass)
+    grdP.GenericRepositoryDummy.executeByClass(new CustomerOrder,null).getClass should be ((new CustomerOrder).getClass)
+    grdP.GenericRepositoryDummy.executeByClass(new PurchaseOrder,null).getClass should be ((new PurchaseOrder).getClass)
+    grdPO.GenericRepositoryDummy.executeByClass(new Product,null).getClass should be ((new Product).getClass)
+    grdPO.GenericRepositoryDummy.executeByClass(new Employee,null).getClass should be ((new Employee).getClass)
+    grdCO.GenericRepositoryDummy.executeByClass(new CustomerOrder,null).getClass should be ((new CustomerOrder).getClass)
+    grdCO.GenericRepositoryDummy.executeByClass(new PurchaseOrder,null).getClass should be ((new PurchaseOrder).getClass)
   }
 }

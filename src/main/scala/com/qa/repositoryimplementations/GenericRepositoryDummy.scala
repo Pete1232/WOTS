@@ -54,6 +54,7 @@ class GenericRepositoryDummy[E:Manifest] extends GenericRepository[E]{
     }
     else{
       logger.info("Adding new {} to database",entity.getClass.getSimpleName)
+      GenericRepositoryDummy.determineClass(entity)
       entity+:DummyData.databaseProduct.databaseArray
     }
   }
@@ -68,13 +69,30 @@ class GenericRepositoryDummy[E:Manifest] extends GenericRepository[E]{
         false
       }
     }
-    def determineClass[E](entity:E):E={
+    /**
+     * This method executes a method based on the entity type of the given parameter
+     * @param entity
+     * @param callback
+     */
+    def executeByClass[E](entity:E,callback:(E)=>Unit):E={
       val entityType:E =(
       entity match{
-        case entity:CustomerOrder => new CustomerOrder
-        case entity:Employee => new Employee
-        case entity:Product => new Product
-        case entity:PurchaseOrder => new PurchaseOrder
+        case entity:CustomerOrder => {
+          callback((new CustomerOrder).asInstanceOf[E])
+          new CustomerOrder
+        }
+        case entity:Employee => {
+          callback((new Employee).asInstanceOf[E])
+          new Employee
+        }
+        case entity:Product => {
+          callback((new Product).asInstanceOf[E])
+          new Product
+        }
+        case entity:PurchaseOrder => {
+          callback((new PurchaseOrder).asInstanceOf[E])
+          new PurchaseOrder
+        }
         case _ =>{
          logger.error("Entity of type {} not handled by getEntityList method",entity.getClass.getSimpleName)
          logger.warn("Program will terminate")
