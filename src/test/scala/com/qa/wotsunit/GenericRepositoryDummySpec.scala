@@ -1,4 +1,4 @@
-package com.qa.wotsunit
+/*package com.qa.wotsunit
 
 import org.scalatest._
 import com.qa.repositoryimplementations.GenericRepositoryDummy
@@ -50,14 +50,4 @@ class GenericRepositoryDummySpec extends UnitSpec{
     grdPO.GenericRepositoryDummy.determineArray(new Employee) should be (false)
     grdCO.GenericRepositoryDummy.determineArray(new Array[Employee](3)) should be (true)  
   }
-  "Calling determineClass with parameter entity" should "return a new entity of the same type" in{
-    grdP.GenericRepositoryDummy.executeByClass(new Product,null).getClass should be ((new Product).getClass)
-    grdP.GenericRepositoryDummy.executeByClass(new Employee,null).getClass should be ((new Employee).getClass)
-    grdP.GenericRepositoryDummy.executeByClass(new CustomerOrder,null).getClass should be ((new CustomerOrder).getClass)
-    grdP.GenericRepositoryDummy.executeByClass(new PurchaseOrder,null).getClass should be ((new PurchaseOrder).getClass)
-    grdPO.GenericRepositoryDummy.executeByClass(new Product,null).getClass should be ((new Product).getClass)
-    grdPO.GenericRepositoryDummy.executeByClass(new Employee,null).getClass should be ((new Employee).getClass)
-    grdCO.GenericRepositoryDummy.executeByClass(new CustomerOrder,null).getClass should be ((new CustomerOrder).getClass)
-    grdCO.GenericRepositoryDummy.executeByClass(new PurchaseOrder,null).getClass should be ((new PurchaseOrder).getClass)
-  }
-}
+}*/

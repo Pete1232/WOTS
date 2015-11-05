@@ -8,6 +8,7 @@ import com.typesafe.scalalogging.Logger
 import org.slf4j.LoggerFactory
 import com.qa.entities.Employee
 import com.qa.entities.CustomerOrder
+import com.qa.entities.Product
 import com.qa.entities.PurchaseOrder
 
 /**
@@ -15,90 +16,36 @@ import com.qa.entities.PurchaseOrder
  */
 class GenericRepositoryDummy[E:Manifest] extends GenericRepository[E]{
   val logger = Logger(LoggerFactory.getLogger("GenericRepositoryDummy.class"))
-  /**
-   * This method returns an Array from the dummy data based on the Entity type
-   * @param entity
-   */
-  def getEntityList(entity:E):Array[E]={
-    logger.debug("Calling getEntityList with Entity type {}",entity.getClass.getSimpleName)
-    val array:Array[E] = {
-    (entity match{
-      case entity:CustomerOrder => DummyData.databaseCustomerOrder.databaseArray
-      case entity:Employee => DummyData.databaseEmployee.databaseArray
-      case entity:Product => DummyData.databaseProduct.databaseArray
-      case entity:PurchaseOrder => DummyData.databasePurchaseOrder.databaseArray
-      case _ =>{
-         logger.error("Entity of type {} not handled by getEntityList method",entity.getClass.getSimpleName)
-         logger.warn("Program will terminate")
-      }
-    }).asInstanceOf[Array[E]]}
-    logger.info("Dummy database{} retrieved",entity.getClass.getSimpleName)
-    array
-  }
-  /**
-   * This method returns all entities in the given DummyData array
-   * TODO This is redundant (see above) - remove?
-   */
-  def findAll(entity:E):Array[E]={
-    logger.debug("Calling findAll with Entity type {}",entity.getClass.getSimpleName)
-    getEntityList(entity:E)
-  }
-  /**
-   * This method sets the DummyData databaseArray of the given type as the given entity
-   * @param entity
-   */
-  def persist(entity:E){
-    logger.debug("Calling persist with Entity type {}",entity.getClass.getSimpleName)
-    if(GenericRepositoryDummy.determineArray(entity)){
-      logger.info("Replacing database{} with new Array[{}](length)",entity.getClass.getSimpleName,entity.getClass.getSimpleName)
-    }
-    else{
-      logger.info("Adding new {} to database",entity.getClass.getSimpleName)
-      GenericRepositoryDummy.determineClass(entity)
-      entity+:DummyData.databaseProduct.databaseArray
-    }
-  }
   object GenericRepositoryDummy{
-    def determineArray[E](entity:E):Boolean={
-      if(entity.getClass.isArray){
-        logger.debug("Determined type as Array")
-        true
-      }
-      else{
-        logger.debug("Determined type as !Array")
-        false
-      }
-    }
     /**
      * This method executes a method based on the entity type of the given parameter
      * @param entity
      * @param callback
      */
-    def executeByClass[E](entity:E,callback:(E)=>Unit):E={
-      val entityType:E =(
+    def findAll(entity:E)=(entityType:E)=>{
+      def getDatabaseCustomerOrder:Array[CustomerOrder]={
+        DummyData.databaseCustomerOrder.databaseArray
+      }
+      def getDatabaseEmployee:Array[Employee]={
+        DummyData.databaseEmployee.databaseArray
+      }
+      def getDatabaseProduct:Array[Product]={
+        DummyData.databaseProduct.databaseArray
+      }
+      def getDatabasePurchaseOrder:Array[PurchaseOrder]={
+        DummyData.databasePurchaseOrder.databaseArray
+      }
       entity match{
-        case entity:CustomerOrder => {
-          callback((new CustomerOrder).asInstanceOf[E])
-          new CustomerOrder
-        }
-        case entity:Employee => {
-          callback((new Employee).asInstanceOf[E])
-          new Employee
-        }
-        case entity:Product => {
-          callback((new Product).asInstanceOf[E])
-          new Product
-        }
-        case entity:PurchaseOrder => {
-          callback((new PurchaseOrder).asInstanceOf[E])
-          new PurchaseOrder
-        }
+        case entity:CustomerOrder => getDatabaseCustomerOrder
+        case entity:Employee => getDatabaseEmployee
+        case entity:Product => getDatabaseProduct
+        case entity:PurchaseOrder => getDatabasePurchaseOrder
         case _ =>{
          logger.error("Entity of type {} not handled by getEntityList method",entity.getClass.getSimpleName)
          logger.warn("Program will terminate")
         }
-      }).asInstanceOf[E]
-      entityType
+      }
+
     }
   }
   
