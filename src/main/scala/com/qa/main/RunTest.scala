@@ -12,7 +12,7 @@ import com.qa.entities.Employee
 object RunTest {
   def main(args:Array[String]){
     val productRepositoryDummy: ProductRepositoryDummy = new ProductRepositoryDummy
-    productRepositoryDummy.GenericRepositoryDummy.findAll(new Product)
+    val arrayProduct:Array[Product] = productRepositoryDummy.GenericRepositoryDummy.findAll(new Product)
     for(product<-arrayProduct)
       println("Product! "+product.productId+" -- "+product.productName+" -- "+product.image+" -- "+product.porousware)
     val employeeRepositoryDummy:EmployeeRepositoryDummy = new EmployeeRepositoryDummy

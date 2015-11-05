@@ -18,11 +18,10 @@ class GenericRepositoryDummy[E:Manifest] extends GenericRepository[E]{
   val logger = Logger(LoggerFactory.getLogger("GenericRepositoryDummy.class"))
   object GenericRepositoryDummy{
     /**
-     * This method executes a method based on the entity type of the given parameter
+     * This method returns a get method to retrieve a Dummy database of the given type
      * @param entity
-     * @param callback
      */
-    def findAll(entity:E)=(entityType:E)=>{
+    def findAll:E=>Array[E]={entity =>
       def getDatabaseCustomerOrder:Array[CustomerOrder]={
         DummyData.databaseCustomerOrder.databaseArray
       }
@@ -36,13 +35,14 @@ class GenericRepositoryDummy[E:Manifest] extends GenericRepository[E]{
         DummyData.databasePurchaseOrder.databaseArray
       }
       entity match{
-        case entity:CustomerOrder => getDatabaseCustomerOrder
-        case entity:Employee => getDatabaseEmployee
-        case entity:Product => getDatabaseProduct
-        case entity:PurchaseOrder => getDatabasePurchaseOrder
+        case entity:CustomerOrder => getDatabaseCustomerOrder.asInstanceOf[Array[E]]
+        case entity:Employee => getDatabaseEmployee.asInstanceOf[Array[E]]
+        case entity:Product => getDatabaseProduct.asInstanceOf[Array[E]]
+        case entity:PurchaseOrder => getDatabasePurchaseOrder.asInstanceOf[Array[E]]
         case _ =>{
          logger.error("Entity of type {} not handled by getEntityList method",entity.getClass.getSimpleName)
-         logger.warn("Program will terminate")
+         logger.warn("Method will return null")
+         null.asInstanceOf[Array[E]]
         }
       }
 
