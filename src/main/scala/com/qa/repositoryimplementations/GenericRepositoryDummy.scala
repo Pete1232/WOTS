@@ -6,6 +6,9 @@ import com.qa.dummydata.DummyBuilder
 import com.qa.entities.Product
 import com.typesafe.scalalogging.Logger
 import org.slf4j.LoggerFactory
+import com.qa.entities.Employee
+import com.qa.entities.CustomerOrder
+import com.qa.entities.PurchaseOrder
 
 /**
  * @author pnewman
@@ -18,9 +21,19 @@ class GenericRepositoryDummy[E] extends GenericRepository[E]{
    */
   def getEntityList[E](entity:E):Array[E]={
     logger.debug("Calling getEntityList with Entity type {}",entity.getClass.getSimpleName)
+    val array:Array[E] = {
     (entity match{
-      case entityType:Product => DummyData.databaseProduct.databaseArray
-    }).asInstanceOf[Array[E]]
+      case entity:CustomerOrder => DummyData.databaseCustomerOrder.databaseArray
+      case entity:Employee => DummyData.databaseEmployee.databaseArray
+      case entity:Product => DummyData.databaseProduct.databaseArray
+      case entity:PurchaseOrder => DummyData.databasePurchaseOrder.databaseArray
+      case _ =>{
+         logger.error("Entity of type {} not handled by getEntityList method",entity.getClass.getSimpleName)
+         logger.warn("Program will terminate")
+      }
+    }).asInstanceOf[Array[E]]}
+    logger.info("{} repository dummy methods available",entity.getClass().getSimpleName)
+    array
   }
   /**
    * This method returns all entities in the given DummyData array

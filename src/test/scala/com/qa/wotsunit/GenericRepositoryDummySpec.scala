@@ -13,7 +13,7 @@ class GenericRepositoryDummySpec extends UnitSpec{
     val array:Array[Product] = grd.getEntityList(product)
     array.getClass.getSimpleName+"" should be ("Product[]")
   }
-    "Calling findAll" should "return an array of the given entity type" in{
+  "Calling findAll" should "return an array of the given entity type" in{
     //TODO Add to this with more entities as they are made
     val grd = new GenericRepositoryDummy
     val product = new Product
