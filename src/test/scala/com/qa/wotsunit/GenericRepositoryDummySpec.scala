@@ -28,7 +28,6 @@ class GenericRepositoryDummySpec extends UnitSpec{
     arrayPO.getClass.getSimpleName+"" should be ("PurchaseOrder[]")
   }
   "Calling findAll" should "return an array of the given entity type" in{
-    val grd = new GenericRepositoryDummy
     val arrayCO:Array[CustomerOrder] = grd.findAll(customerOrder)
     val arrayE:Array[Employee] = grd.findAll(employee)
     val arrayP:Array[Product] = grd.findAll(product)
