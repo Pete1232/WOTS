@@ -1,5 +1,6 @@
 package com.qa.wotsunit
 
+import org.scalatest._
 import com.qa.repositoryimplementations.GenericRepositoryDummy
 import com.qa.entities.Product
 

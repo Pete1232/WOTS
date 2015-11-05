@@ -10,8 +10,8 @@ import com.qa.entities.Product
 object RunTest {
   def main(args:Array[String]){
     val productRepositoryDummy: ProductRepositoryDummy = new ProductRepositoryDummy()
-    val array:Array[Product]=productRepositoryDummy.findAll(new Product())
+    val array:Array[Product]=productRepositoryDummy.findAll(new Product)
     for(product<-array)
-    println(product.productId+" "+product.productName+" £"+product.price+" "+product.porousware)
+    println(product.productId+" -- "+product.productName+" -- "+product.image+" -- "+product.porousware)
   }
 }

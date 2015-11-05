@@ -4,7 +4,10 @@ import scala.util.Random
 import com.qa.entities.Product
 import com.typesafe.scalalogging.Logger
 import org.slf4j.LoggerFactory
-
+          
+/**
+ * @author pnewman
+ */
 /**
  * This class contains methods to automatically populate DummyData arrays
  * @author pnewman
@@ -26,7 +29,8 @@ class DummyBuilder[E:Manifest](size:Int){
     if(counter<=5 || counter==entries)
       logger.debug("Populating DummyData Array of {}. Count: {} out of {}. (Checks first 5 only)",entity.getClass.getSimpleName,counter+"",entries+"")
     if(counter<entries){
-      addToArray(counter, new Product(counter+1,"Product: "+randomInt,randomInt,100*randomFloat,"Category: "+randomInt, "Description: "+randomInt, "Image: "+randomInt, randomBool).asInstanceOf[E])
+      addToArray(counter, //new Product(counter+1,"Product: "+randomInt,randomInt,100*randomFloat,"Category: "+randomInt, "Description: "+randomInt, "Image: "+randomInt, randomBool
+          new Product(counter+1,"Product: "+randomInt,"Image: "+randomInt,randomBool).asInstanceOf[E])
       buildEntityArray(counter.+(1),entries,entity)
     }
     if(counter==entries)
