@@ -49,6 +49,13 @@ class GenericRepositoryDummy[E:Manifest] extends GenericRepository[E]{
    */
   def persist(entity:E){
     logger.debug("Calling persist with Entity type {}",entity.getClass.getSimpleName)
+    if(GenericRepositoryDummy.determineArray(entity)){
+      logger.info("Replacing database{} with new Array[{}](length)",entity.getClass.getSimpleName,entity.getClass.getSimpleName)
+    }
+    else{
+      logger.info("Adding new {} to database",entity.getClass.getSimpleName)
+      entity+:DummyData.databaseProduct.databaseArray
+    }
   }
   object GenericRepositoryDummy{
     def determineArray[E](entity:E):Boolean={
@@ -60,6 +67,20 @@ class GenericRepositoryDummy[E:Manifest] extends GenericRepository[E]{
         logger.debug("Determined type as !Array")
         false
       }
+    }
+    def determineClass[E](entity:E):E={
+      val entityType:E =(
+      entity match{
+        case entity:CustomerOrder => new CustomerOrder
+        case entity:Employee => new Employee
+        case entity:Product => new Product
+        case entity:PurchaseOrder => new PurchaseOrder
+        case _ =>{
+         logger.error("Entity of type {} not handled by getEntityList method",entity.getClass.getSimpleName)
+         logger.warn("Program will terminate")
+        }
+      }).asInstanceOf[E]
+      entityType
     }
   }
   

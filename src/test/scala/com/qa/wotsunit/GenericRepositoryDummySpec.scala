@@ -40,10 +40,24 @@ class GenericRepositoryDummySpec extends UnitSpec{
     arrayP.getClass.getSimpleName+"" should be ("Product[]")
     arrayPO.getClass.getSimpleName+"" should be ("PurchaseOrder[]")
   }
-  "Calling persist with an Array parameter" should "cause determineType to detect an array" in{
-    grdP.GenericRepositoryDummy.determineArray(new Product) should be (false)
-    grdP.GenericRepositoryDummy.determineArray(new Array[Product](5)) should be (true)
+  "Calling determineArray with parameter entity" should "return true if and only if entity is an Array" in{
+    grdE.GenericRepositoryDummy.determineArray(new Product) should be (false)
+    grdE.GenericRepositoryDummy.determineArray(new Array[Product](5)) should be (true)
     grdE.GenericRepositoryDummy.determineArray(new Employee) should be (false)
     grdE.GenericRepositoryDummy.determineArray(new Array[Employee](3)) should be (true)
+    grdP.GenericRepositoryDummy.determineArray(new Product) should be (false)
+    grdP.GenericRepositoryDummy.determineArray(new Array[Product](5)) should be (true)
+    grdPO.GenericRepositoryDummy.determineArray(new Employee) should be (false)
+    grdCO.GenericRepositoryDummy.determineArray(new Array[Employee](3)) should be (true)  
+  }
+  "Calling determineClass with parameter entity" should "return a new entity of the same type" in{
+    grdP.GenericRepositoryDummy.determineClass(new Product).getClass should be ((new Product).getClass)
+    grdP.GenericRepositoryDummy.determineClass(new Employee).getClass should be ((new Employee).getClass)
+    grdP.GenericRepositoryDummy.determineClass(new CustomerOrder).getClass should be ((new CustomerOrder).getClass)
+    grdP.GenericRepositoryDummy.determineClass(new PurchaseOrder).getClass should be ((new PurchaseOrder).getClass)
+    grdPO.GenericRepositoryDummy.determineClass(new Product).getClass should be ((new Product).getClass)
+    grdPO.GenericRepositoryDummy.determineClass(new Employee).getClass should be ((new Employee).getClass)
+    grdCO.GenericRepositoryDummy.determineClass(new CustomerOrder).getClass should be ((new CustomerOrder).getClass)
+    grdCO.GenericRepositoryDummy.determineClass(new PurchaseOrder).getClass should be ((new PurchaseOrder).getClass)
   }
 }
