@@ -32,7 +32,7 @@ class DummyBuilderSpec extends UnitSpec{
     builderPO.addToArray(index,purchaseOrder)
     builderPO.databaseArray(index) should be (purchaseOrder)
   }
-  "Calling buildEntityArray" should "populate ALL entries of databaseArray (of any size) with entities of the given type" in {
+  "Calling buildEntityArray" should "populate ALL entries of databaseArray (of any size) with entities of the given type (when starting with counter 0)" in {
     val index = Math.abs(Random.nextInt(entries))
     builderCO.buildEntityArray(0, entries, customerOrder)  
     for(entry<-builderCO.databaseArray){
