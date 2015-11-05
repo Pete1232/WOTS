@@ -15,32 +15,35 @@ class GenericRepositoryDummySpec extends UnitSpec{
     val employee = new Employee
     val product = new Product
     val purchaseOrder = new PurchaseOrder
-    val grd = new GenericRepositoryDummy
+    val grdCO = new GenericRepositoryDummy[CustomerOrder]
+    val grdE = new GenericRepositoryDummy[Employee]
+    val grdP = new GenericRepositoryDummy[Product]
+    val grdPO = new GenericRepositoryDummy[PurchaseOrder]
   //TODO Add more methods as they are made
   "Calling getEntityList" should "return an array of the given entity type" in{
-    val arrayCO:Array[CustomerOrder] = grd.getEntityList(customerOrder)
-    val arrayE:Array[Employee] = grd.getEntityList(employee)
-    val arrayP:Array[Product] = grd.getEntityList(product)
-    val arrayPO:Array[PurchaseOrder] = grd.getEntityList(purchaseOrder)
+    val arrayCO:Array[CustomerOrder] = grdCO.getEntityList(customerOrder)
+    val arrayE:Array[Employee] = grdE.getEntityList(employee)
+    val arrayP:Array[Product] = grdP.getEntityList(product)
+    val arrayPO:Array[PurchaseOrder] = grdPO.getEntityList(purchaseOrder)
     arrayCO.getClass.getSimpleName+"" should be ("CustomerOrder[]")
     arrayE.getClass.getSimpleName+"" should be ("Employee[]")
     arrayP.getClass.getSimpleName+"" should be ("Product[]")
     arrayPO.getClass.getSimpleName+"" should be ("PurchaseOrder[]")
   }
   "Calling findAll" should "return an array of the given entity type" in{
-    val arrayCO:Array[CustomerOrder] = grd.findAll(customerOrder)
-    val arrayE:Array[Employee] = grd.findAll(employee)
-    val arrayP:Array[Product] = grd.findAll(product)
-    val arrayPO:Array[PurchaseOrder] = grd.findAll(purchaseOrder)
+    val arrayCO:Array[CustomerOrder] = grdCO.findAll(customerOrder)
+    val arrayE:Array[Employee] = grdE.findAll(employee)
+    val arrayP:Array[Product] = grdP.findAll(product)
+    val arrayPO:Array[PurchaseOrder] = grdPO.findAll(purchaseOrder)
     arrayCO.getClass.getSimpleName+"" should be ("CustomerOrder[]")
     arrayE.getClass.getSimpleName+"" should be ("Employee[]")
     arrayP.getClass.getSimpleName+"" should be ("Product[]")
     arrayPO.getClass.getSimpleName+"" should be ("PurchaseOrder[]")
   }
   "Calling persist with an Array parameter" should "cause determineType to detect an array" in{
-    grd.GenericRepositoryDummy.determineArray(new Product) should be (false)
-    grd.GenericRepositoryDummy.determineArray(new Array[Product](5)) should be (true)
-    grd.GenericRepositoryDummy.determineArray(new Employee) should be (false)
-    grd.GenericRepositoryDummy.determineArray(new Array[Employee](3)) should be (true)
+    grdP.GenericRepositoryDummy.determineArray(new Product) should be (false)
+    grdP.GenericRepositoryDummy.determineArray(new Array[Product](5)) should be (true)
+    grdE.GenericRepositoryDummy.determineArray(new Employee) should be (false)
+    grdE.GenericRepositoryDummy.determineArray(new Array[Employee](3)) should be (true)
   }
 }
