@@ -1,4 +1,5 @@
 package com.qa.dummydata
+//TODO should be a companion object (merge with DummyBuilder)
 
 import com.qa.entities.Product
 import scala.util.Random

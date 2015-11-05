@@ -6,15 +6,15 @@ package com.qa.repositories
  trait GenericRepository[E] {
   //TODO Uncomment and implement all methods
   /**
-   * This method returns a list of all entities in a table
+   * This method returns function that returns an array of entities
    * @return
    */
-  //def findAll(entity:E):Array[E]
+  def findAll:E=>Array[E]
   /**
    * This method persists a list of entities
    * @param entities
    */
- // def persist(entities:E)
+   def persist:E=>Unit
 /*  *//**
    * This method updates (overwrites) a list of entities in a table
    * @param entities

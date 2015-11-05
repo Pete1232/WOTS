@@ -17,7 +17,7 @@ import com.qa.entities.Employee
  */
 class DummyBuilder[E:Manifest](size:Int){
   val logger = Logger(LoggerFactory.getLogger("DummyBuilder.class"))
-  val databaseArray:Array[E]= new Array[E](size)
+  var databaseArray:Array[E]= new Array[E](size)
   logger.debug("Initialised databaseArray of size {} and type {}",size+"",databaseArray.getClass.getSimpleName)
   /**
    * This generic method fills databaseArray with the relevant entities
