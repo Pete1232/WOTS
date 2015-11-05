@@ -17,7 +17,7 @@ class GenericRepositoryDummy[E] extends GenericRepository[E]{
   val logger = Logger(LoggerFactory.getLogger("GenericRepositoryDummy.class"))
   /**
    * This method returns an Array from the dummy data based on the Entity type
-   * @param entityType
+   * @param entity
    */
   def getEntityList[E](entity:E):Array[E]={
     logger.debug("Calling getEntityList with Entity type {}",entity.getClass.getSimpleName)
@@ -32,7 +32,7 @@ class GenericRepositoryDummy[E] extends GenericRepository[E]{
          logger.warn("Program will terminate")
       }
     }).asInstanceOf[Array[E]]}
-    logger.info("{} repository dummy methods available",entity.getClass().getSimpleName)
+    logger.info("Dummy database{} retrieved",entity.getClass.getSimpleName)
     array
   }
   /**
@@ -43,4 +43,25 @@ class GenericRepositoryDummy[E] extends GenericRepository[E]{
     logger.debug("Calling findAll with Entity type {}",entity.getClass.getSimpleName)
     getEntityList(entity:E)
   }
+  /**
+   * This method sets the DummyData databaseArray of the given type as the given entity
+   * @param entity
+   */
+  def persist[E](entity:E){
+    logger.debug("Calling persist with Entity type {}",entity.getClass.getSimpleName)
+  }
+  object GenericRepositoryDummy{
+    def determineArray[E](entity:E):Boolean={
+      if(entity.getClass.isArray){
+        logger.debug("Determined type as Array")
+        true
+      }
+      else{
+        logger.debug("Determined type as !Array")
+        false
+      }
+    }
+  }
+  
+  
 }

@@ -37,4 +37,10 @@ class GenericRepositoryDummySpec extends UnitSpec{
     arrayP.getClass.getSimpleName+"" should be ("Product[]")
     arrayPO.getClass.getSimpleName+"" should be ("PurchaseOrder[]")
   }
+  "Calling persist with an Array parameter" should "cause determineType to detect an array" in{
+    grd.GenericRepositoryDummy.determineArray(new Product) should be (false)
+    grd.GenericRepositoryDummy.determineArray(new Array[Product](5)) should be (true)
+    grd.GenericRepositoryDummy.determineArray(new Employee) should be (false)
+    grd.GenericRepositoryDummy.determineArray(new Array[Employee](3)) should be (true)
+  }
 }

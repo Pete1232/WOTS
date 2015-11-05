@@ -14,8 +14,8 @@ package com.qa.repositories
    * This method persists a list of entities
    * @param entities
    */
-/*  def persist(entities:Array[E])
-  *//**
+  def persist[E](entities:E)
+/*  *//**
    * This method updates (overwrites) a list of entities in a table
    * @param entities
    *//*
