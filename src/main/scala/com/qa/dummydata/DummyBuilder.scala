@@ -25,29 +25,29 @@ class DummyBuilder[E:Manifest](size:Int){
    * @param entries
    * @param entity
    */
-  def buildEntityArray(counter:Int,entries:Int,entity:E){
+  def buildEntityArray(counter:Int,entity:E){
     val randomInt = Math.abs(Random.nextInt())
     val randomBool = Random.nextBoolean()
-    if(counter<=3 || counter==entries)
-      logger.debug("Populating DummyData Array of {}. Count: {} out of {}. (Checks first 3 and final)",entity.getClass.getSimpleName,counter+"",entries+"")
-    if(counter<entries){
+    if(counter<=3 || counter==size)
+      logger.debug("Populating DummyData Array of {}. Count: {} out of {}. (Checks first 3 and final)",entity.getClass.getSimpleName,counter+"",size+"")
+    if(counter<size){
       
       entity match{
         case entity:CustomerOrder =>{
           addToArray(counter, new CustomerOrder(counter+1,"Status: "+randomInt,"Address: "+randomInt).asInstanceOf[E])
-          buildEntityArray(counter.+(1),entries,entity.asInstanceOf[E])
+          buildEntityArray(counter.+(1),entity.asInstanceOf[E])
         }
         case entity:Employee =>{
           addToArray(counter, new Employee(counter+1,"Name: "+randomInt,"Username: "+randomInt,"Password: "+randomInt,randomInt).asInstanceOf[E])
-          buildEntityArray(counter.+(1),entries,entity.asInstanceOf[E])
+          buildEntityArray(counter.+(1),entity.asInstanceOf[E])
         }
         case entity:Product => {
           addToArray(counter, new Product(counter+1,"Product: "+randomInt,"Image: "+randomInt,randomBool).asInstanceOf[E])
-          buildEntityArray(counter.+(1),entries,entity.asInstanceOf[E])
+          buildEntityArray(counter.+(1),entity.asInstanceOf[E])
         }
         case entity:PurchaseOrder =>{
           addToArray(counter, new PurchaseOrder(counter+1,randomInt,"Status: "+randomInt).asInstanceOf[E])
-          buildEntityArray(counter.+(1),entries,entity.asInstanceOf[E])          
+          buildEntityArray(counter.+(1),entity.asInstanceOf[E])          
         }
         case _ => {
           logger.error("Entity of type {} not handled by buildEntityArray method",entity.getClass.getSimpleName)
@@ -55,7 +55,7 @@ class DummyBuilder[E:Manifest](size:Int){
         }
       }
     }
-    if(counter==entries)
+    if(counter==size)
       logger.info("DummyData {} table has been successfully initialised.",entity.getClass.getSimpleName)
   }
   /**

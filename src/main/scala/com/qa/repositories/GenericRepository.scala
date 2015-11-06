@@ -15,6 +15,7 @@ package com.qa.repositories
    * @param entities
    */
    def persist:E=>Unit
+   def persistArray:Array[E]=>Unit
 /*  *//**
    * This method updates (overwrites) a list of entities in a table
    * @param entities

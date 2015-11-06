@@ -16,8 +16,8 @@ object DummyData {
   val databaseEmployee = new DummyBuilder[Employee](entries)
   val databaseProduct = new DummyBuilder[Product](entries)
   val databasePurchaseOrder = new DummyBuilder[PurchaseOrder](entries)
-  databaseCustomerOrder.buildEntityArray(0,entries,new CustomerOrder)
-  databaseEmployee.buildEntityArray(0, entries, new Employee)
-  databaseProduct.buildEntityArray(0,entries,new Product)
-  databasePurchaseOrder.buildEntityArray(0,entries,new PurchaseOrder)
+  databaseCustomerOrder.buildEntityArray(0,new CustomerOrder)
+  databaseEmployee.buildEntityArray(0,new Employee)
+  databaseProduct.buildEntityArray(0,new Product)
+  databasePurchaseOrder.buildEntityArray(0,new PurchaseOrder)
 }
