@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory
 
 class GenericRepositoryDummySpec extends UnitSpec{
     val logger = Logger(LoggerFactory.getLogger("DummyBuilder.class"))
-    val dummyBuilder = new DummyBuilder[CustomerOrder](3).buildEntityArray(0, new CustomerOrder)
     val customerOrder = new CustomerOrder
     val employee = new Employee
     val product = new Product
@@ -23,11 +22,19 @@ class GenericRepositoryDummySpec extends UnitSpec{
     var customerOrderArray:Array[CustomerOrder] = new Array[CustomerOrder](3)
     for(i<-0 until customerOrderArray.length)
       customerOrderArray(i)=new CustomerOrder
+    var employeeArray:Array[Employee] = new Array[Employee](3)
+    for(i<-0 until employeeArray.length)
+      employeeArray(i)=new Employee
+    var productArray:Array[Product] = new Array[Product](3)
+    for(i<-0 until productArray.length)
+      productArray(i)=new Product
+    var purchaseOrderArray:Array[PurchaseOrder] = new Array[PurchaseOrder](3)
+    for(i<-0 until purchaseOrderArray.length)
+      purchaseOrderArray(i)=new PurchaseOrder
     val grdCO = new GenericRepositoryDummy[CustomerOrder]
     val grdE = new GenericRepositoryDummy[Employee]
     val grdP = new GenericRepositoryDummy[Product]
     val grdPO = new GenericRepositoryDummy[PurchaseOrder]
-  //TODO Add more methods as they are made
   "Calling findAll returns a function that" should "return an array of the given entity type" in{
     val arrayCO:Array[CustomerOrder] = grdCO.GenericRepositoryDummy.findAll(customerOrder)
     val arrayE:Array[Employee] = grdE.GenericRepositoryDummy.findAll(employee)
@@ -66,17 +73,17 @@ class GenericRepositoryDummySpec extends UnitSpec{
     val initialP = grdP.GenericRepositoryDummy.findAll(product).length
     val initialPO = grdPO.GenericRepositoryDummy.findAll(purchaseOrder).length
     grdCO.GenericRepositoryDummy.persistArray(customerOrderArray)
-    grdE.GenericRepositoryDummy.persist(employee)
-    grdP.GenericRepositoryDummy.persist(product)
-    grdPO.GenericRepositoryDummy.persist(purchaseOrder)
+    grdE.GenericRepositoryDummy.persistArray(employeeArray)
+    grdP.GenericRepositoryDummy.persistArray(productArray)
+    grdPO.GenericRepositoryDummy.persistArray(purchaseOrderArray)
     val finalCO = grdCO.GenericRepositoryDummy.findAll(customerOrder).length
     val finalE = grdE.GenericRepositoryDummy.findAll(employee).length
     val finalP = grdP.GenericRepositoryDummy.findAll(product).length
     val finalPO = grdPO.GenericRepositoryDummy.findAll(purchaseOrder).length
     finalCO should be (initialCO+customerOrderArray.length)
-    finalE should be (initialE+1)
-    finalP should be (initialP+1)
-    finalPO should be (initialPO+1)
+    finalE should be (initialE+employeeArray.length)
+    finalP should be (initialP+productArray.length)
+    finalPO should be (initialPO+purchaseOrderArray.length)
     grdCO.GenericRepositoryDummy.findAll(customerOrder)(finalCO-1).customerOrderStatus should be (customerOrder.customerOrderStatus)
     grdE.GenericRepositoryDummy.findAll(employee)(finalE-1).employeeUsername should be (employee.employeeUsername)
     grdP.GenericRepositoryDummy.findAll(product)(finalP-1).porousware should be (product.porousware)
