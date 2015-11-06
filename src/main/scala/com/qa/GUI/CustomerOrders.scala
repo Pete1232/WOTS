@@ -18,6 +18,7 @@ import scalafx.scene.input.KeyCombination
 import scalafx.scene.control.TabPane
 import scalafx.scene.control.Tab
 import scalafx.scene.text.Text
+import scalafx.geometry.Insets
 
 /**
  * @author pnewman
@@ -28,7 +29,8 @@ object CustomerOrders extends JFXApp{
   }
   stage = new PrimaryStage{
     title = "Hello"
-    scene = new Scene(500,300){
+    scene = new Scene(800,450){
+      stylesheets = List(getClass.getResource("CustomerOrders.css").toExternalForm)
       root = new BorderPane{
         top = new VBox{
           children = List(
@@ -57,7 +59,11 @@ object CustomerOrders extends JFXApp{
     new TabPane{
       tabs = List(
         new Tab{
-          text = "Open Customer Orders"
+          text = "Customer Orders"
+          closable = false
+        },
+        new Tab{
+          text = "Purchase Orders"
           closable = false
         }
       )
