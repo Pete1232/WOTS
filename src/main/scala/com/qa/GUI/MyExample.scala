@@ -1,19 +1,20 @@
-package com.qa.SFXSamples
+package com.qa.GUI
 
 import scalafx.Includes._
 import scalafx.application.JFXApp
-import scalafx.stage.Stage
 import scalafx.scene.control.Button
 import scalafx.scene.Scene
-import scalafx.scene.layout.StackPane
-import scalafx.event.EventHandler
-import scalafx.event.ActionEvent
 import scalafx.scene.input.MouseEvent
 import scalafx.scene.layout.GridPane
 import scalafx.geometry.Pos
 import scalafx.geometry.Insets
-import scalafx.scene.control.Label
 import scalafx.scene.layout.HBox
+import scalafx.geometry.Insets.sfxInsets2jfx
+import scalafx.geometry.Pos.sfxEnum2jfx
+import scalafx.scene.Scene.sfxScene2jfx
+import scalafx.scene.control.Button.sfxButton2jfx
+import scalafx.scene.layout.GridPane.sfxGridPane2jfx
+import scalafx.stage.Stage.sfxStage2jfx
 
 object MyExample extends JFXApp {
   stage = new JFXApp.PrimaryStage {
