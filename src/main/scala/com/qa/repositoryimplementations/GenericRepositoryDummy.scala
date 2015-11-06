@@ -64,17 +64,23 @@ class GenericRepositoryDummy[E:Manifest]{
       }
     }
     def persistArray:Array[E]=>Unit={entityArray =>
-      def postAppendArray(array:Array[E]):Array[E]={
-        for(entity<-entityArray)
-          array:+entity
-        array
+      def postAppendArray(count:Int,array:Array[E]):Array[E]={
+        if(count<entityArray.length){
+        logger.debug("persistArray: start array length: {}",array.length+"")
+        val nextArray = array:+entityArray(count)
+        logger.debug("persistArray: end array length: {}",nextArray.length+"")
+        postAppendArray(count+1,nextArray)
+        }
+        else{
+          array
+        }
       }
       val testEntity = entityArray.head
       testEntity match{
-        case testEntity:CustomerOrder => DummyData.databaseCustomerOrder.databaseArray=postAppendArray(getDatabaseCustomerOrder.asInstanceOf[Array[E]]).asInstanceOf[Array[CustomerOrder]]
-        case testEntity:Employee => DummyData.databaseEmployee.databaseArray=postAppendArray(getDatabaseEmployee.asInstanceOf[Array[E]]).asInstanceOf[Array[Employee]]
-        case testEntity:Product => DummyData.databaseProduct.databaseArray=postAppendArray(getDatabaseProduct.asInstanceOf[Array[E]]).asInstanceOf[Array[Product]]
-        case testEntity:PurchaseOrder => DummyData.databasePurchaseOrder.databaseArray=postAppendArray(getDatabasePurchaseOrder.asInstanceOf[Array[E]]).asInstanceOf[Array[PurchaseOrder]]
+        case testEntity:CustomerOrder =>  DummyData.databaseCustomerOrder.databaseArray=postAppendArray(0,getDatabaseCustomerOrder.asInstanceOf[Array[E]]).asInstanceOf[Array[CustomerOrder]]
+        case testEntity:Employee => DummyData.databaseEmployee.databaseArray=postAppendArray(0,getDatabaseEmployee.asInstanceOf[Array[E]]).asInstanceOf[Array[Employee]]
+        case testEntity:Product => DummyData.databaseProduct.databaseArray=postAppendArray(0,getDatabaseProduct.asInstanceOf[Array[E]]).asInstanceOf[Array[Product]]
+        case testEntity:PurchaseOrder => DummyData.databasePurchaseOrder.databaseArray=postAppendArray(0,getDatabasePurchaseOrder.asInstanceOf[Array[E]]).asInstanceOf[Array[PurchaseOrder]]
         case _ =>{
           logger.error("Entity of type {} not handled by persistArray method",entityArray.getClass.getSimpleName)
           logger.warn("Method will return null")

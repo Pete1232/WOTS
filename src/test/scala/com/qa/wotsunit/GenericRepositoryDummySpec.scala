@@ -15,12 +15,14 @@ import org.slf4j.LoggerFactory
 
 class GenericRepositoryDummySpec extends UnitSpec{
     val logger = Logger(LoggerFactory.getLogger("DummyBuilder.class"))
-    val dummyBuilder = new DummyBuilder[CustomerOrder](3)
+    val dummyBuilder = new DummyBuilder[CustomerOrder](3).buildEntityArray(0, new CustomerOrder)
     val customerOrder = new CustomerOrder
     val employee = new Employee
     val product = new Product
     val purchaseOrder = new PurchaseOrder
-    val customerOrderArray = dummyBuilder.buildEntityArray(0, new CustomerOrder)
+    var customerOrderArray:Array[CustomerOrder] = new Array[CustomerOrder](3)
+    for(i<-0 until customerOrderArray.length)
+      customerOrderArray(i)=new CustomerOrder
     val grdCO = new GenericRepositoryDummy[CustomerOrder]
     val grdE = new GenericRepositoryDummy[Employee]
     val grdP = new GenericRepositoryDummy[Product]
@@ -63,7 +65,7 @@ class GenericRepositoryDummySpec extends UnitSpec{
     val initialE = grdE.GenericRepositoryDummy.findAll(employee).length
     val initialP = grdP.GenericRepositoryDummy.findAll(product).length
     val initialPO = grdPO.GenericRepositoryDummy.findAll(purchaseOrder).length
-    grdCO.GenericRepositoryDummy.persist(customerOrder)
+    grdCO.GenericRepositoryDummy.persistArray(customerOrderArray)
     grdE.GenericRepositoryDummy.persist(employee)
     grdP.GenericRepositoryDummy.persist(product)
     grdPO.GenericRepositoryDummy.persist(purchaseOrder)
@@ -71,7 +73,7 @@ class GenericRepositoryDummySpec extends UnitSpec{
     val finalE = grdE.GenericRepositoryDummy.findAll(employee).length
     val finalP = grdP.GenericRepositoryDummy.findAll(product).length
     val finalPO = grdPO.GenericRepositoryDummy.findAll(purchaseOrder).length
-    finalCO should be (initialCO+1)
+    finalCO should be (initialCO+customerOrderArray.length)
     finalE should be (initialE+1)
     finalP should be (initialP+1)
     finalPO should be (initialPO+1)
