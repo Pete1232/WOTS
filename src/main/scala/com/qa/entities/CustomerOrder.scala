@@ -1,6 +1,7 @@
 package com.qa.entities
 
 import scalafx.beans.property.StringProperty
+import scalafx.beans.property.ObjectProperty
 
 //import java.time.LocalDateTime
 
@@ -11,7 +12,7 @@ class CustomerOrder(val orderId_ :Int,var customerOrderStatus_ :String,val deliv
 {
   def this()=this(0,null,null)
   
-  val orderId = new StringProperty(this,"orderID",""+orderId_)
+  val orderId = new ObjectProperty[Int](this,"orderId",orderId_)
   val customerOrderStatus = new StringProperty(this,"customerOrderStatus",customerOrderStatus_)
   val deliveryAddress = new StringProperty(this,"deliveryAddress",deliveryAddress_)  
 }

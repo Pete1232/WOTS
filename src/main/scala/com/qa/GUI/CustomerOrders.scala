@@ -26,6 +26,7 @@ import scalafx.scene.Node
 import scalafx.scene.control.TableColumn
 import com.qa.entities.CustomerOrder
 import com.qa.repositoryimplementations.CustomerOrderRepositoryDummy
+import com.qa.model.CustomerOrderModel
 
 /**
  * @author pnewman
@@ -81,18 +82,18 @@ object CustomerOrders extends JFXApp{
     }
   }
   def createNodeCO:Node={
-    val orderIdCol = new TableColumn[CustomerOrder,String]{
+    val orderIdCol = new TableColumn[CustomerOrder,Int]{
       text = "Customer Order ID"
       cellValueFactory = {_.value.orderId}
       prefWidth = 180
     }
     val repoCO = new CustomerOrderRepositoryDummy
-    val table = new TableView[CustomerOrder]{
+    val table = new TableView[CustomerOrder](CustomerOrderModel.getCustomerOrders){
       columns += (orderIdCol)
     }
-    table.selectionModel().selectedItem.onChange(
+/*    table.selectionModel().selectedItem.onChange(
       (_, _, newValue) => println(newValue + " chosen in TableView")
-    )
+    )*/
     table
   }
   def createNodePO:Node={
