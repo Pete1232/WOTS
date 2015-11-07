@@ -27,6 +27,12 @@ import scalafx.scene.control.TableColumn
 import com.qa.entities.CustomerOrder
 import com.qa.repositoryimplementations.CustomerOrderRepositoryDummy
 import com.qa.model.CustomerOrderModel
+import scalafx.scene.control.{TableCell, TableColumn, TableView}
+import scalafx.application.JFXApp
+import scalafx.application.JFXApp.PrimaryStage
+import scalafx.collections.ObservableBuffer
+import scalafx.scene.control.TableColumn._
+import scalafx.scene.control.{TableCell, TableColumn, TableView}
 
 /**
  * @author pnewman
@@ -36,7 +42,7 @@ object CustomerOrders extends JFXApp{
     text = "Hello, World!"
   }
   stage = new PrimaryStage{
-    title = "Hello"
+    title = "NBGardens Warehouse Order Tracking System"
     scene = new Scene(800,450){
       stylesheets = List(getClass.getResource("CustomerOrders.css").toExternalForm)
       root = new BorderPane{
@@ -83,13 +89,42 @@ object CustomerOrders extends JFXApp{
   }
   def createNodeCO:Node={
     val orderIdCol = new TableColumn[CustomerOrder,Int]{
-      text = "Customer Order ID"
+      text = "Order ID"
       cellValueFactory = {_.value.orderId_}
       prefWidth = 180
     }
+    val orderStatusCol = new TableColumn[CustomerOrder,String]{
+      text = "Order Status"
+      cellValueFactory = {_.value.customerOrderStatus_}
+      prefWidth = 180
+    }
+    val orderAddressCol = new TableColumn[CustomerOrder,String]{
+      text = "Delivery Address"
+      cellValueFactory = {_.value.deliveryAddress_}
+      prefWidth = 180
+    }
+    val employeeIdCol = new TableColumn[CustomerOrder,Int]{
+      text = "Employee ID"
+      cellValueFactory = {_.value.employeeId_}
+      prefWidth = 180
+    }
+    val claimCol = new TableColumn[CustomerOrder,Int]{
+      text = "Claim Order"
+      cellValueFactory = {_.value.orderId_}
+      prefWidth = 180
+      cellFactory = { _ => 
+        new TableCell[CustomerOrder,String]{
+          item.onChange { (_,_,newOrderId) => 
+            graphic = new Button{
+              text = "Claim Order "+newOrderId
+            }
+          }
+        }
+      }
+    }
     val repoCO = new CustomerOrderRepositoryDummy
     val table = new TableView[CustomerOrder](CustomerOrderModel.getCustomerOrders){
-      columns += (orderIdCol)
+      columns += (orderIdCol,orderStatusCol,orderAddressCol,employeeIdCol,claimCol)
     }
 /*    table.selectionModel().selectedItem.onChange(
       (_, _, newValue) => println(newValue + " chosen in TableView")

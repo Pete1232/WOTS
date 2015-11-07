@@ -1,4 +1,4 @@
-package com.qa.GUI
+package com.qa.SFXSamples
 
 import scalafx.Includes._
 import scalafx.application.JFXApp
@@ -10,7 +10,6 @@ import scalafx.geometry.Pos
 import scalafx.geometry.Insets
 import scalafx.scene.layout.HBox
 import scalafx.geometry.Insets.sfxInsets2jfx
-import scalafx.geometry.Pos.sfxEnum2jfx
 import scalafx.scene.Scene.sfxScene2jfx
 import scalafx.scene.control.Button.sfxButton2jfx
 import scalafx.scene.layout.GridPane.sfxGridPane2jfx

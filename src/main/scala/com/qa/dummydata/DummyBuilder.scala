@@ -34,7 +34,7 @@ class DummyBuilder[E:Manifest](size:Int){
       
       entity match{
         case entity:CustomerOrder =>{
-          addToArray(counter, new CustomerOrder(counter+1,"Status: "+randomInt,"Address: "+randomInt).asInstanceOf[E])
+          addToArray(counter, new CustomerOrder(counter+1,"Status: "+randomInt,"Address: "+randomInt,0).asInstanceOf[E])
           buildEntityArray(counter.+(1),entity.asInstanceOf[E])
         }
         case entity:Employee =>{
