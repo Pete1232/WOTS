@@ -12,6 +12,7 @@ import scalafx.scene.layout.FlowPane
 import scalafx.scene.layout.BorderPane
 import scalafx.scene.control.MenuBar
 import scalafx.scene.layout.VBox
+import scalafx.scene.control._
 import scalafx.scene.control.Menu
 import scalafx.scene.control.MenuItem
 import scalafx.scene.input.KeyCombination
@@ -19,6 +20,12 @@ import scalafx.scene.control.TabPane
 import scalafx.scene.control.Tab
 import scalafx.scene.text.Text
 import scalafx.geometry.Insets
+import scalafx.scene.control.Button
+import scalafx.scene.control.TextField
+import scalafx.scene.Node
+import scalafx.scene.control.TableColumn
+import com.qa.entities.CustomerOrder
+import com.qa.repositoryimplementations.CustomerOrderRepositoryDummy
 
 /**
  * @author pnewman
@@ -59,14 +66,36 @@ object CustomerOrders extends JFXApp{
     new TabPane{
       tabs = List(
         new Tab{
+          id = "CO"
           text = "Customer Orders"
           closable = false
+          content = createNodeCO
         },
         new Tab{
+          id = "PO"
           text = "Purchase Orders"
           closable = false
+          content = createNodePO
         }
       )
     }
+  }
+  def createNodeCO:Node={
+    val orderIdCol = new TableColumn[CustomerOrder,String]{
+      text = "Customer Order ID"
+      cellValueFactory = {_.value.orderId}
+      prefWidth = 180
+    }
+    val repoCO = new CustomerOrderRepositoryDummy
+    val table = new TableView[CustomerOrder]{
+      columns += (orderIdCol)
+    }
+    table.selectionModel().selectedItem.onChange(
+      (_, _, newValue) => println(newValue + " chosen in TableView")
+    )
+    table
+  }
+  def createNodePO:Node={
+    new TextField
   }
 }
