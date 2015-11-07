@@ -8,11 +8,11 @@ import scalafx.beans.property.ObjectProperty
 /**
  * @author pnewman
  */
-class CustomerOrder(val orderId_ :Int,var customerOrderStatus_ :String,val deliveryAddress_ :String)
+class CustomerOrder(val orderId :Int,var customerOrderStatus :String,val deliveryAddress :String)
 {
   def this()=this(0,null,null)
   
-  val orderId = new ObjectProperty[Int](this,"orderId",orderId_)
-  val customerOrderStatus = new StringProperty(this,"customerOrderStatus",customerOrderStatus_)
-  val deliveryAddress = new StringProperty(this,"deliveryAddress",deliveryAddress_)  
+  val orderId_ = new ObjectProperty[Int](this,"orderId",orderId)
+  val customerOrderStatus_ = new StringProperty(this,"customerOrderStatus",customerOrderStatus)
+  val deliveryAddress_ = new StringProperty(this,"deliveryAddress",deliveryAddress)  
 }

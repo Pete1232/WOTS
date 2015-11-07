@@ -84,7 +84,7 @@ object CustomerOrders extends JFXApp{
   def createNodeCO:Node={
     val orderIdCol = new TableColumn[CustomerOrder,Int]{
       text = "Customer Order ID"
-      cellValueFactory = {_.value.orderId}
+      cellValueFactory = {_.value.orderId_}
       prefWidth = 180
     }
     val repoCO = new CustomerOrderRepositoryDummy
