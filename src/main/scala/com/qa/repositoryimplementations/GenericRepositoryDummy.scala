@@ -84,10 +84,20 @@ class GenericRepositoryDummy[E:Manifest]{
         case _ =>{
           logger.error("Entity of type {} not handled by persistArray method",entityArray.getClass.getSimpleName)
           logger.warn("Method will return null")
-          null.asInstanceOf[Array[E]]
         }
-      }
-      
+      } 
+    }
+    def update:(E,Int)=>Unit = {(entity,index) =>
+      entity match{
+        case entity:CustomerOrder =>  DummyData.databaseCustomerOrder.databaseArray(index)=entity
+        case entity:Employee => DummyData.databaseEmployee.databaseArray(index)=entity
+        case entity:Product => DummyData.databaseProduct.databaseArray(index)=entity
+        case entity:PurchaseOrder => DummyData.databasePurchaseOrder.databaseArray(index)=entity
+        case _ =>{
+          logger.error("Entity of type {} not handled by persistArray method",entity.getClass.getSimpleName)
+          logger.warn("Method will return null")
+        }
+      }      
     }
   }  
 }

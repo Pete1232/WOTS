@@ -89,4 +89,18 @@ class GenericRepositoryDummySpec extends UnitSpec{
     grdP.GenericRepositoryDummy.findAll(product)(finalP-1).porousware should be (product.porousware)
     grdPO.GenericRepositoryDummy.findAll(purchaseOrder)(finalPO-1).purchaseOrderStatus should be (purchaseOrder.purchaseOrderStatus)
   }
+  "Calling update returns a function that" should "replace the array entity at the given index with a new entity" in{
+    grdCO.GenericRepositoryDummy.update(customerOrder,2)
+    grdE.GenericRepositoryDummy.update(employee,3)
+    grdP.GenericRepositoryDummy.update(product,5)
+    grdPO.GenericRepositoryDummy.update(purchaseOrder,7)
+    val finalCO = grdCO.GenericRepositoryDummy.findAll(customerOrder)(2)
+    val finalE = grdE.GenericRepositoryDummy.findAll(employee)(3)
+    val finalP = grdP.GenericRepositoryDummy.findAll(product)(5)
+    val finalPO = grdPO.GenericRepositoryDummy.findAll(purchaseOrder)(7)
+    finalCO should be (customerOrder)
+    finalE should be (employee)
+    finalP should be (product)
+    finalPO should be (purchaseOrder)
+  }
 }

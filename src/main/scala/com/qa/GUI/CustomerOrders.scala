@@ -23,6 +23,7 @@ import scalafx.scene.control.TextField
 import com.qa.entities.CustomerOrder
 import com.qa.repositoryimplementations.CustomerOrderRepositoryDummy
 import scalafx.scene.control.TableColumn._
+import scalafx.scene.control.Label
 
 /**
  * @author pnewman
@@ -48,13 +49,13 @@ object CustomerOrders extends JFXApp{
     }
     scene
   }
-  def setTrackingScene:Scene={
+  def setTrackingScene(orderId:Int):Scene={
     val scene = new Scene(800,450){
       root = new BorderPane{
         top = new VBox{
           children = List(
             createMenu,
-            createTrackingPage
+            createTrackingPage(orderId)
           )
         }
       }
@@ -65,10 +66,10 @@ object CustomerOrders extends JFXApp{
     menus = List(
       new Menu("File"){
         items = List(
-          new MenuItem("Something useful..."){
+          new MenuItem("Return to main (Debug)"){
             accelerator = KeyCombination.keyCombination("Ctrl+N")
             onAction = {
-              e: ActionEvent => println(e.eventType + "on MenuItem New")
+              e: ActionEvent => CustomerOrders.stage.scene_=(setMainScene)
             }
           }
         )
@@ -123,7 +124,7 @@ object CustomerOrders extends JFXApp{
             graphic = new Button{
               text = "Claim Order "+newOrderId
               onAction = {
-                e:ActionEvent => 
+                e:ActionEvent => SetScene(e,item.value)
               }
             }
           }
@@ -138,10 +139,17 @@ object CustomerOrders extends JFXApp{
     )
     table
   }
-  def createNodePO:Node={
-    new TextField
+  def SetScene(e:ActionEvent,orderId:Int){
+    CustomerOrders.stage.scene_=(setTrackingScene(orderId))
   }
-  def createTrackingPage:Node={
-    new TextField
+  def createNodePO:Node={
+    new TextField{
+      text = "Hello, World!"
+    }
+  }
+  def createTrackingPage(orderId:Int):Node={
+    new Label{
+      text = "Order ID: "+orderId
+    }
   }
 }
