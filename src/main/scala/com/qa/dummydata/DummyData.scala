@@ -1,5 +1,4 @@
 package com.qa.dummydata
-//TODO should be a companion object (merge with DummyBuilder)
 
 import com.qa.entities.Product
 import scala.util.Random
@@ -8,6 +7,7 @@ import com.qa.entities.CustomerOrder
 import com.qa.entities.PurchaseOrder
 
 /**
+ * This object creates a set of DummyData arrays
  * @author pnewman
  */
 object DummyData {

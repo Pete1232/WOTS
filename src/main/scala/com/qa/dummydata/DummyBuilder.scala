@@ -71,6 +71,5 @@ class DummyBuilder[E:Manifest](size:Int){
     }).asInstanceOf[E]
     if(index<=3)
       logger.debug("Adding new {}.(Checks first 3 only)",entity.getClass.getSimpleName)
-
   }
 }
