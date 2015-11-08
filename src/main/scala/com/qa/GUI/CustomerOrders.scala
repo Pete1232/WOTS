@@ -32,7 +32,10 @@ object CustomerOrders extends JFXApp{
 
   stage = new PrimaryStage{
     title = "NBGardens Warehouse Order Tracking System"
-    scene = new Scene(800,450){
+    scene = setMainScene
+  }
+  def setMainScene:Scene={
+    val scene = new Scene(800,450){
       stylesheets = List(getClass.getResource("CustomerOrders.css").toExternalForm)
       root = new BorderPane{
         top = new VBox{
@@ -43,6 +46,20 @@ object CustomerOrders extends JFXApp{
         }
       }
     }
+    scene
+  }
+  def setTrackingScene:Scene={
+    val scene = new Scene(800,450){
+      root = new BorderPane{
+        top = new VBox{
+          children = List(
+            createMenu,
+            createTrackingPage
+          )
+        }
+      }
+    }
+    scene
   }
   def createMenu = new MenuBar{
     menus = List(
@@ -105,6 +122,9 @@ object CustomerOrders extends JFXApp{
           item.onChange { (_,_,newOrderId) => 
             graphic = new Button{
               text = "Claim Order "+newOrderId
+              onAction = {
+                e:ActionEvent => 
+              }
             }
           }
         }
@@ -113,12 +133,15 @@ object CustomerOrders extends JFXApp{
     val table = new TableView[CustomerOrder](customerOrderList){
       columns ++= List(orderIdCol,orderStatusCol,orderAddressCol,employeeIdCol,claimCol)
     }
-/*    table.selectionModel().selectedItem.onChange(
+    table.selectionModel().selectedItem.onChange(
       (_, _, newValue) => println(newValue + " chosen in TableView")
-    )*/
+    )
     table
   }
   def createNodePO:Node={
+    new TextField
+  }
+  def createTrackingPage:Node={
     new TextField
   }
 }
