@@ -2,45 +2,34 @@ package com.qa.GUI
 
 import scalafx.Includes._
 import scalafx.application.JFXApp
-import scalafx.event.ActionEvent
+import com.qa.model.CustomerOrderModel
 import scalafx.application.JFXApp.PrimaryStage
 import scalafx.scene.Scene
-import scalafx.scene.control.ScrollPane
-import scalafx.scene.image.ImageView
-import scalafx.scene.image.Image
-import scalafx.scene.layout.FlowPane
 import scalafx.scene.layout.BorderPane
-import scalafx.scene.control.MenuBar
 import scalafx.scene.layout.VBox
-import scalafx.scene.control._
+import scalafx.scene.control.MenuBar
 import scalafx.scene.control.Menu
 import scalafx.scene.control.MenuItem
 import scalafx.scene.input.KeyCombination
+import scalafx.event.ActionEvent
 import scalafx.scene.control.TabPane
 import scalafx.scene.control.Tab
-import scalafx.scene.text.Text
-import scalafx.geometry.Insets
-import scalafx.scene.control.Button
-import scalafx.scene.control.TextField
 import scalafx.scene.Node
 import scalafx.scene.control.TableColumn
+import scalafx.scene.control.TableCell
+import scalafx.scene.control.Button
+import scalafx.scene.control.TableView
+import scalafx.scene.control.TextField
 import com.qa.entities.CustomerOrder
 import com.qa.repositoryimplementations.CustomerOrderRepositoryDummy
-import com.qa.model.CustomerOrderModel
-import scalafx.scene.control.{TableCell, TableColumn, TableView}
-import scalafx.application.JFXApp
-import scalafx.application.JFXApp.PrimaryStage
-import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.TableColumn._
-import scalafx.scene.control.{TableCell, TableColumn, TableView}
 
 /**
  * @author pnewman
  */
 object CustomerOrders extends JFXApp{
-  val textRef = new Text{
-    text = "Hello, World!"
-  }
+  val customerOrderList = CustomerOrderModel.getCustomerOrders
+
   stage = new PrimaryStage{
     title = "NBGardens Warehouse Order Tracking System"
     scene = new Scene(800,450){
@@ -49,7 +38,7 @@ object CustomerOrders extends JFXApp{
         top = new VBox{
           children = List(
             createMenu,
-            createTabs
+            createNodeCO
           )
         }
       }
@@ -111,9 +100,8 @@ object CustomerOrders extends JFXApp{
     val claimCol = new TableColumn[CustomerOrder,Int]{
       text = "Claim Order"
       cellValueFactory = {_.value.orderId_}
-      prefWidth = 180
-      cellFactory = { _ => 
-        new TableCell[CustomerOrder,String]{
+      cellFactory = { (col:TableColumn[CustomerOrder,Int]) => 
+        new TableCell[CustomerOrder,Int]{
           item.onChange { (_,_,newOrderId) => 
             graphic = new Button{
               text = "Claim Order "+newOrderId
@@ -122,9 +110,8 @@ object CustomerOrders extends JFXApp{
         }
       }
     }
-    val repoCO = new CustomerOrderRepositoryDummy
-    val table = new TableView[CustomerOrder](CustomerOrderModel.getCustomerOrders){
-      columns += (orderIdCol,orderStatusCol,orderAddressCol,employeeIdCol,claimCol)
+    val table = new TableView[CustomerOrder](customerOrderList){
+      columns ++= List(orderIdCol,orderStatusCol,orderAddressCol,employeeIdCol,claimCol)
     }
 /*    table.selectionModel().selectedItem.onChange(
       (_, _, newValue) => println(newValue + " chosen in TableView")
