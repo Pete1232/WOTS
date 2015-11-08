@@ -9,9 +9,6 @@ import com.qa.entities.CustomerOrder
 import com.qa.entities.Employee
           
 /**
- * @author pnewman
- */
-/**
  * This class contains methods to automatically populate DummyData arrays
  * @author pnewman
  */

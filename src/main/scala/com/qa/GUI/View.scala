@@ -36,11 +36,12 @@ object View{
 
   def setMainScene:Scene={
     val scene = new Scene(800,450){
-      stylesheets = List(getClass.getResource("CustomerOrders.css").toExternalForm)
+      stylesheets = List(getClass.getResource("WOTS.css").toExternalForm)
       root = new BorderPane{
         top = new VBox{
           children = List(
             createMenu,
+            createTabs,
             createNodeCO
           )
         }
@@ -96,27 +97,27 @@ object View{
   def createNodeCO:Node={
     val orderIdCol = new TableColumn[CustomerOrder,Int]{
       text = "Order ID"
-      cellValueFactory = {_.value.orderId_}
+      cellValueFactory = {_.value.orderId}
       prefWidth = 180
     }
     val orderStatusCol = new TableColumn[CustomerOrder,String]{
       text = "Order Status"
-      cellValueFactory = {_.value.customerOrderStatus_}
+      cellValueFactory = {_.value.customerOrderStatus}
       prefWidth = 180
     }
     val orderAddressCol = new TableColumn[CustomerOrder,String]{
       text = "Delivery Address"
-      cellValueFactory = {_.value.deliveryAddress_}
+      cellValueFactory = {_.value.deliveryAddress}
       prefWidth = 180
     }
     val employeeIdCol = new TableColumn[CustomerOrder,Int]{
       text = "Employee ID"
-      cellValueFactory = {_.value.employeeId_}
+      cellValueFactory = {_.value.employeeId}
       prefWidth = 180
     }
     val claimCol = new TableColumn[CustomerOrder,Int]{
       text = "Claim Order"
-      cellValueFactory = {_.value.orderId_}
+      cellValueFactory = {_.value.orderId}
       cellFactory = { (col:TableColumn[CustomerOrder,Int]) => 
         new TableCell[CustomerOrder,Int]{
           item.onChange { (_,_,newOrderId) => 

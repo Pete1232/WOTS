@@ -12,6 +12,7 @@ import com.qa.entities.Product
 import com.qa.entities.PurchaseOrder
 
 /**
+ * This class implements GenericRepository with CRUD methods for DummyData
  * @author pnewman
  */
 class GenericRepositoryDummy[E:Manifest]{
@@ -29,10 +30,6 @@ class GenericRepositoryDummy[E:Manifest]{
       def getDatabasePurchaseOrder:Array[PurchaseOrder]={
         DummyData.databasePurchaseOrder.databaseArray
       }
-    /**
-     * This method returns a get method to retrieve a Dummy database of the given type
-     * @param entity
-     */
     def findAll:E=>Array[E]={entity =>
       entity match{
         case entity:CustomerOrder => getDatabaseCustomerOrder.asInstanceOf[Array[E]]
