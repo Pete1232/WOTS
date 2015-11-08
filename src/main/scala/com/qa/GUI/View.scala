@@ -2,7 +2,6 @@ package com.qa.GUI
 
 import scalafx.Includes._
 import scalafx.application.JFXApp
-import com.qa.model.CustomerOrderModel
 import scalafx.application.JFXApp.PrimaryStage
 import scalafx.scene.Scene
 import scalafx.scene.layout.BorderPane
@@ -24,17 +23,17 @@ import com.qa.entities.CustomerOrder
 import com.qa.repositoryimplementations.CustomerOrderRepositoryDummy
 import scalafx.scene.control.TableColumn._
 import scalafx.scene.control.Label
+import com.typesafe.scalalogging.Logger
+import org.slf4j.LoggerFactory
 
 /**
+ * This object contains the logic that determines what should be displayed to the user.
  * @author pnewman
  */
-object CustomerOrders extends JFXApp{
-  val customerOrderList = CustomerOrderModel.getCustomerOrders
+object View{
+  val logger = Logger(LoggerFactory.getLogger("View.class"))
+  val customerOrderList = Model.getCustomerOrders
 
-  stage = new PrimaryStage{
-    title = "NBGardens Warehouse Order Tracking System"
-    scene = setMainScene
-  }
   def setMainScene:Scene={
     val scene = new Scene(800,450){
       stylesheets = List(getClass.getResource("CustomerOrders.css").toExternalForm)
@@ -64,12 +63,12 @@ object CustomerOrders extends JFXApp{
   }
   def createMenu = new MenuBar{
     menus = List(
-      new Menu("File"){
+      new Menu("Options"){
         items = List(
-          new MenuItem("Return to main (Debug)"){
-            accelerator = KeyCombination.keyCombination("Ctrl+N")
+          new MenuItem("Home"){
+            accelerator = KeyCombination.keyCombination("Ctrl+H")
             onAction = {
-              e: ActionEvent => CustomerOrders.stage.scene_=(setMainScene)
+              e: ActionEvent => Controller.menuHome
             }
           }
         )
@@ -124,7 +123,7 @@ object CustomerOrders extends JFXApp{
             graphic = new Button{
               text = "Claim Order "+newOrderId
               onAction = {
-                e:ActionEvent => SetScene(e,item.value)
+                e:ActionEvent => Controller.SetScene(e,item.value)
               }
             }
           }
@@ -139,9 +138,6 @@ object CustomerOrders extends JFXApp{
     )
     table
   }
-  def SetScene(e:ActionEvent,orderId:Int){
-    CustomerOrders.stage.scene_=(setTrackingScene(orderId))
-  }
   def createNodePO:Node={
     new TextField{
       text = "Hello, World!"
@@ -152,4 +148,8 @@ object CustomerOrders extends JFXApp{
       text = "Order ID: "+orderId
     }
   }
+  /*  Sample code for updating view:
+ *  model.customerOrderStatus_.onChange((obs:ObservableValue[String,String], oldValue:String, newValue:String)=>{
+    logger.debug("Property customerOrderStatus changed: old value = "+oldValue+", new value = "+newValue)
+  })*/
 }
