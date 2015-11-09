@@ -23,5 +23,5 @@ object DummyData {
   databaseEmployee.buildEntityArray(0,new Employee)
   databaseProduct.buildEntityArray(0,new Product)
   databasePurchaseOrder.buildEntityArray(0,new PurchaseOrder)
-  logger.debug("Employee username: "+databaseEmployee.databaseArray(5).employeeUsername_ +". Employee password: "+databaseEmployee.databaseArray(5).employeePassword_)
+  logger.debug("Employee 6 username: "+databaseEmployee.databaseArray(5).employeeUsername_ +". Employee 6 password: "+databaseEmployee.databaseArray(5).employeePassword_)
 }

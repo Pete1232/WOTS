@@ -11,8 +11,8 @@ class CustomerOrder(val orderId_ :Int,var customerOrderStatus_ :String,val deliv
 {
   def this()=this(0,null,null,0)
   
-  val orderId = new ObjectProperty(this,"orderId",orderId_)
-  val customerOrderStatus = new ObjectProperty(this,"customerOrderStatus",customerOrderStatus_)
-  val deliveryAddress = new ObjectProperty(this,"deliveryAddress",deliveryAddress_)  
-  val employeeId = new ObjectProperty(this,"employeeId",employeeID_)  
+  var orderId = new ObjectProperty(this,"orderId",orderId_)
+  var customerOrderStatus = new ObjectProperty(this,"customerOrderStatus",customerOrderStatus_)
+  var deliveryAddress = new ObjectProperty(this,"deliveryAddress",deliveryAddress_)  
+  var employeeId = new ObjectProperty(this,"employeeId",employeeID_)  
 }

@@ -4,6 +4,8 @@ import com.qa.entities.CustomerOrder
 import scalafx.event.ActionEvent
 import com.typesafe.scalalogging.Logger
 import org.slf4j.LoggerFactory
+import com.qa.dummydata.DummyData
+import scalafx.beans.property.ObjectProperty
 /**
  * TODO rewrite the methods when all completed
  * This object contains the logic that determines which methods in the model and view should
@@ -20,7 +22,7 @@ object Controller {
     WOTSMain.stage.scene_=(View.setTrackingScene(orderId))
   }
   def handleLogin(user:String,pass:String){
-    logger.debug("Attempting login. Useris {}. Pass is {}",user,pass)
+    logger.debug("Attempting login. User is {}. Pass is {}",user,pass)
     logger.debug("Login: "+Model.validateLogin(user, pass)("login"))
     if(Model.validateLogin[Boolean](user, pass)("login")){
       session = Model.validateLogin(user, pass)("employeeId")
@@ -31,6 +33,10 @@ object Controller {
     logger.debug("Claiming order {}",orderId+"")
     val order = Model.findBy("orderId")(0,orderId)
     logger.debug("Found order: {}",order)
-    order.employeeID_ = session
+    logger.debug("Employee Id for {}: {}",orderId+"",DummyData.databaseCustomerOrder.databaseArray(orderId-1).employeeId)
+    logger.debug("Session: "+session)
+    DummyData.databaseCustomerOrder.databaseArray(orderId-1).employeeId = new ObjectProperty(new CustomerOrder,"employeeId",session)
+    logger.debug("New Employee Id: "+DummyData.databaseCustomerOrder.databaseArray(orderId-1).employeeId)
+    logger.debug("DummyData customerOrder {} has employeeId {}",orderId+"",DummyData.databaseCustomerOrder.databaseArray(orderId-1).employeeId)
   }
 }

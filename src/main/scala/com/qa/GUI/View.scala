@@ -162,9 +162,7 @@ object View{
       logger.debug("Building customer order table")
       columns ++= List(orderIdCol,orderStatusCol,orderAddressCol,employeeIdCol,claimCol)
     }
-    table.selectionModel().selectedItem.onChange(
-      (_, _, newValue) => println(newValue + " chosen in TableView")
-    )
+    table.items.update(Model.getCustomerOrders)
     table
   }
   def createNodePO:Node={
@@ -209,8 +207,4 @@ object View{
     }
     List(label,user,pass,submit)
   }
-  /*  Sample code for updating view:
- *  model.customerOrderStatus_.onChange((obs:ObservableValue[String,String], oldValue:String, newValue:String)=>{
-    logger.debug("Property customerOrderStatus changed: old value = "+oldValue+", new value = "+newValue)
-  })*/
 }
