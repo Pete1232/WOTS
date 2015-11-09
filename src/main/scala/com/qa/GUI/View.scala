@@ -127,22 +127,22 @@ object View{
     val orderIdCol = new TableColumn[CustomerOrder,Int]{
       text = "Order ID"
       cellValueFactory = {_.value.orderId}
-      prefWidth = 180
+      prefWidth = 160
     }
     val orderStatusCol = new TableColumn[CustomerOrder,String]{
       text = "Order Status"
       cellValueFactory = {_.value.customerOrderStatus}
-      prefWidth = 180
+      prefWidth = 160
     }
     val orderAddressCol = new TableColumn[CustomerOrder,String]{
       text = "Delivery Address"
       cellValueFactory = {_.value.deliveryAddress}
-      prefWidth = 180
+      prefWidth = 160
     }
     val employeeIdCol = new TableColumn[CustomerOrder,Int]{
       text = "Employee ID"
       cellValueFactory = {_.value.employeeId}
-      prefWidth = 180
+      prefWidth = 150
     }
     val claimCol = new TableColumn[CustomerOrder,Int]{
       text = "Claim Order"
@@ -157,6 +157,7 @@ object View{
           }
         }
       }
+      prefWidth=160
     }
     val table = new TableView[CustomerOrder](customerOrderList){
       logger.debug("Building customer order table")

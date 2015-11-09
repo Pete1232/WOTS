@@ -4,3 +4,7 @@
     -fx-text-fill: white;
     -fx-opacity: 1;
 }
+.table-row-cell {
+    -fx-cell-size: 50px;
+    -fx-font: 14px Verdana;
+}
