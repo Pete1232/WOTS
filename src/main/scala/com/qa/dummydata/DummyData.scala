@@ -5,12 +5,15 @@ import scala.util.Random
 import com.qa.entities.Employee
 import com.qa.entities.CustomerOrder
 import com.qa.entities.PurchaseOrder
+import com.typesafe.scalalogging.Logger
+import org.slf4j.LoggerFactory
 
 /**
  * This object creates a set of DummyData arrays
  * @author pnewman
  */
 object DummyData {
+  val logger = Logger(LoggerFactory.getLogger("DummyData.object"))
   val entries = 100
   val databaseCustomerOrder = new DummyBuilder[CustomerOrder](entries)
   val databaseEmployee = new DummyBuilder[Employee](entries)
@@ -20,4 +23,5 @@ object DummyData {
   databaseEmployee.buildEntityArray(0,new Employee)
   databaseProduct.buildEntityArray(0,new Product)
   databasePurchaseOrder.buildEntityArray(0,new PurchaseOrder)
+  logger.debug("Employee username: "+databaseEmployee.databaseArray(5).employeeUsername_ +". Employee password: "+databaseEmployee.databaseArray(5).employeePassword_)
 }

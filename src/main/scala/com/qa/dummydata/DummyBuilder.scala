@@ -23,7 +23,7 @@ class DummyBuilder[E:Manifest](size:Int){
    * @param entity
    */
   def buildEntityArray(counter:Int,entity:E){
-    val randomInt = Math.abs(Random.nextInt())
+    val randomInt = Math.abs(Random.nextInt(1000))
     val randomBool = Random.nextBoolean()
     if(counter<=3 || counter==size)
       logger.debug("Populating DummyData Array of {}. Count: {} out of {}. (Checks first 3 and final)",entity.getClass.getSimpleName,counter+"",size+"")

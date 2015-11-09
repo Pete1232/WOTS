@@ -75,7 +75,8 @@ object View{
           children = createLogin
           padding = Insets(80)
           spacing = 20
-/*          onKeyPressed = {
+/*          TODO Work out how to retrieve login credentials from here - low priority
+ *          onKeyPressed = {
             ke:KeyEvent => {
               logger.debug("Key press detected")
               logger.debug("Detected: "+ke.getCode)
@@ -151,9 +152,7 @@ object View{
           item.onChange { (_,_,newOrderId) => 
             graphic = new Button{
               text = "Claim Order "+newOrderId
-              onAction = {
-                e:ActionEvent => Controller.SetScene(item.value)
-              }
+              onAction = handle(Controller.SetScene(item.value))
             }
           }
         }
@@ -190,9 +189,7 @@ object View{
     }
     val submit = new Button{
       text = "Submit"
-      onAction = {
-        e:ActionEvent => Controller.handleLogin(user.text.toString,pass.text.toString)
-      }
+      onAction = handle(Controller.handleLogin(user.text.value,pass.text.value))
       onKeyPressed = {
         ke:KeyEvent => {
           logger.debug("Key press detected")
@@ -200,7 +197,7 @@ object View{
           logger.debug("Enter: "+KeyCode.ENTER)
           if(ke.getCode.toString.equals(KeyCode.ENTER.toString)){
             logger.debug("Enter key press detected")
-            Controller.handleLogin(user.text.toString,pass.text.toString)
+            Controller.handleLogin(user.text.value,pass.text.value)
           }
         }
       }
