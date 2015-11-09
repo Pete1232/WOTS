@@ -9,6 +9,6 @@ import scalafx.application.JFXApp.PrimaryStage
 object WOTSMain extends JFXApp{
   stage = new PrimaryStage{
     title = "NBGardens Warehouse Order Tracking System"
-    scene = View.setMainScene
+    scene = View.setLoginScene
   }
 }

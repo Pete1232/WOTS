@@ -25,7 +25,9 @@ import scalafx.scene.control.TableColumn._
 import scalafx.scene.control.Label
 import com.typesafe.scalalogging.Logger
 import org.slf4j.LoggerFactory
-
+import scalafx.geometry.Insets
+import scalafx.scene.input.KeyEvent
+import scalafx.scene.input.KeyCode
 /**
  * This object contains the logic that determines what should be displayed to the user.
  * @author pnewman
@@ -33,16 +35,17 @@ import org.slf4j.LoggerFactory
 object View{
   val logger = Logger(LoggerFactory.getLogger("View.class"))
   val customerOrderList = Model.getCustomerOrders
+  val x = 800
+  val y = 450
 
   def setMainScene:Scene={
-    val scene = new Scene(800,450){
+    val scene = new Scene(x,y){
       stylesheets = List(getClass.getResource("WOTS.css").toExternalForm)
       root = new BorderPane{
         top = new VBox{
           children = List(
             createMenu,
-            createTabs,
-            createNodeCO
+            createTabs
           )
         }
       }
@@ -50,13 +53,38 @@ object View{
     scene
   }
   def setTrackingScene(orderId:Int):Scene={
-    val scene = new Scene(800,450){
+    val scene = new Scene(x,y){
       root = new BorderPane{
         top = new VBox{
           children = List(
             createMenu,
             createTrackingPage(orderId)
           )
+        }
+      }
+    }
+    scene
+  }
+  def setLoginScene:Scene={
+    val scene = new Scene(x,y){
+      root = new BorderPane{
+        top = new VBox{
+          children = createMenu
+        }
+        center = new VBox{
+          children = createLogin
+          padding = Insets(80)
+          spacing = 20
+/*          onKeyPressed = {
+            ke:KeyEvent => {
+              logger.debug("Key press detected")
+              logger.debug("Detected: "+ke.getCode)
+              logger.debug("Enter: "+KeyCode.ENTER)
+              if(ke.getCode.toString.equals(KeyCode.ENTER.toString)){
+                logger.debug("Enter key press detected")
+              }
+            }
+          }*/
         }
       }
     }
@@ -124,7 +152,7 @@ object View{
             graphic = new Button{
               text = "Claim Order "+newOrderId
               onAction = {
-                e:ActionEvent => Controller.SetScene(e,item.value)
+                e:ActionEvent => Controller.SetScene(item.value)
               }
             }
           }
@@ -132,6 +160,7 @@ object View{
       }
     }
     val table = new TableView[CustomerOrder](customerOrderList){
+      logger.debug("Building customer order table")
       columns ++= List(orderIdCol,orderStatusCol,orderAddressCol,employeeIdCol,claimCol)
     }
     table.selectionModel().selectedItem.onChange(
@@ -148,6 +177,35 @@ object View{
     new Label{
       text = "Order ID: "+orderId
     }
+  }
+  def createLogin:List[Node]={
+    val label = new Label{
+        text = "Login"
+      }
+    val user = new TextField {
+      promptText = "Username"
+    }
+    val pass = new TextField{
+      promptText = "Password"
+    }
+    val submit = new Button{
+      text = "Submit"
+      onAction = {
+        e:ActionEvent => Controller.handleLogin(user.text.toString,pass.text.toString)
+      }
+      onKeyPressed = {
+        ke:KeyEvent => {
+          logger.debug("Key press detected")
+          logger.debug("Detected: "+ke.getCode)
+          logger.debug("Enter: "+KeyCode.ENTER)
+          if(ke.getCode.toString.equals(KeyCode.ENTER.toString)){
+            logger.debug("Enter key press detected")
+            Controller.handleLogin(user.text.toString,pass.text.toString)
+          }
+        }
+      }
+    }
+    List(label,user,pass,submit)
   }
   /*  Sample code for updating view:
  *  model.customerOrderStatus_.onChange((obs:ObservableValue[String,String], oldValue:String, newValue:String)=>{
