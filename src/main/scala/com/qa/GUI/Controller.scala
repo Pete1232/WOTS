@@ -12,16 +12,25 @@ import org.slf4j.LoggerFactory
  */
 object Controller {
   val logger = Logger(LoggerFactory.getLogger("Controller.object"))
-  def menuHome{
+  var session = 0
+  def setHome{
     WOTSMain.stage.scene_=(View.setMainScene)
   }
-  def SetScene(orderId:Int){
+  def setTracking(orderId:Int){
     WOTSMain.stage.scene_=(View.setTrackingScene(orderId))
   }
   def handleLogin(user:String,pass:String){
     logger.debug("Attempting login. Useris {}. Pass is {}",user,pass)
-    logger.debug("Login: "+Model.validateLogin[Boolean](user, pass)("login"))
-    if(Model.validateLogin[Boolean](user, pass)("login"))
-      menuHome
+    logger.debug("Login: "+Model.validateLogin(user, pass)("login"))
+    if(Model.validateLogin[Boolean](user, pass)("login")){
+      session = Model.validateLogin(user, pass)("employeeId")
+      setHome
+    }
+  }
+  def handleClaim(orderId:Int){
+    logger.debug("Claiming order {}",orderId+"")
+    val order = Model.findBy("orderId")(0,orderId)
+    logger.debug("Found order: {}",order)
+    order.employeeID_ = session
   }
 }

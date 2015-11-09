@@ -56,10 +56,10 @@ object View{
     val scene = new Scene(x,y){
       root = new BorderPane{
         top = new VBox{
-          children = List(
-            createMenu,
-            createTrackingPage(orderId)
-          )
+          children = List(createMenu)
+        }
+        center = new VBox{
+          children = createTrackingPage(orderId)          
         }
       }
     }
@@ -98,7 +98,7 @@ object View{
           new MenuItem("Home"){
             accelerator = KeyCombination.keyCombination("Ctrl+H")
             onAction = {
-              e: ActionEvent => Controller.menuHome
+              e: ActionEvent => Controller.setHome
             }
           }
         )
@@ -152,7 +152,7 @@ object View{
           item.onChange { (_,_,newOrderId) => 
             graphic = new Button{
               text = "Claim Order "+newOrderId
-              onAction = handle(Controller.SetScene(item.value))
+              onAction = handle(Controller.setTracking(item.value))
             }
           }
         }
@@ -172,10 +172,15 @@ object View{
       text = "Hello, World!"
     }
   }
-  def createTrackingPage(orderId:Int):Node={
-    new Label{
+  def createTrackingPage(orderId:Int):List[Node]={
+    val label = new Label{
       text = "Order ID: "+orderId
     }
+    val claim = new Button{
+      text = "Claim"
+      onAction = handle(Controller.handleClaim(orderId))
+    }
+    List(label,claim)
   }
   def createLogin:List[Node]={
     val label = new Label{

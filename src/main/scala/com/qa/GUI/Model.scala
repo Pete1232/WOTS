@@ -70,7 +70,30 @@ object Model {
       }
       else
         false.asInstanceOf[E]
-  } 
-  requestSession}
-
+    } 
+    requestSession
+  }
+  def findBy[E](request:String):(Int,E)=>CustomerOrder={
+    val repoCO = new CustomerOrderRepositoryDummy
+    val orders = repoCO.GenericRepositoryDummy.findAll(new CustomerOrder)
+    def findByOrderId(count:Int,orderId:E):CustomerOrder={
+      logger.debug("SearchId: {}",orderId.asInstanceOf[Int]+"")
+      if(count<orders.length){
+        val order = orders(count)
+        logger.debug("CurrentId: {}",order.orderId_ +"")
+        if(order.orderId_ == orderId)
+          order
+        else
+          findByOrderId(count.+(1),orderId)
+      }
+      else{
+        null
+      }
+    }
+    val findBy:(Int,E)=>CustomerOrder = request match{
+      case "orderId" => findByOrderId
+      case _ => null
+    }
+    findBy
+  }
 }
