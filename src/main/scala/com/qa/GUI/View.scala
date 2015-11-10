@@ -30,6 +30,7 @@ import scalafx.geometry.Insets
 import scalafx.scene.input.KeyEvent
 import scalafx.scene.input.KeyCode
 import com.qa.dummydata.DummyData
+import scalafx.geometry.Pos
 /**
  * This object contains the logic that determines what should be displayed to the user.
  * @author pnewman
@@ -61,11 +62,13 @@ object View{
         top = new VBox{
           children = List(createMenu)
         }
-        left = new VBox{
+/*        left = new VBox{
           children = createTrackingPage(orderId)       
-        }
-        right = new VBox{
+        }*/
+        center = new VBox{
+          id="tracking"
           children = createTrackingApp(orderId,product,count)
+          alignment = Pos.CENTER
         }
       }
     }
@@ -100,12 +103,12 @@ object View{
   }
   def createMenu = new MenuBar{
     menus = List(
-      new Menu("Options"){
+      new Menu("Debug"){
         items = List(
-          new MenuItem("Home"){
-            accelerator = KeyCombination.keyCombination("Ctrl+H")
+          new MenuItem("Quick Log-In"){
+            accelerator = KeyCombination.keyCombination("CTRL+L")
             onAction = {
-              e: ActionEvent => Controller.setHome
+              e: ActionEvent => Controller.loginDebug
             }
           }
         )
@@ -160,7 +163,7 @@ object View{
           item.onChange { (_,_,newOrderId) => 
             graphic = new Button{
               text = "Claim Order "+newOrderId
-              onAction = handle(Controller.setTracking(item.value))
+              onAction = handle(Controller.handleClaim(item.value),Controller.setTracking(item.value))
             }
           }
         }
@@ -181,13 +184,6 @@ object View{
   }
   def createTrackingPage(orderId:Int):List[Node]={
     val productList = Model.getProductByOrderId(orderId)
-    val label = new Label{
-      text = "Order ID: "+orderId
-    }
-    val claim = new Button{
-      text = "Claim"
-      onAction = handle(Controller.handleClaim(orderId))
-    }
     val productIdCol = new TableColumn[Product,Int]{
       text = "Product ID"
       cellValueFactory = {_.value.productId}
@@ -207,22 +203,33 @@ object View{
       logger.debug("Building product table for customer order {}",orderId+"")
       columns ++= List(productIdCol,productNameCol,porouswareCol)
     }
-    List(label,claim,productTable)
+    List(productTable)
   }
   def createTrackingApp(orderId:Int,product:Product,count:Int):List[Node]={
     val productList = Model.getProductByOrderId(orderId)
-    val label = new Label{
-      text = "Order ID: "+orderId
+    val orderLabel = new Label{
+      text = "Order "+orderId
+    }
+    val productLabel = new Label{
+      text = "Current product "+count+" of "+productList.length
     }
     val current = new Label{
       id = "current"
       text = product.aisle_ +""+product.shelf_
     }
+    val request = new Label{
+      text = "Please collect "+12345+" of "+product.productName_
+    }
     val next = new Button{
-      text = "Next Item"
+      text = "Item has been picked"
       onAction = handle(Controller.nextOrder(orderId,productList,count))
     }
-    List(label,current,next)
+    if(count!=0){
+    List(orderLabel,productLabel,current,request,next)
+    }
+    else{
+      List(orderLabel,next)
+    }
   }
   def createLogin:List[Node]={
     val label = new Label{

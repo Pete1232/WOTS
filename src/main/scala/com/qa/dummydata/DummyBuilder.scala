@@ -26,7 +26,7 @@ class DummyBuilder[E:Manifest](size:Int){
     val randomInt = Math.abs(Random.nextInt(1000))
     val randomId = Math.abs(Random.nextInt(100))
     val randomBool = Random.nextBoolean
-    val randomChar = Random.nextPrintableChar()
+    val randomChar = (Random.nextInt(25)+65).toChar
     if(counter<=3 || counter==size)
       logger.debug("Populating DummyData Array of {}. Count: {} out of {}. (Checks first 3 and final)",entity.getClass.getSimpleName,counter+"",size+"")
     if(counter<size){

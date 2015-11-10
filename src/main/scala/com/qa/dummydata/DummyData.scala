@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory
  */
 object DummyData {
   val logger = Logger(LoggerFactory.getLogger("DummyData.object"))
-  val entries = 100
+  val entries = 50
   val databaseCustomerOrder = new DummyBuilder[CustomerOrder](entries)
   val databaseEmployee = new DummyBuilder[Employee](entries)
   val databaseProduct = new DummyBuilder[Product](entries)

@@ -10,6 +10,6 @@ object WOTSMain extends JFXApp{
   stage = new PrimaryStage{
     title = "NBGardens Warehouse Order Tracking System"
     scene = View.setLoginScene
-    resizable = false
+    resizable = true
   }
 }

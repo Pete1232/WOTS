@@ -9,6 +9,8 @@
     -fx-font-size: 14px;
 }
 #current{
-	-fx-font-size: 250px;
-	-fx-padding:0 20 0 0;
+	-fx-font-size: 220px;
+}
+#tracking{
+	-fx-font-size:20px;
 }

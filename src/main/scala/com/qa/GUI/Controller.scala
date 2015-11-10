@@ -17,6 +17,10 @@ import scalafx.collections.ObservableBuffer
 object Controller {
   val logger = Logger(LoggerFactory.getLogger("Controller.object"))
   var session = 0
+  def loginDebug{
+    session = -1
+    setHome
+  }
   def setHome{
     WOTSMain.stage.scene_=(View.setMainScene)
   }
@@ -44,6 +48,7 @@ object Controller {
   def nextOrder(orderId:Int,productList:ObservableBuffer[Product],count:Int){
     if(count >= productList.length){
       logger.debug("End of buffer")
+      WOTSMain.stage.scene_=(View.setMainScene)
     }
     else{
     logger.debug("Product in buffer: {}, of index {}",productList(count),count+"")
