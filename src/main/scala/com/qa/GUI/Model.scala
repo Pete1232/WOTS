@@ -3,10 +3,12 @@ package com.qa.GUI
 import scalafx.collections.ObservableBuffer
 import com.qa.entities.CustomerOrder
 import com.qa.entities.Employee
+import com.qa.entities.Product
 import com.qa.repositoryimplementations.CustomerOrderRepositoryDummy
 import com.qa.repositoryimplementations.EmployeeRepositoryDummy
 import com.typesafe.scalalogging.Logger
 import org.slf4j.LoggerFactory
+import com.qa.repositoryimplementations.ProductRepositoryDummy
 /**
  * This object contains the logic that retrieves information to display to the user
  * @author pnewman
@@ -17,12 +19,28 @@ object Model {
    * This method finds all customer orders and returns them in a suitable format for display (ObservableBuffer)
    */
   def getCustomerOrders: ObservableBuffer[CustomerOrder] = {
-    val customerOrderBuffer = new ObservableBuffer[CustomerOrder]()
+    val customerOrderBuffer = new ObservableBuffer[CustomerOrder]
     val repoCO = new CustomerOrderRepositoryDummy
-    var customerOrders: Array[CustomerOrder] = repoCO.GenericRepositoryDummy.findAll(new CustomerOrder)
+    var customerOrders = repoCO.GenericRepositoryDummy.findAll(new CustomerOrder)
     for (customerOrder <- customerOrders)
       customerOrderBuffer += customerOrder
     customerOrderBuffer
+  }
+  
+  /**
+   * This method finds all products associated with the given customer order
+   */
+  def getProductByOrderId(orderId:Int):ObservableBuffer[Product] = {
+    val productBuffer = new ObservableBuffer[Product]
+    val repoP = new ProductRepositoryDummy
+    val products = repoP.GenericRepositoryDummy.findAll(new Product)
+    for(product <- products){
+      if(product.orderId_ == orderId){
+        logger.debug("Product on order {} found.",orderId+"")
+        productBuffer += product
+      }
+    }
+    productBuffer
   }
 
   /**

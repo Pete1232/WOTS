@@ -24,6 +24,7 @@ class DummyBuilder[E:Manifest](size:Int){
    */
   def buildEntityArray(counter:Int,entity:E){
     val randomInt = Math.abs(Random.nextInt(1000))
+    val randomId = Math.abs(Random.nextInt(100))
     val randomBool = Random.nextBoolean()
     if(counter<=3 || counter==size)
       logger.debug("Populating DummyData Array of {}. Count: {} out of {}. (Checks first 3 and final)",entity.getClass.getSimpleName,counter+"",size+"")
@@ -39,7 +40,7 @@ class DummyBuilder[E:Manifest](size:Int){
           buildEntityArray(counter.+(1),entity.asInstanceOf[E])
         }
         case entity:Product => {
-          addToArray(counter, new Product(counter+1,"Product: "+randomInt,"Image: "+randomInt,randomBool).asInstanceOf[E])
+          addToArray(counter, new Product(counter+1,"Product: "+randomInt,"Image: "+randomInt,randomBool,randomId).asInstanceOf[E])
           buildEntityArray(counter.+(1),entity.asInstanceOf[E])
         }
         case entity:PurchaseOrder =>{

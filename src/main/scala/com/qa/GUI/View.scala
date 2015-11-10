@@ -20,6 +20,7 @@ import scalafx.scene.control.Button
 import scalafx.scene.control.TableView
 import scalafx.scene.control.TextField
 import com.qa.entities.CustomerOrder
+import com.qa.entities.Product
 import com.qa.repositoryimplementations.CustomerOrderRepositoryDummy
 import scalafx.scene.control.TableColumn._
 import scalafx.scene.control.Label
@@ -28,13 +29,14 @@ import org.slf4j.LoggerFactory
 import scalafx.geometry.Insets
 import scalafx.scene.input.KeyEvent
 import scalafx.scene.input.KeyCode
+import com.qa.dummydata.DummyData
 /**
  * This object contains the logic that determines what should be displayed to the user.
  * @author pnewman
  */
 object View{
+  val initDummy = DummyData
   val logger = Logger(LoggerFactory.getLogger("View.class"))
-  val customerOrderList = Model.getCustomerOrders
   val x = 800
   val y = 450
 
@@ -58,7 +60,7 @@ object View{
         top = new VBox{
           children = List(createMenu)
         }
-        center = new VBox{
+        left = new VBox{
           children = createTrackingPage(orderId)          
         }
       }
@@ -124,6 +126,7 @@ object View{
     }
   }
   def createNodeCO:Node={
+    val customerOrderList = Model.getCustomerOrders
     val orderIdCol = new TableColumn[CustomerOrder,Int]{
       text = "Order ID"
       cellValueFactory = {_.value.orderId}
@@ -163,7 +166,7 @@ object View{
       logger.debug("Building customer order table")
       columns ++= List(orderIdCol,orderStatusCol,orderAddressCol,employeeIdCol,claimCol)
     }
-    table.items.update(Model.getCustomerOrders)
+    //table.items.update(Model.getCustomerOrders)
     table
   }
   def createNodePO:Node={
@@ -172,6 +175,7 @@ object View{
     }
   }
   def createTrackingPage(orderId:Int):List[Node]={
+    val productList = Model.getProductByOrderId(orderId)
     val label = new Label{
       text = "Order ID: "+orderId
     }
@@ -179,7 +183,26 @@ object View{
       text = "Claim"
       onAction = handle(Controller.handleClaim(orderId))
     }
-    List(label,claim)
+    val productIdCol = new TableColumn[Product,Int]{
+      text = "Product ID"
+      cellValueFactory = {_.value.productId}
+      prefWidth = 160
+    }
+    val productNameCol = new TableColumn[Product,String]{
+      text = "Product Name"
+      cellValueFactory = {_.value.productName}
+      prefWidth = 160
+    }
+    val porouswareCol = new TableColumn[Product,Boolean]{
+      text = "Porouswared"
+      cellValueFactory = {_.value.porousware}
+      prefWidth = 160
+    }
+    val productTable = new TableView[Product](productList){
+      logger.debug("Building product table for customer order {}",orderId+"")
+      columns ++= List(productIdCol,productNameCol,porouswareCol)
+    }
+    List(label,claim,productTable)
   }
   def createLogin:List[Node]={
     val label = new Label{
