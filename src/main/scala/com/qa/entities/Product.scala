@@ -5,13 +5,15 @@ import scalafx.beans.property.ObjectProperty
 /**
  * @author pnewman
  */
-class Product(val productId_ :Int,val productName_ :String,val image_ :String,val porousware_ :Boolean, val orderId_ :Int)
+class Product(val productId_ :Int,val productName_ :String,val image_ :String,val porousware_ :Boolean, val orderId_ :Int, val aisle_ :Char, val shelf_ :Int)
 {
-  def this()=this(0,null,null,false,0)
+  def this()=this(0,null,null,false,0,'\u0000',0)
   
   val productId = new ObjectProperty(this,"productId",productId_)
   val productName = new ObjectProperty(this,"productName",productName_)
   val image = new ObjectProperty(this,"image",image_)
   val porousware = new ObjectProperty(this,"porousware",porousware_)
   val orderId = new ObjectProperty(this,"orderID",orderId_)
+  val aisle = new ObjectProperty(this,"aisle",aisle_)
+  val shelf = new ObjectProperty(this,"shelf",shelf_)
 }

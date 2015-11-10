@@ -56,6 +56,7 @@ object View{
   }
   def setTrackingScene(orderId:Int,product:Product,count:Int):Scene={
     val scene = new Scene(x,y){
+      stylesheets = List(getClass.getResource("WOTS.css").toExternalForm)
       root = new BorderPane{
         top = new VBox{
           children = List(createMenu)
@@ -72,6 +73,7 @@ object View{
   }
   def setLoginScene:Scene={
     val scene = new Scene(x,y){
+      stylesheets = List(getClass.getResource("WOTS.css").toExternalForm)
       root = new BorderPane{
         top = new VBox{
           children = createMenu
@@ -213,7 +215,8 @@ object View{
       text = "Order ID: "+orderId
     }
     val current = new Label{
-      text = product.productName_
+      id = "current"
+      text = product.aisle_ +""+product.shelf_
     }
     val next = new Button{
       text = "Next Item"

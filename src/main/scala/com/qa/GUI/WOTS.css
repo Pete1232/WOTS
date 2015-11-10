@@ -6,5 +6,9 @@
 }
 .table-row-cell {
     -fx-cell-size: 50px;
-    -fx-font: 14px Verdana;
+    -fx-font-size: 14px;
+}
+#current{
+	-fx-font-size: 250px;
+	-fx-padding:0 20 0 0;
 }
