@@ -21,7 +21,7 @@ object Model {
   def getCustomerOrders: ObservableBuffer[CustomerOrder] = {
     val customerOrderBuffer = new ObservableBuffer[CustomerOrder]
     val repoCO = new CustomerOrderRepositoryDummy
-    var customerOrders = repoCO.GenericRepositoryDummy.findAll(new CustomerOrder)
+    var customerOrders = repoCO.GenericRepositoryDummy.findAll(new CustomerOrder)    
     for (customerOrder <- customerOrders)
       customerOrderBuffer += customerOrder
     customerOrderBuffer

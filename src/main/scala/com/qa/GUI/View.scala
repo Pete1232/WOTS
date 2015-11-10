@@ -54,14 +54,17 @@ object View{
     }
     scene
   }
-  def setTrackingScene(orderId:Int):Scene={
+  def setTrackingScene(orderId:Int,product:Product,count:Int):Scene={
     val scene = new Scene(x,y){
       root = new BorderPane{
         top = new VBox{
           children = List(createMenu)
         }
         left = new VBox{
-          children = createTrackingPage(orderId)          
+          children = createTrackingPage(orderId)       
+        }
+        right = new VBox{
+          children = createTrackingApp(orderId,product,count)
         }
       }
     }
@@ -203,6 +206,20 @@ object View{
       columns ++= List(productIdCol,productNameCol,porouswareCol)
     }
     List(label,claim,productTable)
+  }
+  def createTrackingApp(orderId:Int,product:Product,count:Int):List[Node]={
+    val productList = Model.getProductByOrderId(orderId)
+    val label = new Label{
+      text = "Order ID: "+orderId
+    }
+    val current = new Label{
+      text = product.productName_
+    }
+    val next = new Button{
+      text = "Next Item"
+      onAction = handle(Controller.nextOrder(orderId,productList,count))
+    }
+    List(label,current,next)
   }
   def createLogin:List[Node]={
     val label = new Label{

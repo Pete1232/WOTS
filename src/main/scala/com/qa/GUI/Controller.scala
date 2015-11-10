@@ -1,11 +1,13 @@
 package com.qa.GUI
 
 import com.qa.entities.CustomerOrder
+import com.qa.entities.Product
 import scalafx.event.ActionEvent
 import com.typesafe.scalalogging.Logger
 import org.slf4j.LoggerFactory
 import com.qa.dummydata.DummyData
 import scalafx.beans.property.ObjectProperty
+import scalafx.collections.ObservableBuffer
 /**
  * TODO rewrite the methods when all completed
  * This object contains the logic that determines which methods in the model and view should
@@ -19,7 +21,7 @@ object Controller {
     WOTSMain.stage.scene_=(View.setMainScene)
   }
   def setTracking(orderId:Int){
-    WOTSMain.stage.scene_=(View.setTrackingScene(orderId))
+    WOTSMain.stage.scene_=(View.setTrackingScene(orderId,new Product,0))
   }
   def handleLogin(user:String,pass:String){
     logger.debug("Attempting login. User is {}. Pass is {}",user,pass)
@@ -38,5 +40,14 @@ object Controller {
     DummyData.databaseCustomerOrder.databaseArray(orderId-1).employeeId = new ObjectProperty(new CustomerOrder,"employeeId",session)
     logger.debug("New Employee Id: "+DummyData.databaseCustomerOrder.databaseArray(orderId-1).employeeId)
     logger.debug("DummyData customerOrder {} has employeeId {}",orderId+"",DummyData.databaseCustomerOrder.databaseArray(orderId-1).employeeId)
+  }
+  def nextOrder(orderId:Int,productList:ObservableBuffer[Product],count:Int){
+    if(count >= productList.length){
+      logger.debug("End of buffer")
+    }
+    else{
+    logger.debug("Product in buffer: {}, of index {}",productList(count),count+"")
+    WOTSMain.stage.scene_=(View.setTrackingScene(orderId,productList(count),count.+(1)))
+    }
   }
 }
