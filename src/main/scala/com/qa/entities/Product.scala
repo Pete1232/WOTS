@@ -18,10 +18,11 @@ class Product(val productId_ :Int,val productName_ :String,val image_ :String,va
   val shelf = new ObjectProperty(this,"shelf",shelf_)
   
   object Product {
-    def getDistance(product:Product){
+    def getDistance(product:Product):Int = {
       //TODO Rewrite this to account for warehouse layout
       val xDistance = Math.abs(product.aisle_.toInt - aisle_.toInt)
       val yDistance = Math.abs(product.shelf_ - shelf_)
+      xDistance+yDistance
     }
   }
 }
