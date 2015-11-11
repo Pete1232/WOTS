@@ -7,7 +7,7 @@ import scala.util.Random
 /**
  * @author pnewman
  */
-class Algorithm {
+object Algorithm {
   val elitism = true
   val mutationRate = 0.015
   val tournamentSize = 5

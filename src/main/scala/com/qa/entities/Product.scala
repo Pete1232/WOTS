@@ -8,6 +8,7 @@ import scalafx.beans.property.ObjectProperty
 class Product(val productId_ :Int,val productName_ :String,val image_ :String,val porousware_ :Boolean, val orderId_ :Int, val aisle_ :Char, val shelf_ :Int)
 {
   def this()=this(0,null,null,false,0,'\u0000',0)
+  def this(aisle:Char,shelf:Int)=this(0,null,null,false,0,aisle,shelf)
   
   val productId = new ObjectProperty(this,"productId",productId_)
   val productName = new ObjectProperty(this,"productName",productName_)
