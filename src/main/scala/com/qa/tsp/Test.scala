@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory
 object Test {
   val logger = Logger(LoggerFactory.getLogger("Test.object"))
   def main(args:Array[String]) {
+    logger.debug("Calling Tour constructor")
     val tour0 = new Tour(10)
     logger.debug("Initial empty tour: "+tour0.stops)
     // Create and add our cities
@@ -45,8 +46,9 @@ object Test {
     logger.debug("Populated tour: "+tour.stops)
     
     // Initialize population
-    val pop = new Population(5,tour.stops)
-    System.out.println("Initial distance: " + pop.getFittest.getTourDistance);
+    val pop = new Population(2,tour.stops)
+    logger.debug("Calling getFittest.getTourDistance")
+    logger.info("Initial distance: " + pop.getFittest.getTourDistance);
 
     // Evolve population for 100 generations
     def evolver(count:Int,pop:Population):Population={
@@ -57,9 +59,8 @@ object Test {
     val newPop = evolver(0,pop)
 
     // Print final results
-    println("Finished")
-    println("Final distance: " + newPop.getFittest.getTourDistance)
-    println("Solution:")
-    println(pop.getFittest)
+    logger.info("Finished")
+    logger.info("Final distance: " + newPop.getFittest.getTourDistance)
+    logger.info("Solution: {}",pop.getFittest)
   }
 }

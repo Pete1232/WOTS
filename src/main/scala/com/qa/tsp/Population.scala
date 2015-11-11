@@ -21,8 +21,10 @@ object Population {
     }
 }
 class Population(val popSize:Int,val stops:List[Product]) {
-  val population = createPopulation(0, popSize, Population.generateEmptyPop(0,10,List[Tour]()))
+  val logger = Logger(LoggerFactory.getLogger("Population.class"))
+  val population = createPopulation(0, popSize, Population.generateEmptyPop(0,popSize,List[Tour]()))
   def createPopulation(count:Int,popSize:Int,tours:List[Tour]):List[Tour]={
+    logger.debug("Entering createPopulation method with count {}, popSize {} and tours {}",count+"",popSize+"",tours)
     if(count<popSize){
       val tour = new Tour(stops)
       val nextTour = new Tour(tour.generateIndividual)
@@ -35,6 +37,7 @@ class Population(val popSize:Int,val stops:List[Product]) {
     }
   }
   def getFittest:Tour={
+    logger.debug("Entering getFittest method")
     def findFittest(count:Int,fittest:Tour):Tour={
       if(count<population.length){
         if(population(count).getFitness>fittest.getFitness)          
