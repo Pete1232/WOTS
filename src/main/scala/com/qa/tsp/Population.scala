@@ -5,22 +5,21 @@ import com.qa.entities.Product
 /**
  * @author pnewman
  */
-class Population(popSize:Int,stops:List[Product]) {
-  val population = createPopulation(0, popSize)
-  def createPopulation(count:Int,popSize:Int):List[Tour]={
-    val tours:List[Tour]=null
+class Population(val popSize:Int,val stops:List[Product]) {
+  val population = createPopulation(0, popSize, null)
+  def createPopulation(count:Int,popSize:Int,tours:List[Tour]):List[Tour]={
     if(count<popSize){
       val tour = new Tour(stops)
       tour.generateIndividual
       //This may throw an error, try ++= if it does
-      tours.updated(count, tour)
-      createPopulation(count.+(1),popSize)
+      val newTour = tours.updated(count, tour)
+      createPopulation(count.+(1),popSize,newTour)
     }
     else{
       tours
     }
   }
-  def getFittest{
+  def getFittest:Tour={
     def findFittest(count:Int,fittest:Tour):Tour={
       if(count<population.length){
         if(population(count).fitness>fittest.fitness)          
@@ -31,6 +30,9 @@ class Population(popSize:Int,stops:List[Product]) {
       else
         fittest
     }
-    findFittest(0,population(0))
+    findFittest(0,population.apply(0))
+  }
+  def saveTour(index:Int,tour:Tour):List[Tour]={
+    population.updated(index, tour)
   }
 }

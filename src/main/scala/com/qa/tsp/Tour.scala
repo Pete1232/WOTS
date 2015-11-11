@@ -7,10 +7,25 @@ import com.qa.entities.Product
 /**
  * @author pnewman
  */
-class Tour(stops:List[Product]) {
+/**
+ * @author pnewman
+ */
+object Tour {
+   def generateEmptyTour(count:Int,size:Int,tour:List[Product]) : List[Product]={
+      if(count<size){
+        val newTour = tour:+(null)
+        generateEmptyTour(count.+(1), size, newTour)
+      }
+      else{
+        tour
+      }
+    }
+}
+
+class Tour(val stops:List[Product]) {
   //TODO Rewrite
   val fitness=getFitness
-
+  def this(size:Int)=this(Tour.generateEmptyTour(0,size,null))
   def getStop(tourPosition:Int):Product={
     stops.apply(tourPosition)
   }
