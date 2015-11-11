@@ -28,7 +28,6 @@ class Population(val popSize:Int,val stops:List[Product]) {
     if(count<popSize){
       val tour = new Tour(stops)
       val nextTour = new Tour(tour.generateIndividual)
-      //This may throw an error, try ++= if it does
       val newTour = tours.updated(count, nextTour)
       createPopulation(count.+(1),popSize,newTour)
     }

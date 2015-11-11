@@ -9,6 +9,11 @@ import com.qa.repositoryimplementations.EmployeeRepositoryDummy
 import com.typesafe.scalalogging.Logger
 import org.slf4j.LoggerFactory
 import com.qa.repositoryimplementations.ProductRepositoryDummy
+import com.qa.entities.PurchaseOrder
+import com.qa.repositoryimplementations.PurchaseOrderRepositoryDummy
+import com.qa.tsp.Tour
+import com.qa.tsp.Population
+import com.qa.tsp.Algorithm
 /**
  * This object contains the logic that retrieves information to display to the user
  * @author pnewman
@@ -21,7 +26,7 @@ object Model {
   def getCustomerOrders: ObservableBuffer[CustomerOrder] = {
     val customerOrderBuffer = new ObservableBuffer[CustomerOrder]
     val repoCO = new CustomerOrderRepositoryDummy
-    var customerOrders = repoCO.GenericRepositoryDummy.findAll(new CustomerOrder)    
+    val customerOrders = repoCO.GenericRepositoryDummy.findAll(new CustomerOrder)    
     for (customerOrder <- customerOrders)
       customerOrderBuffer += customerOrder
     customerOrderBuffer
@@ -30,19 +35,35 @@ object Model {
   /**
    * This method finds all products associated with the given customer order
    */
-  def getProductByOrderId(orderId:Int):ObservableBuffer[Product] = {
+  def getProductByOrderId(orderId:Int):List[Product] = {
     val productBuffer = new ObservableBuffer[Product]
+    val productList = List[Product]()
     val repoP = new ProductRepositoryDummy
     val products = repoP.GenericRepositoryDummy.findAll(new Product)
     for(product <- products){
       if(product.orderId_ == orderId){
         logger.debug("Product on order {} found.",orderId+"")
-        productBuffer += product
+        productBuffer+=product
+        //productList+=product
       }
     }
-    productBuffer
+    productBuffer.toList
+    //productList
   }
 
+  def calculateRoute(pop:Int,generations:Int,products:List[Product]):ObservableBuffer[Product]={
+    val tour = new Tour(products)
+    val pop = new Population(1,tour.stops)
+    val newPop = Algorithm.evolver(0, pop)
+    def convertBuffer(products:List[Product]):ObservableBuffer[Product]={
+      val productBuffer = new ObservableBuffer[Product]
+      for (product <- products)
+        productBuffer += product
+      productBuffer
+    }
+    convertBuffer(pop.getFittest.stops)
+  }
+  
   /**
    * This method returns a function that returns information about the current user session
    * @param user
@@ -113,5 +134,13 @@ object Model {
       case _ => null
     }
     findBy
+  }
+    def getPurchaseOrders: ObservableBuffer[PurchaseOrder] = {
+    val purchaseOrderBuffer = new ObservableBuffer[PurchaseOrder]
+    val repoPO = new PurchaseOrderRepositoryDummy
+    val purchaseOrders = repoPO.GenericRepositoryDummy.findAll(new PurchaseOrder)    
+    for (purchaseOrder <- purchaseOrders)
+      purchaseOrderBuffer += purchaseOrder
+    purchaseOrderBuffer
   }
 }

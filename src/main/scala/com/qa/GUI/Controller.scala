@@ -17,6 +17,7 @@ import scalafx.collections.ObservableBuffer
 object Controller {
   val logger = Logger(LoggerFactory.getLogger("Controller.object"))
   var session = 0
+  var order:ObservableBuffer[Product] = null
   def loginDebug{
     session = -1
     setHome
@@ -25,7 +26,8 @@ object Controller {
     WOTSMain.stage.scene_=(View.setMainScene)
   }
   def setTracking(orderId:Int){
-    WOTSMain.stage.scene_=(View.setTrackingScene(orderId,new Product,0))
+    val order = Model.calculateRoute(100, 100, Model.getProductByOrderId(orderId))
+    WOTSMain.stage.scene_=(View.setTrackingScene(orderId,new Product,0,order))
   }
   def handleLogin(user:String,pass:String){
     logger.debug("Attempting login. User is {}. Pass is {}",user,pass)
@@ -52,7 +54,10 @@ object Controller {
     }
     else{
     logger.debug("Product in buffer: {}, of index {}",productList(count),count+"")
-    WOTSMain.stage.scene_=(View.setTrackingScene(orderId,productList(count),count.+(1)))
+    WOTSMain.stage.scene_=(View.setTrackingScene(orderId,productList(count),count.+(1),productList))
     }
+  }
+  def getProductList(orderId:Int):ObservableBuffer[Product]={
+    Model.calculateRoute(100, 100, Model.getProductByOrderId(orderId))
   }
 }

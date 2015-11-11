@@ -81,4 +81,9 @@ object Algorithm {
     }
     tournament.getFittest
   }
+  def evolver(count:Int,pop:Population):Population={
+    if(count<100)
+      evolvePop(pop)
+    pop
+    }
 }

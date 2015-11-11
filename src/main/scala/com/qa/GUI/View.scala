@@ -32,6 +32,8 @@ import scalafx.scene.input.KeyCode
 import com.qa.dummydata.DummyData
 import scalafx.geometry.Pos
 import scalafx.scene.control.ScrollPane
+import com.qa.entities.PurchaseOrder
+import scalafx.collections.ObservableBuffer
 /**
  * This object contains the logic that determines what should be displayed to the user.
  * @author pnewman
@@ -58,19 +60,16 @@ object View{
     }
     scene
   }
-  def setTrackingScene(orderId:Int,product:Product,count:Int):Scene={
+  def setTrackingScene(orderId:Int,product:Product,count:Int,productList:ObservableBuffer[Product]):Scene={
     val scene = new Scene(x,y){
       stylesheets = List(getClass.getResource("WOTS.css").toExternalForm)
       root = new BorderPane{
         top = new VBox{
           children = List(createMenu)
         }
-/*        left = new VBox{
-          children = createTrackingPage(orderId)       
-        }*/
         center = new VBox{
           id="tracking"
-          children = createTrackingApp(orderId,product,count)
+          children = createTrackingApp(orderId,product,count,productList)
           alignment = Pos.CENTER
         }
       }
@@ -88,17 +87,6 @@ object View{
           children = createLogin
           padding = Insets(80)
           spacing = 20
-/*          TODO Work out how to retrieve login credentials from here - low priority
- *          onKeyPressed = {
-            ke:KeyEvent => {
-              logger.debug("Key press detected")
-              logger.debug("Detected: "+ke.getCode)
-              logger.debug("Enter: "+KeyCode.ENTER)
-              if(ke.getCode.toString.equals(KeyCode.ENTER.toString)){
-                logger.debug("Enter key press detected")
-              }
-            }
-          }*/
         }
       }
     }
@@ -141,22 +129,18 @@ object View{
     val orderIdCol = new TableColumn[CustomerOrder,Int]{
       text = "Order ID"
       cellValueFactory = {_.value.orderId}
-      prefWidth = 160
     }
     val orderStatusCol = new TableColumn[CustomerOrder,String]{
       text = "Order Status"
       cellValueFactory = {_.value.customerOrderStatus}
-      prefWidth = 160
     }
     val orderAddressCol = new TableColumn[CustomerOrder,String]{
       text = "Delivery Address"
       cellValueFactory = {_.value.deliveryAddress}
-      prefWidth = 160
     }
     val employeeIdCol = new TableColumn[CustomerOrder,Int]{
       text = "Employee ID"
       cellValueFactory = {_.value.employeeId}
-      prefWidth = 150
     }
     val claimCol = new TableColumn[CustomerOrder,Int]{
       text = "Claim Order"
@@ -171,46 +155,52 @@ object View{
           }
         }
       }
-      prefWidth=160
     }
     val table = new TableView[CustomerOrder](customerOrderList){
       logger.debug("Building customer order table")
       columnResizePolicy = TableView.ConstrainedResizePolicy
       columns ++= List(orderIdCol,orderStatusCol,orderAddressCol,employeeIdCol,claimCol)
     }
-    //table.items.update(Model.getCustomerOrders)
     table
   }
   def createNodePO:Node={
-    new TextField{
-      text = "Hello, World!"
+    val purchaseOrderList = Model.getPurchaseOrders
+    val orderIdCol = new TableColumn[PurchaseOrder,Int]{
+      text = "Order ID"
+      cellValueFactory = {_.value.purchaseOrderId}
     }
-  }
-  def createTrackingPage(orderId:Int):List[Node]={
-    val productList = Model.getProductByOrderId(orderId)
-    val productIdCol = new TableColumn[Product,Int]{
-      text = "Product ID"
-      cellValueFactory = {_.value.productId}
-      prefWidth = 160
+    val orderStatusCol = new TableColumn[PurchaseOrder,String]{
+      text = "Order Status"
+      cellValueFactory = {_.value.purchaseOrderStatus}
     }
-    val productNameCol = new TableColumn[Product,String]{
-      text = "Product Name"
-      cellValueFactory = {_.value.productName}
-      prefWidth = 160
+    val employeeIdCol = new TableColumn[PurchaseOrder,Int]{
+      text = "Employee ID"
+      cellValueFactory = {_.value.employeeId}
     }
-    val porouswareCol = new TableColumn[Product,Boolean]{
-      text = "Porouswared"
-      cellValueFactory = {_.value.porousware}
-      prefWidth = 160
+    val claimCol = new TableColumn[CustomerOrder,Int]{
+      text = "Claim Order"
+      cellValueFactory = {_.value.orderId}
+      cellFactory = { (col:TableColumn[CustomerOrder,Int]) => 
+        new TableCell[CustomerOrder,Int]{
+          item.onChange { (_,_,newOrderId) => 
+            graphic = new Button{
+              text = "Claim Order "+newOrderId
+              onAction = handle(Controller.handleClaim(item.value), Controller.setHome)
+            }
+          }
+        }
+      }
     }
-    val productTable = new TableView[Product](productList){
-      logger.debug("Building product table for customer order {}",orderId+"")
-      columns ++= List(productIdCol,productNameCol,porouswareCol)
+    val table = new TableView[PurchaseOrder](purchaseOrderList){
+      logger.debug("Building customer order table")
+      columnResizePolicy = TableView.ConstrainedResizePolicy
+      columns ++= List(orderIdCol,orderStatusCol,employeeIdCol)
     }
-    List(productTable)
-  }
-  def createTrackingApp(orderId:Int,product:Product,count:Int):List[Node]={
-    val productList = Model.getProductByOrderId(orderId)
+    table
+  } 
+  def createTrackingApp(orderId:Int,product:Product,count:Int,productList:ObservableBuffer[Product]):List[Node]={
+    //val productList = Controller.order //Model.calculateRoute(100, 100, Model.getProductByOrderId(orderId))
+    logger.debug(""+productList)
     val orderLabel = new Label{
       text = "Order "+orderId
     }

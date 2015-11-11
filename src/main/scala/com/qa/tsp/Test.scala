@@ -46,18 +46,11 @@ object Test {
     logger.debug("Populated tour: "+tour.stops)
     logger.debug("Initial distance should be 40")
     logger.info("Initial distance: " + tour.getTourDistance);
-    
-    // Initialize population
+
     val pop = new Population(1,tour.stops)
     //logger.debug("Calling getFittest.getTourDistance")
 
-    // Evolve population for 100 generations
-    def evolver(count:Int,pop:Population):Population={
-      if(count<100)
-        Algorithm.evolvePop(pop)
-      pop
-    }
-    val newPop = evolver(0,pop)
+    val newPop = Algorithm.evolver(0,pop)
 
     // Print final results
     logger.info("Finished")
