@@ -31,6 +31,7 @@ import scalafx.scene.input.KeyEvent
 import scalafx.scene.input.KeyCode
 import com.qa.dummydata.DummyData
 import scalafx.geometry.Pos
+import scalafx.scene.control.ScrollPane
 /**
  * This object contains the logic that determines what should be displayed to the user.
  * @author pnewman
@@ -47,9 +48,11 @@ object View{
       root = new BorderPane{
         top = new VBox{
           children = List(
-            createMenu,
-            createTabs
+            createMenu
           )
+        }
+        center = new VBox{
+          children = List(createTabs)
         }
       }
     }
@@ -128,7 +131,7 @@ object View{
           id = "PO"
           text = "Purchase Orders"
           closable = false
-          content = createNodePO
+          content = createNodePO 
         }
       )
     }
@@ -172,6 +175,7 @@ object View{
     }
     val table = new TableView[CustomerOrder](customerOrderList){
       logger.debug("Building customer order table")
+      columnResizePolicy = TableView.ConstrainedResizePolicy
       columns ++= List(orderIdCol,orderStatusCol,orderAddressCol,employeeIdCol,claimCol)
     }
     //table.items.update(Model.getCustomerOrders)

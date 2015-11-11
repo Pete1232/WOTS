@@ -5,12 +5,11 @@
     -fx-opacity: 1;
 }
 .table-row-cell {
-    -fx-cell-size: 50px;
-    -fx-font-size: 14px;
+    -fx-font-size: 15px;
 }
 #current{
-	-fx-font-size: 220px;
+	-fx-font-size: 200px;
 }
 #tracking{
-	-fx-font-size:20px;
+	-fx-font-size:18px;
 }
