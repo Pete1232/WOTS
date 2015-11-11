@@ -36,24 +36,29 @@ class Tour(val stops:List[Product]) {
     stops.updated(tourPosition, product)
   }
   def getTourDistance:Int={
-    logger.debug("Entering getTourDistance method")
+    logger.debug("Entering getTourDistance method for Tour with stops {}",stops)
     def distanceCounter(count:Int, distance:Int):Int={
-      //logger.debug("Current count: "+count)
       def getThisDistance(endTour:Boolean):Int={
         val currentStop = getStop(count)
         val nextStop = endTour match{
-          case false => getStop(count)
+          case false => getStop(count+1)
           case true => getStop(0)
         }
-        //logger.debug("Next stop: "+nextStop)
-        currentStop.Product.getDistance(nextStop)
+        logger.debug("Next stop: "+nextStop)
+        val result = currentStop.Product.getDistance(nextStop)
+        logger.debug("Returned from getDistance: {}",result+"")
+        result
       }
       if(count<stops.length-1){
         val thisDistance = getThisDistance(false)
-        distanceCounter(count.+(1), distance.+(thisDistance))
+        logger.debug("distance: {}",""+distance)
+        logger.debug("thisDistance: {}",""+thisDistance)
+        distanceCounter(count.+(1), distance+thisDistance)
       }
-      val thisDistance = getThisDistance(true)
-      distance.+(thisDistance)
+      else{
+        val thisDistance = getThisDistance(true)
+        distance.+(thisDistance)
+      }
     }
     distanceCounter(0,0)
   }
