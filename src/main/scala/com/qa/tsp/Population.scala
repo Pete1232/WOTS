@@ -1,18 +1,33 @@
 package com.qa.tsp
 
 import com.qa.entities.Product
+import com.typesafe.scalalogging.Logger
+import org.slf4j.LoggerFactory
 
 /**
  * @author pnewman
  */
+object Population {
+   val logger = Logger(LoggerFactory.getLogger("Population.object"))
+   def generateEmptyPop(count:Int,size:Int,pop:List[Tour]) : List[Tour]={
+      if(count<size){
+        val newTour = pop:+(null)
+        generateEmptyPop(count.+(1), size, newTour)
+      }
+      else{
+        logger.debug("Empty Pop: "+pop)
+        pop
+      }
+    }
+}
 class Population(val popSize:Int,val stops:List[Product]) {
-  val population = createPopulation(0, popSize, null)
+  val population = createPopulation(0, popSize, Population.generateEmptyPop(0,10,List[Tour]()))
   def createPopulation(count:Int,popSize:Int,tours:List[Tour]):List[Tour]={
     if(count<popSize){
       val tour = new Tour(stops)
-      tour.generateIndividual
+      val nextTour = new Tour(tour.generateIndividual)
       //This may throw an error, try ++= if it does
-      val newTour = tours.updated(count, tour)
+      val newTour = tours.updated(count, nextTour)
       createPopulation(count.+(1),popSize,newTour)
     }
     else{
@@ -22,7 +37,7 @@ class Population(val popSize:Int,val stops:List[Product]) {
   def getFittest:Tour={
     def findFittest(count:Int,fittest:Tour):Tour={
       if(count<population.length){
-        if(population(count).fitness>fittest.fitness)          
+        if(population(count).getFitness>fittest.getFitness)          
           findFittest(count.+(1),population(count))
         else
           findFittest(count.+(1),fittest)
