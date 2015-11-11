@@ -28,7 +28,7 @@ class Product(val productId_ :Int,val productName_ :String,val image_ :String,va
       val xDistance = Math.abs(product.aisle_.toInt - aisle_.toInt)
       val yDistance = Math.abs(product.shelf_ - shelf_)
       logger.debug("x distance {}, y distance {}",""+xDistance,""+yDistance)
-      logger.debug("Added distance {}",xDistance+yDistance+"")
+      //logger.debug("Added distance {}",xDistance+yDistance+"")
       xDistance+yDistance
     }
   }

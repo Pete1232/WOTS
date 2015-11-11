@@ -44,12 +44,12 @@ object Test {
     val tour = new Tour(tour11)
     
     logger.debug("Populated tour: "+tour.stops)
-    logger.debug("Initial distance should be >=40")
+    logger.debug("Initial distance should be 40")
     logger.info("Initial distance: " + tour.getTourDistance);
     
     // Initialize population
-    val pop = new Population(10,tour.stops)
-    logger.debug("Calling getFittest.getTourDistance")
+    val pop = new Population(1,tour.stops)
+    //logger.debug("Calling getFittest.getTourDistance")
 
     // Evolve population for 100 generations
     def evolver(count:Int,pop:Population):Population={
@@ -61,13 +61,22 @@ object Test {
 
     // Print final results
     logger.info("Finished")
-    logger.debug("Initial distance should be 40")
-    logger.info("Final distance: " + newPop.getFittest.getTourDistance)
+    val finalDistance = newPop.getFittest.getTourDistance
     val result = pop.getFittest
     logger.info("Solution: {}",result)
+    logger.info("Final distance: " + finalDistance)
     for(stop <- result.stops){
       logger.info("Stop at aisle {} shelf {}",""+stop.aisle_,""+stop.shelf_)
     }
-    
+    val startIndex = result.stops.indexOf(product)
+    logger.debug("Index of start: {}",""+startIndex)
+    val paritionedList = result.stops.partition { x => result.stops.indexOf(x)<=startIndex }
+    logger.debug("Left of start: {}",paritionedList._1)
+    logger.debug("Right of start: {}",paritionedList._2)
+    val actualRoute = paritionedList._2++:paritionedList._1
+    logger.debug("Route to follow: {}",actualRoute)
+    for(stop <- actualRoute){
+      logger.info("Stop at aisle {} shelf {}",""+stop.aisle_,""+stop.shelf_)
+    }
   }
 }
