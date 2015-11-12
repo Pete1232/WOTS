@@ -15,6 +15,7 @@ import com.qa.tsp.Tour
 import com.qa.tsp.Population
 import com.qa.tsp.Algorithm
 import com.qa.repositoryimplementations.GenericRepositoryActual
+import com.qa.repositoryimplementations.GenericRepositoryActual
 /**
  * This object contains the logic that retrieves information to display to the user
  * @author pnewman
@@ -26,8 +27,9 @@ object Model {
    */
   def getCustomerOrders: ObservableBuffer[CustomerOrder] = {
     val customerOrderBuffer = new ObservableBuffer[CustomerOrder]
-    val repoCO = new CustomerOrderRepositoryDummy
-    val customerOrders = repoCO.GenericRepositoryDummy.findAll(new CustomerOrder)    
+    val repoCO = new GenericRepositoryActual//new CustomerOrderRepositoryDummy
+    val customerOrders = repoCO.GenericRepositoryActual.getDatabaseCustomerOrder//GenericRepositoryDummy.findAll(new CustomerOrder)    
+    logger.debug(customerOrders+"")
     for (customerOrder <- customerOrders)
       customerOrderBuffer += customerOrder
     customerOrderBuffer
@@ -40,7 +42,7 @@ object Model {
     val productBuffer = new ObservableBuffer[Product]
     //val productList = List[Product]()
     val repoP = new GenericRepositoryActual //ProductRepositoryDummy
-    val products = repoP.GenericRepositoryActual.getDatabaseProduct //GenericRepositoryDummy.findAll(new Product)
+    val products = repoP.GenericRepositoryActual.getDatabaseProduct//GenericRepositoryDummy.findAll(new Product)
     for(product <- products){
       if(product.orderId_ == orderId){
         logger.debug("Product on order {} found.",orderId+"")
