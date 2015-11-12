@@ -3,6 +3,8 @@ package com.qa.tsp;
 import com.qa.entities.Product
 import com.typesafe.scalalogging.Logger
 import org.slf4j.LoggerFactory
+import com.qa.repositoryimplementations.GenericRepositoryActual
+import com.qa.repositoryimplementations.GenericRepositoryActual
 
 object Test {
   val logger = Logger(LoggerFactory.getLogger("Test.object"))
@@ -71,5 +73,7 @@ object Test {
     for(stop <- actualRoute){
       logger.info("Stop at aisle {} shelf {}",""+stop.aisle_,""+stop.shelf_)
     }
+    val productRepo = new GenericRepositoryActual
+    productRepo.GenericRepositoryActual.getDatabaseProduct
   }
 }
