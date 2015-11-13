@@ -125,7 +125,7 @@ object View{
     }
   }
   def createNodeCO:Node={
-    val customerOrderList = Model.getCustomerOrders
+    val customerOrderList = Model.getCustomerOrders(Model.customerOrders)
     val orderIdCol = new TableColumn[CustomerOrder,Int]{
       text = "Order ID"
       cellValueFactory = {_.value.orderId}

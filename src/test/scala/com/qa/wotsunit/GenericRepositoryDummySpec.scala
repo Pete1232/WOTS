@@ -14,7 +14,6 @@ import com.typesafe.scalalogging.Logger
 import org.slf4j.LoggerFactory
 
 class GenericRepositoryDummySpec extends UnitSpec{
-    val logger = Logger(LoggerFactory.getLogger("DummyBuilder.class"))
     val customerOrder = new CustomerOrder
     val employee = new Employee
     val product = new Product

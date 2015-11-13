@@ -1,6 +1,7 @@
 package com.qa.entities
 
 import scalafx.beans.property.ObjectProperty
+import com.qa.tsp.Population
 
 /**
  * @author pnewman

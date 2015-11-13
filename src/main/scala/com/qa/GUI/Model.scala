@@ -15,56 +15,55 @@ import com.qa.tsp.Tour
 import com.qa.tsp.Population
 import com.qa.tsp.Algorithm
 import com.qa.repositoryimplementations.GenericRepositoryActual
-import com.qa.repositoryimplementations.GenericRepositoryActual
 /**
  * This object contains the logic that retrieves information to display to the user
  * @author pnewman
  */
 object Model {
   val logger = Logger(LoggerFactory.getLogger("Controller.object"))
+  val repoCO = new GenericRepositoryActual//new CustomerOrderRepositoryDummy
+  val customerOrders = repoCO.GenericRepositoryActual.getDatabaseCustomerOrder//GenericRepositoryDummy.findAll(new CustomerOrder)  
+  val repoP = new GenericRepositoryActual //ProductRepositoryDummy
+  val products = repoP.GenericRepositoryActual.getDatabaseProduct//GenericRepositoryDummy.findAll(new Product)
+
   /**
    * This method finds all customer orders and returns them in a suitable format for display (ObservableBuffer)
    */
-  def getCustomerOrders: ObservableBuffer[CustomerOrder] = {
-    val customerOrderBuffer = new ObservableBuffer[CustomerOrder]
-    val repoCO = new GenericRepositoryActual//new CustomerOrderRepositoryDummy
-    val customerOrders = repoCO.GenericRepositoryActual.getDatabaseCustomerOrder//GenericRepositoryDummy.findAll(new CustomerOrder)    
-    logger.debug(customerOrders+"")
-    for (customerOrder <- customerOrders)
-      customerOrderBuffer += customerOrder
-    customerOrderBuffer
+  def getCustomerOrders(customerOrders:Array[CustomerOrder]): ObservableBuffer[CustomerOrder] = {
+    ObservableBuffer[CustomerOrder](customerOrders)
   }
   
   /**
    * This method finds all products associated with the given customer order
    */
-  def getProductByOrderId(orderId:Int):List[Product] = {
-    val productBuffer = new ObservableBuffer[Product]
-    //val productList = List[Product]()
-    val repoP = new GenericRepositoryActual //ProductRepositoryDummy
-    val products = repoP.GenericRepositoryActual.getDatabaseProduct//GenericRepositoryDummy.findAll(new Product)
-    for(product <- products){
-      if(product.orderId_ == orderId){
-        logger.debug("Product on order {} found.",orderId+"")
-        productBuffer+=product
-        //productList+=product
+  def getProductByOrderId(orderId:Int,productData:Array[Product]):Array[Product] = {
+    val productList = Array[Product]()
+    def populateList(count:Int,products:Array[Product]):Array[Product]={
+      if(count<productData.length){
+        if(productData(count).orderId_ == orderId){
+         logger.debug("Product on order {} found.",orderId+"")
+         val newProduct = products:+productData(count)
+         populateList(count.+(1), newProduct)
+        }
+        else{
+          populateList(count.+(1), products)
+        }
+      }
+      else{
+        products
       }
     }
-    productBuffer.toList
-    //productList
+    populateList(0, productList)
   }
 
+  /**
+   * 
+   */
   def calculateRoute(pop:Int,generations:Int,products:List[Product]):ObservableBuffer[Product]={
     val tour = new Tour(products)
-    val pop = new Population(1,tour.stops)
-    val newPop = Algorithm.evolver(0, pop)
-    def convertBuffer(products:List[Product]):ObservableBuffer[Product]={
-      val productBuffer = new ObservableBuffer[Product]
-      for (product <- products)
-        productBuffer += product
-      productBuffer
-    }
-    convertBuffer(pop.getFittest.stops)
+    val population = new Population(pop,tour.stops)
+    val newPop = Algorithm.evolver(0, population)
+    ObservableBuffer[Product](population.getFittest.stops)
   }
   
   /**
@@ -115,7 +114,8 @@ object Model {
     } 
     requestSession
   }
-  def findBy[E](request:String):(Int,E)=>CustomerOrder={
+/*  TODO Not really useful - maybe remove
+ *  def findBy[E](request:String):(Int,E)=>CustomerOrder={
     val repoCO = new CustomerOrderRepositoryDummy
     val orders = repoCO.GenericRepositoryDummy.findAll(new CustomerOrder)
     def findByOrderId(count:Int,orderId:E):CustomerOrder={
@@ -137,7 +137,7 @@ object Model {
       case _ => null
     }
     findBy
-  }
+  }*/
     def getPurchaseOrders: ObservableBuffer[PurchaseOrder] = {
     val purchaseOrderBuffer = new ObservableBuffer[PurchaseOrder]
     val repoPO = new PurchaseOrderRepositoryDummy

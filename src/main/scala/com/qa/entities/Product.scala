@@ -11,6 +11,7 @@ import com.sun.org.apache.xerces.internal.impl.dv.xs.DecimalDV.XDecimal
 class Product(val productId_ :Int,val productName_ :String,val image_ :String,val porousware_ :Boolean, val orderId_ :Int, val aisle_ :Char, val shelf_ :Int)
 {
   def this()=this(0,null,null,false,0,'\u0000',0)
+  def this(orderId:Int)=this(0,null,null,false,orderId,'\u0000',0)
   def this(aisle:Char,shelf:Int)=this(0,null,null,false,0,aisle,shelf)
   val logger = Logger(LoggerFactory.getLogger("Product.class"))
   val productId = new ObjectProperty(this,"productId",productId_)

@@ -26,7 +26,7 @@ object Controller {
     WOTSMain.stage.scene_=(View.setMainScene)
   }
   def setTracking(orderId:Int){
-    val order = Model.calculateRoute(100, 100, Model.getProductByOrderId(orderId))
+    val order = Model.calculateRoute(100, 100, Model.getProductByOrderId(orderId,Model.products).toList) //TODO Replace all Lists with Arrays
     WOTSMain.stage.scene_=(View.setTrackingScene(orderId,new Product,0,order))
   }
   def handleLogin(user:String,pass:String){
@@ -39,7 +39,7 @@ object Controller {
   }
   def handleClaim(orderId:Int){
     logger.debug("Claiming order {}",orderId+"")
-    val order = Model.findBy("orderId")(0,orderId)
+    val order = Model.getProductByOrderId(orderId,Model.products) //TODO What does this do here?
     logger.debug("Found order: {}",order)
     logger.debug("Employee Id for {}: {}",orderId+"",DummyData.databaseCustomerOrder.databaseArray(orderId-1).employeeId)
     logger.debug("Session: "+session)
@@ -58,6 +58,6 @@ object Controller {
     }
   }
   def getProductList(orderId:Int):ObservableBuffer[Product]={
-    Model.calculateRoute(100, 100, Model.getProductByOrderId(orderId))
+    Model.calculateRoute(1000, 1000, Model.getProductByOrderId(orderId,Model.products).toList)//TODO Replace all Lists with Arrays
   }
 }
