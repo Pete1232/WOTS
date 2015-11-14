@@ -19,6 +19,7 @@ import com.qa.repositoryimplementations.GenericRepositoryActual
 import com.qa.entities.CustomerOrderLine
 import com.qa.entities.CustomerOrderLine
 import com.qa.entities.CustomerOrderLine
+import scala.collection.mutable.Leaf
 /**
  * This object contains the logic that retrieves information to display to the user
  * @author pnewman
@@ -30,21 +31,31 @@ object Model {
   val customerOrders = repoCO.GenericRepositoryActual.getDatabaseCustomerOrder //GenericRepositoryDummy.findAll(new CustomerOrder) 
   val repoCOL = new GenericRepositoryActual //EmployeeRepositoryDummy //GenericRepositoryDummy.findAll(new Employee)
   val repoP = new GenericRepositoryActual //ProductRepositoryDummy
-  val products = repoP.GenericRepositoryActual.getDatabaseProduct //GenericRepositoryDummy.findAll(new Product)
+  //val products = repoP.GenericRepositoryActual.getDatabaseProduct //GenericRepositoryDummy.findAll(new Product)
   val repoE = new GenericRepositoryActual //EmployeeRepositoryDummy
   val employees = repoE.GenericRepositoryActual.getDatabaseEmployee //GenericRepositoryDummy.findAll(new Employee)
   val repoPO = new /* GenericRepositoryActual*/ PurchaseOrderRepositoryDummy
   val purchaseOrders = repoPO. /*GenericRepositoryActual.getDatabasePurchaseOrder*/ GenericRepositoryDummy.findAll(new PurchaseOrder)
 
+  
+  def populateOrder(orderLines:Array[CustomerOrderLine]):Array[Product]={
+    def counter(count:Int,products:Array[Product]):Array[Product]={
+      if(count<orderLines.length){
+        val newProduct = repoP.GenericRepositoryActual.getProductByOrderLine(orderLines(count))
+        counter(count.+(1),products:+newProduct)
+      }
+      else{
+        products
+      }
+    }
+    counter(0,Array[Product]())
+  }
+  
   /**
    * This method finds all customer orders and returns them in a suitable format for display (ObservableBuffer)
    */
   def getCustomerOrders(customerOrders: Array[CustomerOrder]): ObservableBuffer[CustomerOrder] = {
     ObservableBuffer[CustomerOrder](customerOrders)
-  }
-  //TODO remove me
-  def getProducts:Array[Product]={
-    repoP.GenericRepositoryActual.getDatabaseProduct.toArray
   }
 
   /**
@@ -75,7 +86,8 @@ object Model {
   def getProductByOrderLine(orderLines:Array[CustomerOrderLine],productData:Array[Product]):Array[Product]={
     def populateProducts(count:Int,productList:Array[Product],orderLine:CustomerOrderLine):Array[Product]={
       if(count<productData.length){
-        if(productData(count).orderId_ == orderLine.orderId_){
+        logger.debug("Order line product Id: {}",""+orderLine.productId_)
+        if(productData(count).productId_ == orderLine.productId_){
           val newProduct = productList :+ productData(count)
           populateProducts(count.+(1),newProduct,orderLine)
         }
@@ -90,7 +102,8 @@ object Model {
     
     def iterateOrderLines(count:Int,productList:Array[Product]):Array[Product]={
       if(count<orderLines.length){
-        val productTemp = populateProducts(0, Array[Product](), orderLines(count))
+        val productTemp = populateProducts(0, productList, orderLines(count))
+        logger.debug("Adding {} products",""+productTemp.length)
         iterateOrderLines(count.+(1), productList ++: productTemp)        
       }
       else{

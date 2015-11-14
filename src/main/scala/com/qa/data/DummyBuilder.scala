@@ -42,7 +42,7 @@ class DummyBuilder[E:Manifest](size:Int){
           buildEntityArray(counter.+(1),entity.asInstanceOf[E])
         }
         case entity:Product => {
-          addToArray(counter, new Product(counter+1,"Product: "+randomInt,"Image: "+randomInt,randomBool,randomShelf,randomChar,randomId).asInstanceOf[E])
+          addToArray(counter, new Product(counter+1,"Product: "+randomInt,"Image: "+randomInt,randomBool,randomShelf,randomChar,randomId, randomId).asInstanceOf[E])
           buildEntityArray(counter.+(1),entity.asInstanceOf[E])
         }
         case entity:PurchaseOrder =>{

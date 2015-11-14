@@ -61,7 +61,7 @@ class Tour(val stops:List[Product]) {
         //logger.debug("distance: {}",""+distance)
         //logger.debug("thisDistance: {}",""+thisDistance)
         val finalCount = distance.+(thisDistance)
-        logger.info("Total length of route: {}",""+finalCount)
+        //logger.info("Total length of route: {}",""+finalCount)
         finalCount
       }
     }

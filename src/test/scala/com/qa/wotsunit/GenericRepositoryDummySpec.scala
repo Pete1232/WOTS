@@ -2,7 +2,7 @@ package com.qa.wotsunit
 
 import org.scalatest._
 import com.qa.repositoryimplementations.GenericRepositoryDummy
-import com.qa.dummydata.DummyBuilder
+import com.qa.data.DummyBuilder
 import com.qa.entities.Product
 import com.qa.entities.Employee
 import com.qa.entities.CustomerOrder

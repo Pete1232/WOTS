@@ -8,11 +8,11 @@ import com.sun.org.apache.xerces.internal.impl.dv.xs.DecimalDV.XDecimal
 /**
  * @author pnewman
  */
-class Product(val productId_ :Int,val productName_ :String,val image_ :String,val porousware_ :Boolean, val orderId_ :Int, val aisle_ :Char, val shelf_ :Int)
+class Product(val productId_ :Int,val productName_ :String,val image_ :String,val porousware_ :Boolean, val orderId_ :Int, val aisle_ :Char, val shelf_ :Int, val quantity_ :Int)
 {
-  def this()=this(0,null,null,false,0,'\u0000',0)
-  def this(orderId:Int)=this(0,null,null,false,orderId,'\u0000',0)
-  def this(aisle:Char,shelf:Int)=this(0,null,null,false,0,aisle,shelf)
+  def this()=this(0,null,null,false,0,'\u0000',0,0)
+  def this(orderId:Int)=this(0,null,null,false,orderId,'\u0000',0,0)
+  def this(aisle:Char,shelf:Int)=this(0,null,null,false,0,aisle,shelf,0)
   val logger = Logger(LoggerFactory.getLogger("Product.class"))
   val productId = new ObjectProperty(this,"productId",productId_)
   val productName = new ObjectProperty(this,"productName",productName_)
@@ -21,6 +21,7 @@ class Product(val productId_ :Int,val productName_ :String,val image_ :String,va
   val orderId = new ObjectProperty(this,"orderID",orderId_)
   val aisle = new ObjectProperty(this,"aisle",aisle_)
   val shelf = new ObjectProperty(this,"shelf",shelf_)
+  val quantity = new ObjectProperty(this,"quantity",quantity_)
   
   object Product {
     def getDistance(product:Product):Int = {

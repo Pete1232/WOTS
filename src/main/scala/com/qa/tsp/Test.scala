@@ -74,6 +74,6 @@ object Test {
       logger.info("Stop at aisle {} shelf {}",""+stop.aisle_,""+stop.shelf_)
     }
     val productRepo = new GenericRepositoryActual
-    productRepo.GenericRepositoryActual.getDatabaseProduct
+/*    productRepo.GenericRepositoryActual.getDatabaseProduct*/
   }
 }

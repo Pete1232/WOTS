@@ -49,18 +49,13 @@ class GenericRepositoryActual[E: Manifest] {
       val ps: PreparedStatement = conn.prepareStatement("SELECT * FROM customerorder")
       logger.debug("Statement: " + ps)
       val rs = ps.executeQuery
-      //logger.debug("Result set: "+rs.next)
       def createOrders(orders: Array[CustomerOrder]): Array[CustomerOrder] = {
         if (rs.next) {
-          logger.debug("Result set next exists")
           val orderId = rs.getInt("CustomerOrderId")
-          logger.debug("Order Id: " + orderId)
           val orderStatus = rs.getString("CustomerOrderStatus")
           val deliveryAddress = rs.getString("AddressId")
           val employeeId = rs.getInt("EmployeeId")
-          logger.debug("Employee Id: " + employeeId)
           val newOrder = new CustomerOrder(orderId, orderStatus, deliveryAddress, employeeId)
-          logger.debug("New customer order: " + newOrder)
           createOrders(orders :+ newOrder)
         } else {
           orders
@@ -115,7 +110,7 @@ class GenericRepositoryActual[E: Manifest] {
        
       val conn = establishConnection
       val stmt = conn.createStatement
-      val ps: PreparedStatement = conn.prepareStatement("SELECT * FROM customerorderline")
+      val ps: PreparedStatement = conn.prepareStatement("SELECT * FROM customerorderline WHERE CustomerOrder_CustomerOrderId="+customerOrderId)
       logger.debug("Statement: " + ps)
       val rs = ps.executeQuery
       //logger.debug("Result set: "+rs.next)
@@ -136,7 +131,7 @@ class GenericRepositoryActual[E: Manifest] {
       }
       createCustomerOrderLine(Array[CustomerOrderLine]())
     }
-    def getDatabaseProduct: Array[Product] = {
+/*    def getDatabaseProduct: Array[Product] = {
       val productDoc = getCollection(mongoDB("Product")).toArray
       logger.debug("Entering getDatabaseProduct method with {} Products", productDoc.length + "")
       //logger.debug(productDoc.getClass+"")
@@ -167,7 +162,29 @@ class GenericRepositoryActual[E: Manifest] {
         }
       }
       createProducts(0, Array[Product]())
+    }*/
+    
+    def getProductByOrderLine(orderLine:CustomerOrderLine):Product={
+      val productDoc = getCollection(mongoDB("Product")).toArray
+      def findProduct(count:Int):Product = {
+        val productId = (productDoc(count).get("productID") + "").toInt
+        if(productId==orderLine.productId_){
+          val productName = productDoc(count).get("productName") + ""
+          val image = productDoc(count).get("image") + ""
+          val porousware = (productDoc(count).get("porusware") + "").toBoolean
+          val orderId = orderLine.orderId_
+          val aisle: Char = (productDoc(count).get("aisle") + "")(0)
+          val shelf = (productDoc(count).get("shelf") + "")toInt
+          val quantity = orderLine.quantity_
+          new Product(productId, productName, image, porousware, orderId, aisle, shelf, quantity)
+        }
+        else{
+          findProduct(count.+(1))
+        }
+      }
+      findProduct(0)
     }
+    
     def getDatabasePurchaseOrder: Array[PurchaseOrder] = {
       //TODO empty method stub
       null
@@ -176,7 +193,7 @@ class GenericRepositoryActual[E: Manifest] {
       logger.debug("Entering getCollection method")
       collection.find
     }
-    def findAll: E => Array[E] = { entity =>
+   /* def findAll: E => Array[E] = { entity =>
       entity match {
         case entity: CustomerOrder => getDatabaseCustomerOrder.asInstanceOf[Array[E]]
         case entity: Employee      => getDatabaseEmployee.asInstanceOf[Array[E]]
@@ -188,7 +205,7 @@ class GenericRepositoryActual[E: Manifest] {
           null.asInstanceOf[Array[E]]
         }
       }
-    }
+    }*/
     def persist: E => Unit = { entity =>
       logger.debug("Persisting entity of type {}", entity.getClass.getSimpleName)
       def postAppend(array: Array[E]): Array[E] = {

@@ -26,11 +26,10 @@ object Controller {
     WOTSMain.stage.scene_=(View.setMainScene)
   }
   def setTracking(orderId:Int){
-    val productDB =  Model.getProducts
-    logger.debug("Products: "+productDB.length)
+    //val productDB =  Model.getProducts
     val orderLines = Model.getOrderLineByOrderId(orderId)
-    logger.debug("Order Lines: "+orderLines(0).quantity_)
-    val productsOnOrder = Model.getProductByOrderLine(orderLines,productDB)
+    logger.debug("Order Lines: "+orderLines.length)
+    val productsOnOrder = Model.populateOrder(orderLines)
     logger.debug("Products on order: "+productsOnOrder.length)
     val order = Model.calculateRoute(10, 1000, productsOnOrder.toList) //TODO Replace all Lists with Arrays Model.getProductByOrderId(orderId,Model.products).toList
     WOTSMain.stage.scene_=(View.setTrackingScene(orderId,new Product,0,order))
@@ -44,7 +43,7 @@ object Controller {
     }
   }
   def handleClaim(orderId:Int){
-    logger.debug("Claiming order {}",orderId+"")
+/*    logger.debug("Claiming order {}",orderId+"")
     val order = Model.getProductByOrderId(orderId,Model.products)
     logger.debug("Found order: {}",order)
     logger.debug("Employee Id for {}: {}",orderId+"",DummyData.databaseCustomerOrder.databaseArray(orderId-1).employeeId)
@@ -52,7 +51,7 @@ object Controller {
     //TODO Generic update method
     //DummyData.databaseCustomerOrder.databaseArray(orderId-1).employeeId = new ObjectProperty(new CustomerOrder,"employeeId",session)
     logger.debug("New Employee Id: "+DummyData.databaseCustomerOrder.databaseArray(orderId-1).employeeId)
-    logger.debug("DummyData customerOrder {} has employeeId {}",orderId+"",DummyData.databaseCustomerOrder.databaseArray(orderId-1).employeeId)
+    logger.debug("DummyData customerOrder {} has employeeId {}",orderId+"",DummyData.databaseCustomerOrder.databaseArray(orderId-1).employeeId)*/
   }
   def nextOrder(orderId:Int,productList:ObservableBuffer[Product],count:Int){
     if(count >= productList.length){
@@ -64,7 +63,7 @@ object Controller {
     WOTSMain.stage.scene_=(View.setTrackingScene(orderId,productList(count),count.+(1),productList))
     }
   }
-  def getProductList(orderId:Int):ObservableBuffer[Product]={
+/*  def getProductList(orderId:Int):ObservableBuffer[Product]={
     Model.calculateRoute(1000, 1000, Model.getProductByOrderId(orderId,Model.products).toList)//TODO Replace all Lists with Arrays
-  }
+  }*/
 }

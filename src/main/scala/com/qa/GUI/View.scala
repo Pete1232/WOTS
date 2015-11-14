@@ -220,7 +220,7 @@ object View{
       text = product.aisle_ +""+product.shelf_
     }
     val request = new Label{
-      text = "Please collect "+12345+" of "+product.productName_
+      text = "Please collect "+product.quantity_ +" of "+product.productName_
     }
     val next = new Button{
       text = "Item has been picked"
