@@ -26,7 +26,13 @@ object Controller {
     WOTSMain.stage.scene_=(View.setMainScene)
   }
   def setTracking(orderId:Int){
-    val order = Model.calculateRoute(100, 100, Model.getProductByOrderId(orderId,Model.products).toList) //TODO Replace all Lists with Arrays
+    val productDB =  Model.getProducts
+    logger.debug("Products: "+productDB.length)
+    val orderLines = Model.getOrderLineByOrderId(orderId)
+    logger.debug("Order Lines: "+orderLines(0).quantity_)
+    val productsOnOrder = Model.getProductByOrderLine(orderLines,productDB)
+    logger.debug("Products on order: "+productsOnOrder.length)
+    val order = Model.calculateRoute(10, 1000, productsOnOrder.toList) //TODO Replace all Lists with Arrays Model.getProductByOrderId(orderId,Model.products).toList
     WOTSMain.stage.scene_=(View.setTrackingScene(orderId,new Product,0,order))
   }
   def handleLogin(user:String,pass:String){
@@ -39,11 +45,12 @@ object Controller {
   }
   def handleClaim(orderId:Int){
     logger.debug("Claiming order {}",orderId+"")
-    val order = Model.getProductByOrderId(orderId,Model.products) //TODO What does this do here?
+    val order = Model.getProductByOrderId(orderId,Model.products)
     logger.debug("Found order: {}",order)
     logger.debug("Employee Id for {}: {}",orderId+"",DummyData.databaseCustomerOrder.databaseArray(orderId-1).employeeId)
     logger.debug("Session: "+session)
-    DummyData.databaseCustomerOrder.databaseArray(orderId-1).employeeId = new ObjectProperty(new CustomerOrder,"employeeId",session)
+    //TODO Generic update method
+    //DummyData.databaseCustomerOrder.databaseArray(orderId-1).employeeId = new ObjectProperty(new CustomerOrder,"employeeId",session)
     logger.debug("New Employee Id: "+DummyData.databaseCustomerOrder.databaseArray(orderId-1).employeeId)
     logger.debug("DummyData customerOrder {} has employeeId {}",orderId+"",DummyData.databaseCustomerOrder.databaseArray(orderId-1).employeeId)
   }

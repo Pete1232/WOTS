@@ -20,7 +20,7 @@ object Tour {
         generateEmptyTour(count.+(1), size, newTour)
       }
       else{
-        logger.debug("Empty Tour: "+tour)
+        //logger.debug("Empty Tour: "+tour)
         tour
       }
     }
@@ -51,17 +51,17 @@ class Tour(val stops:List[Product]) {
       }
       if(count<stops.length-1){
         val thisDistance = getThisDistance(false)
-        logger.debug("distance: {}",""+distance)
-        logger.debug("thisDistance: {}",""+thisDistance)
+       //logger.debug("distance: {}",""+distance)
+       // logger.debug("thisDistance: {}",""+thisDistance)
         distanceCounter(count.+(1), distance+thisDistance)
       }
       else{
-        logger.debug("GOING HOME")
+        //logger.debug("GOING HOME")
         val thisDistance = getThisDistance(true)
-        logger.debug("distance: {}",""+distance)
-        logger.debug("thisDistance: {}",""+thisDistance)
+        //logger.debug("distance: {}",""+distance)
+        //logger.debug("thisDistance: {}",""+thisDistance)
         val finalCount = distance.+(thisDistance)
-        logger.debug("Total length of route: {}",""+finalCount)
+        logger.info("Total length of route: {}",""+finalCount)
         finalCount
       }
     }

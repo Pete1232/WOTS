@@ -60,6 +60,7 @@ object View{
     }
     scene
   }
+  
   def setTrackingScene(orderId:Int,product:Product,count:Int,productList:ObservableBuffer[Product]):Scene={
     val scene = new Scene(x,y){
       stylesheets = List(getClass.getResource("WOTS.css").toExternalForm)
@@ -76,6 +77,7 @@ object View{
     }
     scene
   }
+  
   def setLoginScene:Scene={
     val scene = new Scene(x,y){
       stylesheets = List(getClass.getResource("WOTS.css").toExternalForm)
@@ -92,6 +94,7 @@ object View{
     }
     scene
   }
+  
   def createMenu = new MenuBar{
     menus = List(
       new Menu("Debug"){
@@ -106,6 +109,7 @@ object View{
       }
     )
   }
+  
   def createTabs:TabPane = {
     new TabPane{
       tabs = List(
@@ -124,6 +128,7 @@ object View{
       )
     }
   }
+  
   def createNodeCO:Node={
     val customerOrderList = Model.getCustomerOrders(Model.customerOrders)
     val orderIdCol = new TableColumn[CustomerOrder,Int]{
@@ -156,6 +161,7 @@ object View{
         }
       }
     }
+    
     val table = new TableView[CustomerOrder](customerOrderList){
       logger.debug("Building customer order table")
       columnResizePolicy = TableView.ConstrainedResizePolicy
@@ -163,6 +169,7 @@ object View{
     }
     table
   }
+  
   def createNodePO:Node={
     val purchaseOrderList = Model.getPurchaseOrders
     val orderIdCol = new TableColumn[PurchaseOrder,Int]{
@@ -198,6 +205,7 @@ object View{
     }
     table
   } 
+  
   def createTrackingApp(orderId:Int,product:Product,count:Int,productList:ObservableBuffer[Product]):List[Node]={
     //val productList = Controller.order //Model.calculateRoute(100, 100, Model.getProductByOrderId(orderId))
     logger.debug(""+productList)
@@ -225,6 +233,7 @@ object View{
       List(orderLabel,next)
     }
   }
+  
   def createLogin:List[Node]={
     val label = new Label{
         text = "Login"

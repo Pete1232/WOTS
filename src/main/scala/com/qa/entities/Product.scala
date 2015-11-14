@@ -25,10 +25,10 @@ class Product(val productId_ :Int,val productName_ :String,val image_ :String,va
   object Product {
     def getDistance(product:Product):Int = {
       //TODO Rewrite this to account for warehouse layout
-      logger.debug("Calculating distance from aisle {}, shelf {} to aisle {}, shelf {}", ""+aisle_ , ""+shelf_ ,""+product.aisle_ ,""+product.shelf_ )
+      //logger.debug("Calculating distance from aisle {}, shelf {} to aisle {}, shelf {}", ""+aisle_ , ""+shelf_ ,""+product.aisle_ ,""+product.shelf_ )
       val xDistance = Math.abs(product.aisle_.toInt - aisle_.toInt)
       val yDistance = Math.abs(product.shelf_ - shelf_)
-      logger.debug("x distance {}, y distance {}",""+xDistance,""+yDistance)
+      //logger.debug("x distance {}, y distance {}",""+xDistance,""+yDistance)
       //logger.debug("Added distance {}",xDistance+yDistance+"")
       xDistance+yDistance
     }
