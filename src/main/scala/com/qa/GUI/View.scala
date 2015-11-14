@@ -171,7 +171,7 @@ object View{
   }
   
   def createNodePO:Node={
-    val purchaseOrderList = Model.getPurchaseOrders
+    val purchaseOrderList = Model.getPurchaseOrders(Model.purchaseOrders)
     val orderIdCol = new TableColumn[PurchaseOrder,Int]{
       text = "Order ID"
       cellValueFactory = {_.value.purchaseOrderId}
@@ -184,22 +184,8 @@ object View{
       text = "Employee ID"
       cellValueFactory = {_.value.employeeId}
     }
-    val claimCol = new TableColumn[CustomerOrder,Int]{
-      text = "Claim Order"
-      cellValueFactory = {_.value.orderId}
-      cellFactory = { (col:TableColumn[CustomerOrder,Int]) => 
-        new TableCell[CustomerOrder,Int]{
-          item.onChange { (_,_,newOrderId) => 
-            graphic = new Button{
-              text = "Claim Order "+newOrderId
-              onAction = handle(Controller.handleClaim(item.value), Controller.setHome)
-            }
-          }
-        }
-      }
-    }
     val table = new TableView[PurchaseOrder](purchaseOrderList){
-      logger.debug("Building customer order table")
+      logger.debug("Building purchase order table")
       columnResizePolicy = TableView.ConstrainedResizePolicy
       columns ++= List(orderIdCol,orderStatusCol,employeeIdCol)
     }

@@ -63,6 +63,36 @@ class GenericRepositoryActual[E: Manifest] {
       }
       createOrders(Array[CustomerOrder]())
     }
+    
+    def getDatabasePurchaseOrder: Array[PurchaseOrder] = {
+      //TODO This is Java code
+      def establishConnection: Connection = {
+        try {
+          DriverManager.getConnection(urlSQL, usernameSQL, passwordSQL)
+        } catch {
+          //TODO Do this properly
+          case e: Throwable => e.printStackTrace; null
+        }
+      }
+      val conn = establishConnection
+      val stmt = conn.createStatement
+      val ps: PreparedStatement = conn.prepareStatement("SELECT * FROM purchaseorder")
+      logger.debug("Statement: " + ps)
+      val rs = ps.executeQuery
+      def createOrders(orders: Array[PurchaseOrder]): Array[PurchaseOrder] = {
+        if (rs.next) {
+          val orderId = rs.getInt("PurchaseOrderId")
+          val employeeId = rs.getInt("Employee_EmployeeId")
+          val orderStatus = rs.getString("OrderStatus")
+          val newOrder = new PurchaseOrder(orderId,employeeId,orderStatus)
+          createOrders(orders :+ newOrder)
+        } else {
+          orders
+        }
+      }
+      createOrders(Array[PurchaseOrder]())
+    }
+    
     def getDatabaseEmployee: Array[Employee] = {
       //TODO This is Java code
       def establishConnection: Connection = {
@@ -185,10 +215,6 @@ class GenericRepositoryActual[E: Manifest] {
       findProduct(0)
     }
     
-    def getDatabasePurchaseOrder: Array[PurchaseOrder] = {
-      //TODO empty method stub
-      null
-    }
     def getCollection(collection: MongoCollection): MongoCursor = {
       logger.debug("Entering getCollection method")
       collection.find

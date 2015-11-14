@@ -34,8 +34,8 @@ object Model {
   //val products = repoP.GenericRepositoryActual.getDatabaseProduct //GenericRepositoryDummy.findAll(new Product)
   val repoE = new GenericRepositoryActual //EmployeeRepositoryDummy
   val employees = repoE.GenericRepositoryActual.getDatabaseEmployee //GenericRepositoryDummy.findAll(new Employee)
-  val repoPO = new /* GenericRepositoryActual*/ PurchaseOrderRepositoryDummy
-  val purchaseOrders = repoPO. /*GenericRepositoryActual.getDatabasePurchaseOrder*/ GenericRepositoryDummy.findAll(new PurchaseOrder)
+  val repoPO = new GenericRepositoryActual//PurchaseOrderRepositoryDummy
+  val purchaseOrders = repoPO.GenericRepositoryActual.getDatabasePurchaseOrder// GenericRepositoryDummy.findAll(new PurchaseOrder)
 
   
   def populateOrder(orderLines:Array[CustomerOrderLine]):Array[Product]={
@@ -194,10 +194,7 @@ object Model {
     findBy
   }*/
 
-  def getPurchaseOrders: ObservableBuffer[PurchaseOrder] = {
-    val purchaseOrderBuffer = new ObservableBuffer[PurchaseOrder]
-    for (purchaseOrder <- purchaseOrders)
-      purchaseOrderBuffer += purchaseOrder
-    purchaseOrderBuffer
+  def getPurchaseOrders(purchaseOrders:Array[PurchaseOrder]): ObservableBuffer[PurchaseOrder] = {
+    ObservableBuffer[PurchaseOrder](purchaseOrders)
   }
 }
