@@ -1,6 +1,6 @@
 package com.qa.wotsunit
 
-import com.qa.dummydata.DummyBuilder
+import com.qa.data.DummyBuilder
 import scala.util.Random
 import com.qa.entities.CustomerOrder
 import com.qa.entities.Employee

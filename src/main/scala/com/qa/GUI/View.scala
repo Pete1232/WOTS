@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory
 import scalafx.geometry.Insets
 import scalafx.scene.input.KeyEvent
 import scalafx.scene.input.KeyCode
-import com.qa.dummydata.DummyData
+import com.qa.data.DummyData
 import scalafx.geometry.Pos
 import scalafx.scene.control.ScrollPane
 import com.qa.entities.PurchaseOrder

@@ -1,8 +1,8 @@
 package com.qa.repositoryimplementations
 
 import com.qa.repositories.GenericRepository
-import com.qa.dummydata.DummyData
-import com.qa.dummydata.DummyBuilder
+import com.qa.data.DummyData
+import com.qa.data.DummyBuilder
 import com.qa.entities.Product
 import com.typesafe.scalalogging.Logger
 import org.slf4j.LoggerFactory

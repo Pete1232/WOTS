@@ -1,4 +1,4 @@
-package com.qa.dummydata
+package com.qa.data
 
 import com.qa.entities.Product
 import scala.util.Random

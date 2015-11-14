@@ -5,7 +5,7 @@ import com.qa.entities.Product
 import scalafx.event.ActionEvent
 import com.typesafe.scalalogging.Logger
 import org.slf4j.LoggerFactory
-import com.qa.dummydata.DummyData
+import com.qa.data.DummyData
 import scalafx.beans.property.ObjectProperty
 import scalafx.collections.ObservableBuffer
 /**

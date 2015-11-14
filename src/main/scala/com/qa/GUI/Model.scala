@@ -21,10 +21,10 @@ import com.qa.repositoryimplementations.GenericRepositoryActual
  */
 object Model {
   val logger = Logger(LoggerFactory.getLogger("Controller.object"))
-  val repoCO = new GenericRepositoryActual//new CustomerOrderRepositoryDummy
-  val customerOrders = repoCO.GenericRepositoryActual.getDatabaseCustomerOrder//GenericRepositoryDummy.findAll(new CustomerOrder)  
-  val repoP = new GenericRepositoryActual //ProductRepositoryDummy
-  val products = repoP.GenericRepositoryActual.getDatabaseProduct//GenericRepositoryDummy.findAll(new Product)
+  val repoCO = /*new GenericRepositoryActual*/new CustomerOrderRepositoryDummy
+  val customerOrders = repoCO./*GenericRepositoryActual.getDatabaseCustomerOrder*/GenericRepositoryDummy.findAll(new CustomerOrder)  
+  val repoP = new /*GenericRepositoryActual*/ProductRepositoryDummy
+  val products = repoP./*GenericRepositoryActual.getDatabaseProduct*/GenericRepositoryDummy.findAll(new Product)
 
   /**
    * This method finds all customer orders and returns them in a suitable format for display (ObservableBuffer)
