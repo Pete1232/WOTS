@@ -4,22 +4,14 @@ import scalafx.collections.ObservableBuffer
 import com.qa.entities.CustomerOrder
 import com.qa.entities.Employee
 import com.qa.entities.Product
-import com.qa.repositoryimplementations.CustomerOrderRepositoryDummy
-import com.qa.repositoryimplementations.EmployeeRepositoryDummy
 import com.typesafe.scalalogging.Logger
 import org.slf4j.LoggerFactory
-import com.qa.repositoryimplementations.ProductRepositoryDummy
 import com.qa.entities.PurchaseOrder
-import com.qa.repositoryimplementations.PurchaseOrderRepositoryDummy
 import com.qa.tsp.Tour
 import com.qa.tsp.Population
 import com.qa.tsp.Algorithm
-import com.qa.repositoryimplementations.GenericRepositoryActual
-import com.qa.repositoryimplementations.GenericRepositoryActual
+import com.qa.repositories.GenericRepositoryActual
 import com.qa.entities.CustomerOrderLine
-import com.qa.entities.CustomerOrderLine
-import com.qa.entities.CustomerOrderLine
-import scala.collection.mutable.Leaf
 /**
  * This object contains the logic that retrieves information to display to the user
  * @author pnewman

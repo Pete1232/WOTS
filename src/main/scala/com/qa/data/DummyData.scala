@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory
  * @author pnewman
  */
 object DummyData {
-  val logger = Logger(LoggerFactory.getLogger("DummyData.object"))
   val entries = 50
   val databaseCustomerOrder = new DummyBuilder[CustomerOrder](entries)
   val databaseEmployee = new DummyBuilder[Employee](entries)
@@ -23,5 +22,4 @@ object DummyData {
   databaseEmployee.buildEntityArray(0,new Employee)
   databaseProduct.buildEntityArray(0,new Product)
   databasePurchaseOrder.buildEntityArray(0,new PurchaseOrder)
-  logger.debug("Employee 6 username: "+databaseEmployee.databaseArray(5).employeeUsername_ +". Employee 6 password: "+databaseEmployee.databaseArray(5).employeePassword_)
 }

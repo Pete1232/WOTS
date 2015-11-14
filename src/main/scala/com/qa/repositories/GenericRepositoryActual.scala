@@ -1,6 +1,5 @@
-package com.qa.repositoryimplementations
+package com.qa.repositories
 
-import com.qa.repositories.GenericRepository
 import com.qa.entities.Product
 import com.typesafe.scalalogging.Logger
 import org.slf4j.LoggerFactory
@@ -12,7 +11,6 @@ import com.mongodb.casbah.MongoClient
 import com.mongodb.casbah.MongoCollection
 import com.mongodb.casbah.MongoCursor
 import java.sql.DriverManager
-import java.sql.SQLException
 import java.sql.Connection
 import java.sql.PreparedStatement
 import com.qa.entities.CustomerOrder

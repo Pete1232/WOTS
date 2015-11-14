@@ -2,8 +2,6 @@ package com.qa.entities
 
 import scalafx.beans.property.ObjectProperty
 
-//import java.time.LocalDateTime
-
 /**
  * @author pnewman
  */
