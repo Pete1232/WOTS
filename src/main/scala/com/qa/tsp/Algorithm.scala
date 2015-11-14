@@ -11,6 +11,10 @@ object Algorithm {
   val elitism = true
   val mutationRate = 0.015
   val tournamentSize = 5
+  
+  /**
+   * This method 
+   */
   def evolvePop(pop:Population)={
     val newPopulation = new Population(pop.popSize,pop.stops)
     if(elitism)

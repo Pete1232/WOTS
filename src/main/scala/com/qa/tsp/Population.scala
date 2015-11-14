@@ -9,22 +9,33 @@ import org.slf4j.LoggerFactory
  */
 object Population {
    val logger = Logger(LoggerFactory.getLogger("Population.object"))
-   def generateEmptyPop(count:Int,size:Int,pop:List[Tour]) : List[Tour]={
-      if(count<size){
-        val newTour = pop:+(null)
-        generateEmptyPop(count.+(1), size, newTour)
+   
+   /**
+    * This method generates a population of null tours of the given size
+    * @param size
+    */
+   def generateEmptyPop(size:Int):Array[Tour]={
+     def createEmptyPopulation(count:Int,pop:Array[Tour]) : Array[Tour]={
+        if(count<size){
+          val newTour = pop:+(null)
+          createEmptyPopulation(count.+(1), newTour)
+        }
+        else{
+          pop
+        }
       }
-      else{
-        //logger.debug("Empty Pop: "+pop)
-        pop
-      }
+      createEmptyPopulation(0,Array[Tour]())
     }
 }
+
 class Population(val popSize:Int,val stops:List[Product]) {
   val logger = Logger(LoggerFactory.getLogger("Population.class"))
-  val population = createPopulation(0, popSize, Population.generateEmptyPop(0,popSize,List[Tour]()))
-  def createPopulation(count:Int,popSize:Int,tours:List[Tour]):List[Tour]={
-    //logger.debug("Entering createPopulation method with count {}, popSize {} and tours {}",count+"",popSize+"",tours)
+  val population = createPopulation(0, popSize, Population.generateEmptyPop(popSize))
+  
+  /**
+   * 
+   */
+  def createPopulation(count:Int,popSize:Int,tours:Array[Tour]):Array[Tour]={
     if(count<popSize){
       val tour = new Tour(stops)
       val nextTour = new Tour(tour.generateIndividual)
@@ -35,6 +46,7 @@ class Population(val popSize:Int,val stops:List[Product]) {
       tours
     }
   }
+  
   def getFittest:Tour={
     //logger.debug("Entering getFittest method")
     def findFittest(count:Int,fittest:Tour):Tour={
@@ -49,7 +61,7 @@ class Population(val popSize:Int,val stops:List[Product]) {
     }
     findFittest(0,population.apply(0))
   }
-  def saveTour(index:Int,tour:Tour):List[Tour]={
+  def saveTour(index:Int,tour:Tour):Array[Tour]={
     population.updated(index, tour)
   }
 }
