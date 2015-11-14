@@ -24,18 +24,24 @@ import com.qa.entities.CustomerOrderLine
 /**
  * @author pnewman
  */
-class GenericRepositoryActual[E: Manifest] {
+/*class GenericRepositoryActual[E: Manifest] {
   val logger = Logger(LoggerFactory.getLogger("GenericRepositoryMongo.class"))
   val mongoClient = MongoClient("localhost", 27017)
   val mongoDB = mongoClient("FreshTech")
   val driverSQL = "com.mysql.jdbc.Driver"
   val urlSQL = "jdbc:mysql://localhost/NBGardens"
   val usernameSQL = "root"
-  val passwordSQL = "academy"
+  val passwordSQL = "academy"*/
 
-  object GenericRepositoryActual extends GenericRepository[E] {
+  object GenericRepositoryActual{
+      val logger = Logger(LoggerFactory.getLogger("GenericRepositoryMongo.class"))
+  val mongoClient = MongoClient("localhost", 27017)
+  val mongoDB = mongoClient("FreshTech")
+  val driverSQL = "com.mysql.jdbc.Driver"
+  val urlSQL = "jdbc:mysql://localhost/NBGardens"
+  val usernameSQL = "root"
+  val passwordSQL = "academy"
     def getDatabaseCustomerOrder: Array[CustomerOrder] = {
-      //TODO This is Java code
       def establishConnection: Connection = {
         try {
           DriverManager.getConnection(urlSQL, usernameSQL, passwordSQL)
@@ -161,38 +167,6 @@ class GenericRepositoryActual[E: Manifest] {
       }
       createCustomerOrderLine(Array[CustomerOrderLine]())
     }
-/*    def getDatabaseProduct: Array[Product] = {
-      val productDoc = getCollection(mongoDB("Product")).toArray
-      logger.debug("Entering getDatabaseProduct method with {} Products", productDoc.length + "")
-      //logger.debug(productDoc.getClass+"")
-      //logger.debug(productDoc(1).get("productID")+"")
-      def createProducts(count: Int, productArray: Array[Product]): Array[Product] = {
-        if (count < productDoc.length) {
-          logger.debug("Adding new product")
-          val productPage = productDoc(count)
-          //logger.debug(productPage+"")
-          val productId = (productPage.get("productID") + "").toInt
-          //logger.debug(productId+"")
-          val productName = productPage.get("productName") + ""
-          //logger.debug(productName)
-          val image = productPage.get("image") + ""
-          val porousware = (productPage.get("porusware") + "").toBoolean
-          //logger.debug(porousware+"")
-          val orderId = 2
-          //TODO orderId set to 1
-          val aisle: Char = (productPage.get("aisle") + "")(0)
-          //logger.debug(aisle+"")
-          val shelf = (productPage.get("shelf") + "")toInt
-          val newProduct = new Product(productId, productName, image, porousware, orderId, aisle, shelf)
-          //logger.debug(newProduct+"")
-          createProducts(count.+(1), productArray :+ newProduct)
-        } else {
-          logger.debug("Products from database: " + productArray)
-          productArray
-        }
-      }
-      createProducts(0, Array[Product]())
-    }*/
     
     def getProductByOrderLine(orderLine:CustomerOrderLine):Product={
       val productDoc = getCollection(mongoDB("Product")).toArray
@@ -219,20 +193,8 @@ class GenericRepositoryActual[E: Manifest] {
       logger.debug("Entering getCollection method")
       collection.find
     }
-   /* def findAll: E => Array[E] = { entity =>
-      entity match {
-        case entity: CustomerOrder => getDatabaseCustomerOrder.asInstanceOf[Array[E]]
-        case entity: Employee      => getDatabaseEmployee.asInstanceOf[Array[E]]
-        case entity: Product       => getDatabaseProduct.asInstanceOf[Array[E]]
-        case entity: PurchaseOrder => getDatabasePurchaseOrder.asInstanceOf[Array[E]]
-        case _ => {
-          logger.error("Entity of type {} not handled by findAll method", entity.getClass.getSimpleName)
-          logger.warn("Method will return null")
-          null.asInstanceOf[Array[E]]
-        }
-      }
-    }*/
-    def persist: E => Unit = { entity =>
+    
+    def persist[E:Manifest]: E => Unit = { entity =>
       logger.debug("Persisting entity of type {}", entity.getClass.getSimpleName)
       def postAppend(array: Array[E]): Array[E] = {
         array :+ entity
@@ -250,7 +212,7 @@ class GenericRepositoryActual[E: Manifest] {
       }
     }
     
-    def persistArray: Array[E] => Unit = { entityArray =>
+    def persistArray[E:Manifest]: Array[E] => Unit = { entityArray =>
       def postAppendArray(count: Int, array: Array[E]): Array[E] = {
         if (count < entityArray.length) {
           logger.debug("persistArray: start array length: {}", array.length + "")
@@ -265,17 +227,16 @@ class GenericRepositoryActual[E: Manifest] {
       update
     }
     
-    def update: (E, Int) => Unit = { (entity, index) =>
+    def update[E:Manifest]: (E, Int) => Unit = { (entity, index) =>
       entity match {
         case entity: CustomerOrder =>
         case entity: Employee      =>
         case entity: Product       =>
         case entity: PurchaseOrder =>
         case _ => {
-          logger.error("Entity of type {} not handled by persistArray method", entity.getClass.getSimpleName)
+          logger.error("Entity of type {} not handled by update method", entity.getClass.getSimpleName)
           logger.warn("Method will return null")
         }
       }
     }
   }
-}
