@@ -24,7 +24,25 @@ object Model {
   val employees = repository.get(new Employee)
   val purchaseOrders = repository.get(new PurchaseOrder)
 
+  /**
+   * This method finds all customer orders and returns them in an ObservableBuffer
+   */
+  def getCustomerOrders(customerOrders: Array[CustomerOrder]): ObservableBuffer[CustomerOrder] = {
+    ObservableBuffer[CustomerOrder](customerOrders)
+  }
   
+  /**
+   * This method finds all purchase orders and returns them in an ObservableBuffer
+   */  
+  def getPurchaseOrders(purchaseOrders:Array[PurchaseOrder]): ObservableBuffer[PurchaseOrder] = {
+    ObservableBuffer[PurchaseOrder](purchaseOrders)
+  }  
+  
+  /**
+   * This method creates an array of all products corresponding to a given array of order lines
+   * @param Array[CustomerOrderLine]
+   * @return Array[Product]
+   */
   def populateOrder(orderLines:Array[CustomerOrderLine]):Array[Product]={
     def counter(count:Int,products:Array[Product]):Array[Product]={
       if(count<orderLines.length){
@@ -52,83 +70,21 @@ object Model {
 }*/
   
   /**
-   * This method finds all customer orders and returns them in a suitable format for display (ObservableBuffer)
-   */
-  def getCustomerOrders(customerOrders: Array[CustomerOrder]): ObservableBuffer[CustomerOrder] = {
-    ObservableBuffer[CustomerOrder](customerOrders)
-  }
-
-  /**
-   * This method finds all products associated with the given customer order
-   */
-  def getProductByOrderId(orderId: Int, productData: Array[Product]): Array[Product] = {
-    val productList = Array[Product]()
-    def populateList(count: Int, products: Array[Product]): Array[Product] = {
-      if (count < productData.length) {
-        if (productData(count).orderId_ == orderId) {
-          logger.debug("Product on order {} found.", orderId + "")
-          val newProduct = products :+ productData(count)
-          populateList(count.+(1), newProduct)
-        } else {
-          populateList(count.+(1), products)
-        }
-      } else {
-        products
-      }
-    }
-    populateList(0, productList)
-  }
-  
-/*  def getOrderLineByOrderId(orderId:Int):Array[CustomerOrderLine]={
-    if(DataConfig.online)
-      repository.getCustomerOrderLineByOrderId(orderId)
-    else{
-      Array[CustomerOrderLine](new CustomerOrderLine(orderId,1,10),new CustomerOrderLine(orderId,2,20))
-    }
-  }
-
-  def getProductByOrderLine(orderLines:Array[CustomerOrderLine],productData:Array[Product]):Array[Product]={
-    def populateProducts(count:Int,productList:Array[Product],orderLine:CustomerOrderLine):Array[Product]={
-      if(count<productData.length){
-        logger.debug("Order line product Id: {}",""+orderLine.productId_)
-        if(productData(count).productId_ == orderLine.productId_){
-          val newProduct = productList :+ productData(count)
-          populateProducts(count.+(1),newProduct,orderLine)
-        }
-        else{
-          populateProducts(count.+(1),productList,orderLine)
-        }
-      }
-      else{
-        productList
-      }
-    }
-    
-    def iterateOrderLines(count:Int,productList:Array[Product]):Array[Product]={
-      if(count<orderLines.length){
-        val productTemp = populateProducts(0, productList, orderLines(count))
-        logger.debug("Adding {} products",""+productTemp.length)
-        iterateOrderLines(count.+(1), productList ++: productTemp)        
-      }
-      else{
-        productList
-      }
-    }
-    iterateOrderLines(0, Array[Product]())
-  }*/
-  
-  /**
-   *
+   *This method carries out a genetic travelling salesman algorithm on a list of products, returning an ordered ObservableBuffer
+   * @param Int
+   * @param Int
+   * @param List[Product]
+   * @return ObservableBuffer[Product]
    */
   def calculateRoute(pop: Int, generations: Int, products: List[Product]): ObservableBuffer[Product] = {
     val tour = new Tour(products)
     val population = new Population(pop, tour.stops)
-    val newPop = Algorithm.evolver(0, population)
-    ObservableBuffer[Product](population.getFittest.stops)
+    val newPop = Algorithm.evolver(0, generations,population)
+    ObservableBuffer[Product](newPop.getFittest.stops)
   }
 
   /**
-   * This method returns a function that returns information about the current user session
+   * This method returns information about the current user session based on the given string
    * @param String
    * @param String
    * @return String=>E
@@ -163,9 +119,5 @@ object Model {
         false.asInstanceOf[E]
     }
     requestSession
-  }
-
-  def getPurchaseOrders(purchaseOrders:Array[PurchaseOrder]): ObservableBuffer[PurchaseOrder] = {
-    ObservableBuffer[PurchaseOrder](purchaseOrders)
   }
 }

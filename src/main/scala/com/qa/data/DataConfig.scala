@@ -25,15 +25,24 @@ object DataConfig {
 
   val repository = configureRepository(false)
   
+  /**
+   * This method attempts to establish a connection to the SQL database
+   * @return Connection
+   */
   def connectionSQL:Connection={
     establishSQLConnection(urlSQL,usernameSQL,passwordSQL)
   }
+  
+  /**
+   * This method attempts to establish a connection to the Mongo database
+   * @return MongoDB
+   */
   def connectionMongo:MongoDB={
     establishMongoConnection(mongoClient,mongoName)
   }
   
   /**
-   * This method attempts to establish a connection to the given SQL database
+   * This method attempts to configure a connection to the given SQL database
    * @param String
    * @param String
    * @param String
@@ -49,7 +58,7 @@ object DataConfig {
   }
 
   /**
-   * This method attempts to establish a connection to the given Mongo database
+   * This method attempts to configure a connection to the given Mongo database
    * @param MongoClient
    * @param String
    * @return MongoDB
@@ -80,6 +89,7 @@ object DataConfig {
 
   /**
    * This method returns the repository implementation corresponding to the database(s) currently in use
+   * @param Boolean
    * @return GenericRepository
    */
   def configureRepository(online:Boolean):GenericRepository={

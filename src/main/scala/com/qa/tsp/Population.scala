@@ -4,9 +4,6 @@ import com.qa.entities.Product
 import com.typesafe.scalalogging.Logger
 import org.slf4j.LoggerFactory
 
-/**
- * @author pnewman
- */
 object Population {
    val logger = Logger(LoggerFactory.getLogger("Population.object"))
    
@@ -28,6 +25,9 @@ object Population {
     }
 }
 
+/**
+ * @author pnewman
+ */
 class Population(val popSize:Int,val stops:List[Product]) {
   val logger = Logger(LoggerFactory.getLogger("Population.class"))
   val population = createPopulation(0, popSize, Population.generateEmptyPop(popSize))
@@ -48,7 +48,6 @@ class Population(val popSize:Int,val stops:List[Product]) {
   }
   
   def getFittest:Tour={
-    //logger.debug("Entering getFittest method")
     def findFittest(count:Int,fittest:Tour):Tour={
       if(count<population.length){
         if(population(count).getFitness>fittest.getFitness)          
@@ -61,6 +60,7 @@ class Population(val popSize:Int,val stops:List[Product]) {
     }
     findFittest(0,population.apply(0))
   }
+  
   def saveTour(index:Int,tour:Tour):Array[Tour]={
     population.updated(index, tour)
   }

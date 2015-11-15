@@ -17,22 +17,38 @@ object Controller {
   val logger = Logger(LoggerFactory.getLogger("Controller.object"))
   var session = 0
   
+  /**
+   * This is a convenience method to quickly login from the manu-bar
+   * (Would be removed)
+   */
   def loginDebug{
     session = -1
     setHome
   }
   
+  /**
+   * This method sets the view to the home page
+   */
   def setHome{
     WOTSMain.stage.scene_=(View.setMainScene)
   }
   
+  /**
+   * This method sets the view to the tracking page for the given order
+   * @param Int
+   */
   def setTracking(orderId:Int){
     val orderLines = Model.repository.getCustomerOrderLineByOrderId(orderId)
     val productsOnOrder = Model.populateOrder(orderLines)
-    val order = Model.calculateRoute(10, 1000, productsOnOrder.toList) //TODO Replace all Lists with Arrays Model.getProductByOrderId(orderId,Model.products).toList
+    val order = Model.calculateRoute(100, 1000, productsOnOrder.toList) //TODO Replace all Lists with Arrays Model.getProductByOrderId(orderId,Model.products).toList
     WOTSMain.stage.scene_=(View.setTrackingScene(orderId,new Product,0,order))
   }
   
+  /**
+   * This method saves the session of a valid user after login, and sets the view to the home page
+   * @param String
+   * @param String
+   */
   def handleLogin(user:String,pass:String){
     logger.debug("Attempting login. User is {}. Pass is {}",user,pass)
     if(Model.validateLogin[Boolean](user, pass)("login")){
@@ -41,18 +57,20 @@ object Controller {
     }
   }
   
+  /**
+   * This method updates the employee claim on an order to the current session
+   * @param Int
+   */
   def handleClaim(orderId:Int){
-/*    logger.debug("Claiming order {}",orderId+"")
-    val order = Model.getProductByOrderId(orderId,Model.products)
-    logger.debug("Found order: {}",order)
-    logger.debug("Employee Id for {}: {}",orderId+"",DummyData.databaseCustomerOrder.databaseArray(orderId-1).employeeId)
-    logger.debug("Session: "+session)
-    //TODO Generic update method
-    //DummyData.databaseCustomerOrder.databaseArray(orderId-1).employeeId = new ObjectProperty(new CustomerOrder,"employeeId",session)
-    logger.debug("New Employee Id: "+DummyData.databaseCustomerOrder.databaseArray(orderId-1).employeeId)
-    logger.debug("DummyData customerOrder {} has employeeId {}",orderId+"",DummyData.databaseCustomerOrder.databaseArray(orderId-1).employeeId)*/
+  //TODO Implement
   }
   
+  /**
+   * This method iterates through the products on an order
+   * @param Int
+   * @param ObservableBuffer[Product]
+   * @param Int
+   */
   def nextOrder(orderId:Int,productList:ObservableBuffer[Product],count:Int){
     if(count >= productList.length){
       logger.debug("End of buffer")

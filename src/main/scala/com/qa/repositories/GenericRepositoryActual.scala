@@ -134,9 +134,11 @@ object GenericRepositoryActual extends GenericRepository{
     }
     createCustomerOrderLine(Array[CustomerOrderLine]())
   }
+  
   /**
    * This method returns a product corresponding to the given CustomerOrderLine
    * @param CustomerOrderLine
+   * @return Product
    */
   def getProductByOrderLine(orderLine:CustomerOrderLine):Product={
     val productDoc = DataConfig.connectionMongo("Product").find.toArray
@@ -169,18 +171,7 @@ object GenericRepositoryActual extends GenericRepository{
    * @param E
    */
     def persist[E](entity: E){
-/*    TODO Implement
- *    entity match {
-      case entity: CustomerOrder =>
-      case entity: Employee      =>
-      case entity: Product       =>
-      case entity: PurchaseOrder =>
-      case _ => {
-        logger.error("Entity of type {} not handled by persist method", entity.getClass.getSimpleName)
-        logger.warn("Method will return null")
-        null.asInstanceOf[Array[E]]
-      }
-    }*/
+    //TODO Implement
   }
 
   /**
@@ -189,16 +180,6 @@ object GenericRepositoryActual extends GenericRepository{
    * @param Int
    */
     def update[E](entity:E, index:Int){
-/*    TODO Implement
- *    entity match {
-      case entity: CustomerOrder =>
-      case entity: Employee      =>
-      case entity: Product       =>
-      case entity: PurchaseOrder =>
-      case _ => {
-        logger.error("Entity of type {} not handled by update method", entity.getClass.getSimpleName)
-        logger.warn("Method will return null")
-      }
-    }*/
+    //TODO Implement
   }
 }

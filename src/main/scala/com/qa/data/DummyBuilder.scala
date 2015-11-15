@@ -18,9 +18,8 @@ class DummyBuilder[E:Manifest](size:Int){
   logger.debug("Initialised databaseArray of size {} and type {}",size+"",databaseArray.getClass.getSimpleName)
   /**
    * This generic method fills databaseArray with the relevant entities
-   * @param counter
-   * @param entries
-   * @param entity
+   * @param Int
+   * @param E
    */
   def buildEntityArray(counter:Int,entity:E){
     val randomInt = Math.abs(Random.nextInt(1000))
@@ -60,6 +59,8 @@ class DummyBuilder[E:Manifest](size:Int){
   }
   /**
    * This generic method adds an entity to databaseArray of given type at given index
+   * @param Int
+   * @param E
    */
   def addToArray(index:Int,entity:E){
     databaseArray(index)=(entity match{

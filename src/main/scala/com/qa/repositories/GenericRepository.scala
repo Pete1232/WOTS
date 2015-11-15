@@ -29,7 +29,17 @@ trait GenericRepository{
    */
   def update[E](entity:E,index:Int)
   
-  
+  /**
+   * This method should return an array of CustomerOrderLine with the given orderId
+   * @param Int
+   * @return Array[CustomerOrderLine]
+   */
   def getCustomerOrderLineByOrderId(customerOrderId: Int): Array[CustomerOrderLine]
+  
+  /**
+   * This method should return a product corresponding to the given CustomerOrderLine
+   * @param CustomerOrderLine
+   * @return Product
+   */
   def getProductByOrderLine(orderLine:CustomerOrderLine):Product
 }

@@ -87,13 +87,19 @@ object GenericRepositoryDummy extends GenericRepository{
       }
     }      
   }
-  
+
+  /**
+   * This method returns an array of CustomerOrderLine with the given orderId
+   * @param Int
+   * @return Array[CustomerOrderLine]
+   */
   def getCustomerOrderLineByOrderId(customerOrderId: Int): Array[CustomerOrderLine] = {
     Array[CustomerOrderLine](new CustomerOrderLine(customerOrderId,1,10),new CustomerOrderLine(customerOrderId,2,20))
   }
   /**
    * This method returns a product corresponding to the given CustomerOrderLine
    * @param CustomerOrderLine
+   * @return Product
    */
   def getProductByOrderLine(orderLine:CustomerOrderLine):Product={
     val productData = get(new Product)

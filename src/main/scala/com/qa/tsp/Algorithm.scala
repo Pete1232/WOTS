@@ -5,23 +5,46 @@ import com.qa.entities.Product
 import scala.util.Random
 
 /**
+ * This object contains methods to execute a genetic travelling salesman algorithm
  * @author pnewman
  */
 object Algorithm {
-  val elitism = true
   val mutationRate = 0.015
   val tournamentSize = 5
+
+  /**
+   * This method 'evolves' a population for a single generation
+   * @param Population
+   */
+  def evolvePop(pop:Population){
+    val population = new Population(pop.popSize,pop.stops)
+    population.saveTour(0,pop.getFittest)
+    def cross(count:Int){
+      if(count<population.popSize){
+        val parent1 = tournamentSelection(population)
+        val parent2 = tournamentSelection(population)
+        val child = crossover(parent1, parent2, population)
+        population.saveTour(count, child)
+        cross(count.+(1))
+      }
+    }
+    def mutator(count:Int){
+      if(count<population.popSize){
+        val newTour = mutate(population.population(count))
+        population.saveTour(count, newTour)
+        mutator(count.+(1))
+      }
+    cross(0)
+    mutator(0)
+    }
+  }
   
   /**
-   * This method 
+   * This method crosses two parent tours together by taking a sub-tour of one and adding remaining stops in order from the other tour
+   * @param Tour
+   * @param Tour
+   * @param Population
    */
-  def evolvePop(pop:Population)={
-    val newPopulation = new Population(pop.popSize,pop.stops)
-    if(elitism)
-      newPopulation.saveTour(0,pop.getFittest)
-    val elitismOffset = 1
-    
-  }
   def crossover(parent1:Tour,parent2:Tour,pop:Population):Tour={
     val firstChild = new Tour(pop.stops.length)
     val start = (Random.nextDouble*parent1.stops.length).toInt
@@ -61,8 +84,12 @@ object Algorithm {
     val secondChild = addSubTour(0, firstChild)
     completeTour(0,secondChild)
   }
-  def mutate(tour:Tour){
-    def mutateCities(stop1Index:Int){
+  
+  /**
+   * This method randomly rearranges the stops in a tour
+   */
+  def mutate(tour:Tour):Tour={
+    def mutateCities(stop1Index:Int):Tour={
       if(Random.nextDouble<mutationRate){
         val stop2Index = tour.stops.length*Random.nextDouble.toInt
         val stop1 = tour.getStop(stop1Index)
@@ -71,9 +98,17 @@ object Algorithm {
         tour.setStop(stop1Index, stop2)
         mutateCities(stop1Index.+(1))
       }
-      mutateCities(0)
+      else{
+        tour
+      }
     }
+    mutateCities(0)
   }
+  
+  /**
+   * This method chooses the best tour from a relatively small list (default 5) as candidate for crossover
+   * @param Population
+   */
   def tournamentSelection(pop:Population):Tour={
     val tournament = new Population(tournamentSize,pop.stops)
     def duel(count:Int){
@@ -85,9 +120,17 @@ object Algorithm {
     }
     tournament.getFittest
   }
-  def evolver(count:Int,pop:Population):Population={
-    if(count<100)
+  
+  /**
+   * This method evolves the population over a given number of generations
+   */
+  def evolver(count:Int,generations:Int,pop:Population):Population={
+    if(count<generations){
       evolvePop(pop)
-    pop
+      evolver(count.+(1),generations,pop)
     }
+    else{
+      pop
+    }
+  }
 }
