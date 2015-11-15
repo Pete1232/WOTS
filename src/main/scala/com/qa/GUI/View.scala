@@ -21,7 +21,6 @@ import scalafx.scene.control.TableView
 import scalafx.scene.control.TextField
 import com.qa.entities.CustomerOrder
 import com.qa.entities.Product
-import com.qa.repositoryimplementations.CustomerOrderRepositoryDummy
 import scalafx.scene.control.TableColumn._
 import scalafx.scene.control.Label
 import com.typesafe.scalalogging.Logger
