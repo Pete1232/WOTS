@@ -11,18 +11,19 @@ import com.qa.entities.PurchaseOrder
  * @author pnewman
  */
 class DummyBuilderSpec extends UnitSpec{
-  val entries = Math.abs(Random.nextInt(200))
-  val builderCO = new DummyBuilder[CustomerOrder](entries)
-  val builderE = new DummyBuilder[Employee](entries)
-  val builderP = new DummyBuilder[Product](entries)
-  val builderPO = new DummyBuilder[PurchaseOrder](entries)
-  val customerOrder=new CustomerOrder
-  val employee=new Employee
-  val product=new Product
-  val purchaseOrder=new PurchaseOrder
-  
+
   "Calling addToArray" should "populate the given index of databaseArray (of any size) with an entity of the given type" in {
+    val entries = Math.abs(Random.nextInt(200))
     val index = Math.abs(Random.nextInt(entries))
+    val builderCO = new DummyBuilder[CustomerOrder](entries)
+    val builderE = new DummyBuilder[Employee](entries)
+    val builderP = new DummyBuilder[Product](entries)
+    val builderPO = new DummyBuilder[PurchaseOrder](entries)
+    val customerOrder=new CustomerOrder
+    val employee=new Employee
+    val product=new Product
+    val purchaseOrder=new PurchaseOrder
+  
     builderCO.addToArray(index,customerOrder)
     builderCO.databaseArray(index) should be (customerOrder)
     builderE.addToArray(index,employee)
@@ -33,7 +34,17 @@ class DummyBuilderSpec extends UnitSpec{
     builderPO.databaseArray(index) should be (purchaseOrder)
   }
   "Calling buildEntityArray" should "populate ALL entries of databaseArray (of any size) with entities of the given type (when starting with counter 0)" in {
+    val entries = Math.abs(Random.nextInt(200))
     val index = Math.abs(Random.nextInt(entries))
+    val builderCO = new DummyBuilder[CustomerOrder](entries)
+    val builderE = new DummyBuilder[Employee](entries)
+    val builderP = new DummyBuilder[Product](entries)
+    val builderPO = new DummyBuilder[PurchaseOrder](entries)
+    val customerOrder=new CustomerOrder
+    val employee=new Employee
+    val product=new Product
+    val purchaseOrder=new PurchaseOrder
+  
     builderCO.buildEntityArray(0, customerOrder)  
     for(entry<-builderCO.databaseArray){
       entry should not be (null)

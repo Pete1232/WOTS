@@ -17,7 +17,7 @@ import com.qa.entities.CustomerOrderLine
  * @author pnewman
  */
 object Model {
-  val logger = Logger(LoggerFactory.getLogger("Controller.object"))
+  val logger = Logger(LoggerFactory.getLogger("Model.object"))
   //TODO Dummy/Actual implementation should be chosen automatically
   val customerOrders = GenericRepositoryActual.getDatabaseCustomerOrder
   val employees = GenericRepositoryActual.getDatabaseEmployee
@@ -36,6 +36,19 @@ object Model {
     }
     counter(0,Array[Product]())
   }
+  
+/*  def populateOrder(orderLines:Array[CustomerOrderLine]):Array[Product]={
+    def beep(products:Array[Product],orderLines:Array[CustomerOrderLine]):Array[Product]={
+      if(orderLines.isEmpty){
+        products
+      }
+      else{
+        val newProduct = GenericRepositoryActual.getProductByOrderLine(orderLines.head)
+        beep(products:+newProduct,orderLines.tail)
+      }
+    }
+    beep(Array.empty,orderLines)
+}*/
   
   /**
    * This method finds all customer orders and returns them in a suitable format for display (ObservableBuffer)

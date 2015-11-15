@@ -14,7 +14,7 @@ import com.qa.entities.PurchaseOrder
  * @author pnewman
  */
 
-object GenericRepositoryDummy{
+object GenericRepositoryDummy extends GenericRepository{
   val logger = Logger(LoggerFactory.getLogger("GenericRepositoryDummy.class"))
   
   def getDatabaseCustomerOrder:Array[CustomerOrder]={

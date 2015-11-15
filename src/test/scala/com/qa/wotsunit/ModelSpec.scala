@@ -11,12 +11,22 @@ import org.scalatest.Inspectors
 import org.scalatest.Inside
 import org.scalatest.FlatSpec
 import org.scalatest.Suites
+import com.qa.entities.CustomerOrderLine
 
 /**
  * @author pnewman
  */
 class ModelSpec extends UnitSpec{
-  def testGetCustomerOrders{
+  
+  def testPopulateOrder{
+    "The populateOrder method" should "return an array of products" in{
+      val orderLines = Array[CustomerOrderLine](new CustomerOrderLine(1,2,10),new CustomerOrderLine(2,3,20),new CustomerOrderLine(3,4,30))
+      Model.populateOrder(orderLines).getClass.getSimpleName should be ("Product[]")
+    }
+    it should ""
+  }
+  
+/*  def testGetCustomerOrders{
     "The getCustomerOrders method" should "convert a given Array of CustomerOrder to an Observable buffer" in{
       val customerOrders = Array[CustomerOrder](new CustomerOrder,new CustomerOrder)
       Model.getCustomerOrders(customerOrders) should be (ObservableBuffer[CustomerOrder](customerOrders(0),customerOrders(1)))
@@ -32,5 +42,7 @@ class ModelSpec extends UnitSpec{
     }
   }
   testGetCustomerOrders
-  testGetProductByOrderId
+  testGetProductByOrderId*/
+  
+  testPopulateOrder
 }

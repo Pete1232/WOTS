@@ -18,6 +18,8 @@ import com.qa.entities.CustomerOrderLine
 import com.qa.entities.CustomerOrderLine
 import com.qa.entities.CustomerOrderLine
 import com.qa.entities.CustomerOrderLine
+import com.qa.data.DataConfig
+import java.sql.SQLException
 
 /**
  * @author pnewman
@@ -31,24 +33,12 @@ import com.qa.entities.CustomerOrderLine
   val usernameSQL = "root"
   val passwordSQL = "academy"*/
 
-  object GenericRepositoryActual{
-      val logger = Logger(LoggerFactory.getLogger("GenericRepositoryMongo.class"))
-  val mongoClient = MongoClient("localhost", 27017)
-  val mongoDB = mongoClient("FreshTech")
-  val driverSQL = "com.mysql.jdbc.Driver"
-  val urlSQL = "jdbc:mysql://localhost/NBGardens"
-  val usernameSQL = "root"
-  val passwordSQL = "academy"
+  object GenericRepositoryActual extends GenericRepository{
+    val logger = Logger(LoggerFactory.getLogger("GenericRepositoryMongo.class"))
+    val mongoDB = DataConfig.connectionMongo
+    
     def getDatabaseCustomerOrder: Array[CustomerOrder] = {
-      def establishConnection: Connection = {
-        try {
-          DriverManager.getConnection(urlSQL, usernameSQL, passwordSQL)
-        } catch {
-          //TODO Do this properly
-          case e: Throwable => e.printStackTrace; null
-        }
-      }
-      val conn = establishConnection
+      val conn = DataConfig.connectionSQL
       val stmt = conn.createStatement
       val ps: PreparedStatement = conn.prepareStatement("SELECT * FROM customerorder")
       logger.debug("Statement: " + ps)
@@ -69,16 +59,7 @@ import com.qa.entities.CustomerOrderLine
     }
     
     def getDatabasePurchaseOrder: Array[PurchaseOrder] = {
-      //TODO This is Java code
-      def establishConnection: Connection = {
-        try {
-          DriverManager.getConnection(urlSQL, usernameSQL, passwordSQL)
-        } catch {
-          //TODO Do this properly
-          case e: Throwable => e.printStackTrace; null
-        }
-      }
-      val conn = establishConnection
+      val conn = DataConfig.connectionSQL
       val stmt = conn.createStatement
       val ps: PreparedStatement = conn.prepareStatement("SELECT * FROM purchaseorder")
       logger.debug("Statement: " + ps)
@@ -98,16 +79,7 @@ import com.qa.entities.CustomerOrderLine
     }
     
     def getDatabaseEmployee: Array[Employee] = {
-      //TODO This is Java code
-      def establishConnection: Connection = {
-        try {
-          DriverManager.getConnection(urlSQL, usernameSQL, passwordSQL)
-        } catch {
-          //TODO Do this properly
-          case e: Throwable => e.printStackTrace; null
-        }
-      }
-      val conn = establishConnection
+      val conn = DataConfig.connectionSQL
       val stmt = conn.createStatement
       val ps: PreparedStatement = conn.prepareStatement("SELECT * FROM employee")
       logger.debug("Statement: " + ps)
@@ -133,16 +105,7 @@ import com.qa.entities.CustomerOrderLine
       createEmployees(Array[Employee]())
     }
     def getDatabaseCustomerOrderLine(customerOrderId: Int): Array[CustomerOrderLine] = {
-       def establishConnection: Connection = {
-        try {
-          DriverManager.getConnection(urlSQL, usernameSQL, passwordSQL)
-        } catch {
-          //TODO Do this properly
-          case e: Throwable => e.printStackTrace; null
-        }
-      }
-       
-      val conn = establishConnection
+      val conn = DataConfig.connectionSQL
       val stmt = conn.createStatement
       val ps: PreparedStatement = conn.prepareStatement("SELECT * FROM customerorderline WHERE CustomerOrder_CustomerOrderId="+customerOrderId)
       logger.debug("Statement: " + ps)
@@ -167,7 +130,7 @@ import com.qa.entities.CustomerOrderLine
     }
     
     def getProductByOrderLine(orderLine:CustomerOrderLine):Product={
-      val productDoc = getCollection(mongoDB("Product")).toArray
+      val productDoc = DataConfig.connectionMongo("Product").find.toArray
       def findProduct(count:Int):Product = {
         val productId = (productDoc(count).get("productID") + "").toInt
         if(productId==orderLine.productId_){
@@ -185,11 +148,6 @@ import com.qa.entities.CustomerOrderLine
         }
       }
       findProduct(0)
-    }
-    
-    def getCollection(collection: MongoCollection): MongoCursor = {
-      logger.debug("Entering getCollection method")
-      collection.find
     }
     
     def persist[E:Manifest]: E => Unit = { entity =>

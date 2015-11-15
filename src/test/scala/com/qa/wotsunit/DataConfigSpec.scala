@@ -1,6 +1,6 @@
-/*package com.qa.wotsunit
+package com.qa.wotsunit
 
-TODO Finish tests and create class - low priority
+//TODO Finish tests and create class - low priority
 
 import com.qa.entities.CustomerOrder
 import com.qa.entities.Employee
@@ -11,6 +11,9 @@ import com.mongodb.MongoException
 import java.sql.DriverManager
 import java.sql.SQLException
 import com.sun.corba.se.spi.servicecontext.UEInfoServiceContext
+import com.qa.data.DataConfig
+import com.qa.repositories.GenericRepositoryActual
+import com.qa.repositories.GenericRepositoryDummy
 
 class DataConfigSpec extends UnitSpec{
   def testEstablishSQLConnection{
@@ -19,66 +22,79 @@ class DataConfigSpec extends UnitSpec{
       val urlSQL = "jdbc:mysql://localhost/NBGardens"
       val usernameSQL = "root"
       val passwordSQL = "academy"
-      intercept[SQLException]{
-        DataConfig.establishSQLConnection(urlSQL,usernameSQL,passwordSQL)
-        cancel("Test cannot run - requested SQL connection not available")
+      try{
+        val conn = DataConfig.establishSQLConnection(urlSQL,usernameSQL,passwordSQL)
+        conn.getMetaData.getURL should be (urlSQL)
+        conn.getMetaData.getUserName should be (usernameSQL+"@localhost")
       }
-      val connection = DriverManager.getConnection(urlSQL,usernameSQL,passwordSQL)
-      DataConfig.establishSQLConnection(urlSQL,usernameSQL,passwordSQL) should be (connection)
-    }
-    it should "throw an SQLException and return null if no connection is made" in{
-      intercept[SQLException]{
-        val driverSQL = "com.mysql.jdbc.Driver"
-        val urlSQL = "jdbc:mysql://localhost/null"
-        val usernameSQL = "null"
-        val passwordSQL = "null"
-        establishSQLConnection(urlSQL,usernameSQL,passwordSQL) should be null
+      catch{
+        case sqle:SQLException => cancel("Test cancelled - Database connection could not be established.")
       }
     }
   }
+  
   def testEstablishMongoConnection{
     "The establishMongoConnection method" should "return a MongoDB entity configured for FreshTech" in{
-      intercept[MongoException]{
-        val mongoClient = MongoClient("localhost",27017)
-        DataConfig.establishMongoConnection(mongoClient)
-        cancel("Test cannot run - requested Mongo connection not available")
-      }
       val mongoClient = MongoClient("localhost",27017)
-      val mongoDB = mongoClient("FreshTech")      
-      DataConfig.establishMongoConnection(mongoClient) should be (mongoDB)
-    }
-    it should "throw a MongoException and return null if no connection is made" in{
-      intercept[MongoException]{
-        val mongoClient = MongoClient("localhost",0)
-        establishMongoConnection(mongoClient) should be null
+      val mongoName = "FreshTech"
+      try{
+        DataConfig.establishMongoConnection(mongoClient,mongoName)
       }
-      fail()
+      catch{
+        case me:MongoException => cancel("Test cannot run - requested Mongo connection not available")
+      }
+      val mongoDB = mongoClient(mongoName)      
+      DataConfig.establishMongoConnection(DataConfig.mongoClient,DataConfig.mongoName).getName should be (mongoDB.getName)
+    }
+    it should "return null if no connection is made" in{
+      val mongoClient = MongoClient("localhost",27017)
+      val databaseFalse = "FailTest"
+      DataConfig.establishMongoConnection(mongoClient, databaseFalse) should be (null)
     }
   }
+  
+  def testCloseSQLConnection{
+    "The closeSQLConnection method" should "terminate an active SQL connection" in{
+      val driverSQL = "com.mysql.jdbc.Driver"
+      val urlSQL = "jdbc:mysql://localhost/NBGardens"
+      val usernameSQL = "root"
+      val passwordSQL = "academy"
+      try{
+        val connection = DriverManager.getConnection(urlSQL,usernameSQL,passwordSQL)
+        if(connection.isClosed){
+          cancel("Test cancelled - Database connection did not open successfully")
+        }
+        else{
+          DataConfig.closeSQLConnection(connection)
+          connection.isClosed should be (true)
+        }
+      }
+      catch{
+        case sqle:SQLException => cancel("Test cancelled - Database connection could not be established.")
+      }
+    }
+  }
+  
   def testConfigureRepositories {
-    "The configureRepositories method" should "instantiate entity repositories using actual data" in{
-      configureRepository(new CustomerOrder) should be ProductRepositoryDummy
-      configureRepository(new Employee) should be ProductRepositoryDummy
-      configureRepository(new Product) should be ProductRepositoryDummy
-      configureRepository(new PurchaseOrder) should be ProductRepositoryDummy
-      
+    "The configureRepositories method" should "instantiate entity repositories using actual data if a connection is possible" in{
+      if((DataConfig.connectionMongo !== null) & (DataConfig.connectionSQL !== null)){
+        DataConfig.configureRepository should be (GenericRepositoryActual)
+      }
+      else{
+        cancel("Test cancelled - no database connection available")
+      }
     }
-    it should "instantiate the entity repositories with dummy data and log a warning if a database connection hasn't been established" in{
-      
-    }
-    it should "return null and log a warning if an unknown entity is entered" in{
-      
-    }
-  }
-  def testDataConfig{
-    "Instantiating DataConfig with the no-args constructor" should "run configureRepository for all entities" in{
-      
-    }
-    it should "save these configurations as attributes" in{
-      
-    }
-    it should "save whether actual data is being used with a boolean attribute" in{
-      
+    it should "instantiate the entity repositories with dummy data if a database connection hasn't been established" in{
+      if((DataConfig.connectionMongo !== null) & (DataConfig.connectionSQL !== null)){
+        cancel("Test cancelled - should not instantiate dummy data if connection is available")
+      }
+      else{
+        DataConfig.configureRepository should be (GenericRepositoryDummy)           
+      }
     }
   }
-}*/
+  testConfigureRepositories
+  testEstablishMongoConnection
+  testEstablishSQLConnection
+  testCloseSQLConnection
+}
