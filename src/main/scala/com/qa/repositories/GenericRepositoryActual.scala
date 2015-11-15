@@ -111,6 +111,10 @@ object GenericRepositoryActual extends GenericRepository{
     }
   }
 
+  /**
+   * This method returns an array of CustomerOrderLine with the given orderId
+   * @param Int
+   */
   def getCustomerOrderLineByOrderId(customerOrderId: Int): Array[CustomerOrderLine] = {
     val conn = DataConfig.connectionSQL
     val stmt = conn.createStatement
@@ -129,7 +133,10 @@ object GenericRepositoryActual extends GenericRepository{
     }
     createCustomerOrderLine(Array[CustomerOrderLine]())
   }
-  
+  /**
+   * This method returns a product corresponding to the given CustomerOrderLine
+   * @param CustomerOrderLine
+   */
   def getProductByOrderLine(orderLine:CustomerOrderLine):Product={
     val productDoc = DataConfig.connectionMongo("Product").find.toArray
     def findProduct(count:Int):Product = {
