@@ -15,15 +15,19 @@ import org.slf4j.LoggerFactory
 class GenericRepositoryDummySpec extends UnitSpec{
       
   def testGet{
-    "Calling get_ returns a function that" should "return an array of the given entity type" in{
-    val arrayCO:Array[CustomerOrder] = GenericRepositoryDummy.get(new CustomerOrder)
-    val arrayE:Array[Employee] = GenericRepositoryDummy.get(new Employee)
-    val arrayP:Array[Product] = GenericRepositoryDummy.get(new Product)
-    val arrayPO:Array[PurchaseOrder] = GenericRepositoryDummy.get(new PurchaseOrder)
-    arrayCO.getClass.getSimpleName+"" should be ("CustomerOrder[]")
-    arrayE.getClass.getSimpleName+"" should be ("Employee[]")
-    arrayP.getClass.getSimpleName+"" should be ("Product[]")
-    arrayPO.getClass.getSimpleName+"" should be ("PurchaseOrder[]")
+    "Calling get returns a function that" should "return an array of the given entity type" in{
+      val arrayCO:Array[CustomerOrder] = GenericRepositoryDummy.get(new CustomerOrder)
+      val arrayE:Array[Employee] = GenericRepositoryDummy.get(new Employee)
+      val arrayP:Array[Product] = GenericRepositoryDummy.get(new Product)
+      val arrayPO:Array[PurchaseOrder] = GenericRepositoryDummy.get(new PurchaseOrder)
+      arrayCO.getClass.getSimpleName+"" should be ("CustomerOrder[]")
+      arrayE.getClass.getSimpleName+"" should be ("Employee[]")
+      arrayP.getClass.getSimpleName+"" should be ("Product[]")
+      arrayPO.getClass.getSimpleName+"" should be ("PurchaseOrder[]")
+    }
+    it should "return null if the entity type is not recognised" in{
+      GenericRepositoryDummy.get("Test") should be (null)
+      GenericRepositoryDummy.get(11) should be (null)
     }
   }
     

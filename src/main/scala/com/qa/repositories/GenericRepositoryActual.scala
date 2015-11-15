@@ -153,7 +153,12 @@ object GenericRepositoryActual extends GenericRepository{
         new Product(productId, productName, image, porousware, orderId, aisle, shelf, quantity)
       }
       else{
-        findProduct(count.+(1))
+        if(count<productDoc.length-1){
+          findProduct(count.+(1))
+        }
+        else{
+          null
+        }
       }
     }
     findProduct(0)

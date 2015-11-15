@@ -7,6 +7,7 @@ import scalafx.beans.property.ObjectProperty
  */
 class CustomerOrderLine (val orderId_ :Int, val productId_ :Int, val quantity_ :Int){
   def this() = this(0,0,0)
+  def this(productId:Int) = this(0,productId,0)
   
   var orderId = new ObjectProperty(this,"orderId",orderId_)
   var productId = new ObjectProperty(this,"productId",productId_)

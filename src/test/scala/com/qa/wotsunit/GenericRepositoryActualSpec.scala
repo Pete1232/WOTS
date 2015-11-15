@@ -1,80 +1,91 @@
-/*package com.qa.wotsunit
+package com.qa.wotsunit
 
 import com.qa.repositories.GenericRepositoryActual
 import com.qa.entities.CustomerOrder
 import com.qa.entities.Employee
 import com.qa.entities.Product
 import com.qa.entities.PurchaseOrder
+import com.qa.entities.CustomerOrderLine
+import com.qa.data.DataConfig
 
-*//**
+/**
  * @author pnewman
- *//*
+ */
 class GenericRepositoryActualSpec extends UnitSpec {
 
+  def connectionExists:Boolean = {
+    (DataConfig.connectionMongo!==null) & (DataConfig.connectionSQL!==null)
+  }
+  
   def testGet{
-    "Calling get_ returns a function that" should "return an array of the given entity type" in{
-    val arrayCO:Array[CustomerOrder] = GenericRepositoryActual.get(new CustomerOrder)
-    val arrayE:Array[Employee] = GenericRepositoryActual.get(new Employee)
-    val arrayP:Array[Product] = GenericRepositoryActual.get(new Product)
-    val arrayPO:Array[PurchaseOrder] = GenericRepositoryActual.get(new PurchaseOrder)
-    arrayCO.getClass.getSimpleName+"" should be ("CustomerOrder[]")
-    arrayE.getClass.getSimpleName+"" should be ("Employee[]")
-    arrayP.getClass.getSimpleName+"" should be ("Product[]")
-    arrayPO.getClass.getSimpleName+"" should be ("PurchaseOrder[]")
+    "Calling get returns a function that" should "return an array of the given entity type" in{
+    if(!connectionExists){
+      cancel("Test cancelled - At least one database connection is not available")
+    }
+    else{
+      val arrayCO = GenericRepositoryActual.get(new CustomerOrder)
+      val arrayE = GenericRepositoryActual.get(new Employee)
+      val arrayPO = GenericRepositoryActual.get(new PurchaseOrder)
+      arrayCO.getClass.getSimpleName+"" should be ("CustomerOrder[]")
+      arrayE.getClass.getSimpleName+"" should be ("Employee[]")
+      arrayPO.getClass.getSimpleName+"" should be ("PurchaseOrder[]")
+      }
+    }
+    it should "return null if the entity type is not recognised" in{
+      if(!connectionExists){
+        cancel("Test cancelled - At least one database connection is not available")
+      }
+      else{
+        GenericRepositoryActual.get("Test") should be (null)
+        GenericRepositoryActual.get(11) should be (null)
+      }
     }
   }
-    
-  def testPersist{
-    "Calling persist returns a function that" should "append a single entity to the end of an array" in {
-      val customerOrder = new CustomerOrder
-      val employee = new Employee
-      val product = new Product
-      val purchaseOrder = new PurchaseOrder
-      val initialCO = GenericRepositoryActual.get(customerOrder).length
-      val initialE = GenericRepositoryActual.get(employee).length
-      val initialP = GenericRepositoryActual.get(product).length
-      val initialPO = GenericRepositoryActual.get(purchaseOrder).length
-      GenericRepositoryActual.persist(customerOrder)
-      GenericRepositoryActual.persist(employee)
-      GenericRepositoryActual.persist(product)
-      GenericRepositoryActual.persist(purchaseOrder)
-      val finalCO = GenericRepositoryActual.get(customerOrder).length
-      val finalE = GenericRepositoryActual.get(employee).length
-      val finalP = GenericRepositoryActual.get(product).length
-      val finalPO = GenericRepositoryActual.get(purchaseOrder).length
-      finalCO should be (initialCO+1)
-      finalE should be (initialE+1)
-      finalP should be (initialP+1)
-      finalPO should be (initialPO+1)
-      GenericRepositoryActual.get(customerOrder)(finalCO-1).customerOrderStatus should be (customerOrder.customerOrderStatus)
-      GenericRepositoryActual.get(employee)(finalE-1).employeeUsername should be (employee.employeeUsername)
-      GenericRepositoryActual.get(product)(finalP-1).porousware should be (product.porousware)
-      GenericRepositoryActual.get(purchaseOrder)(finalPO-1).purchaseOrderStatus should be (purchaseOrder.purchaseOrderStatus)
+
+  def testGetCustomerOrderLineByOrderId{
+    "Calling getCustomerOrderLineByOrderId" should "return an array of CustomerOrderLine" in{
+      if(!connectionExists){
+        cancel("Test cancelled - At least one database connection is not available")
+      }
+      else{
+        GenericRepositoryActual.getCustomerOrderLineByOrderId(1).getClass.getSimpleName should be ("CustomerOrderLine[]")
+      }
+    }
+    it should "only contain order lines with the given Id" in{
+      if(!connectionExists){
+        cancel("Test cancelled - At least one database connection is not available")
+      }
+      else{
+        val orderLines = GenericRepositoryActual.getCustomerOrderLineByOrderId(1)
+        for(orderLine<-orderLines){
+          orderLine.orderId_ should be (1)
+        }
+      }
+    }      
+  }
+  
+  def testGetProductByOrderLine{
+    "Calling getProductByOrderLine" should "return a Product" in{
+      if(!connectionExists){
+        cancel("Test cancelled - At least one database connection is not available")
+      }
+      else{
+        GenericRepositoryActual.getProductByOrderLine(new CustomerOrderLine(1)).getClass.getSimpleName should be ("Product")
+      }
+    }
+    it should "have the same productId as the given order line" in{
+      if(!connectionExists){
+        cancel("Test cancelled - At least one database connection is not available")
+      }
+      else{
+        val product = GenericRepositoryActual.getProductByOrderLine(new CustomerOrderLine(1))
+        product.productId_ should be (1)
+      }
     }
   }
   
-  def testUpdate{
-    "Calling update returns a function that" should "replace the array entity at the given index with a new entity" in{
-      val customerOrder = new CustomerOrder
-      val employee = new Employee
-      val product = new Product
-      val purchaseOrder = new PurchaseOrder
-      GenericRepositoryActual.update(customerOrder,2)
-      GenericRepositoryActual.update(employee,3)
-      GenericRepositoryActual.update(product,5)
-      GenericRepositoryActual.update(purchaseOrder,7)
-      val finalCO = GenericRepositoryActual.get(customerOrder)(2)
-      val finalE = GenericRepositoryActual.get(employee)(3)
-      val finalP = GenericRepositoryActual.get(product)(5)
-      val finalPO = GenericRepositoryActual.get(purchaseOrder)(7)
-      finalCO should be (customerOrder)
-      finalE should be (employee)
-      finalP should be (product)
-      finalPO should be (purchaseOrder)
-    }
-  }
   testGet
-  testPersist
-  testUpdate
+  testGetCustomerOrderLineByOrderId
+  testGetProductByOrderLine
   
-}*/
+}
