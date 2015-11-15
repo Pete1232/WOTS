@@ -22,75 +22,96 @@ import com.qa.data.DataConfig
 import java.sql.SQLException
 
 /**
+ * This object implements GenericRepository with CRUD methods for SQL and Mongo databases (as applicable)
  * @author pnewman
  */
 object GenericRepositoryActual extends GenericRepository{
   val logger = Logger(LoggerFactory.getLogger("GenericRepositoryMongo.class"))
-  val mongoDB = DataConfig.connectionMongo
   
-  def getDatabaseCustomerOrder: Array[CustomerOrder] = {
-    val conn = DataConfig.connectionSQL
-    val stmt = conn.createStatement
-    val ps: PreparedStatement = conn.prepareStatement("SELECT * FROM customerorder")
-    logger.debug("Statement: " + ps)
-    val rs = ps.executeQuery
-    def createOrders(orders: Array[CustomerOrder]): Array[CustomerOrder] = {
-      if (rs.next) {
-        val orderId = rs.getInt("CustomerOrderId")
-        val orderStatus = rs.getString("CustomerOrderStatus")
-        val deliveryAddress = rs.getString("AddressId")
-        val employeeId = rs.getInt("EmployeeId")
-        val newOrder = new CustomerOrder(orderId, orderStatus, deliveryAddress, employeeId)
-        createOrders(orders :+ newOrder)
-      } else {
-        orders
+  /**
+   * This method returns a data array of the given entity type
+   * @param E
+   * @return Array[E]
+   */
+  def get[E](entity:E):Array[E]={
+    
+    def getDatabaseCustomerOrder: Array[CustomerOrder] = {
+      val conn = DataConfig.connectionSQL
+      val stmt = conn.createStatement
+      val ps: PreparedStatement = conn.prepareStatement("SELECT * FROM customerorder")
+      logger.debug("Statement: " + ps)
+      val rs = ps.executeQuery
+      def createOrders(orders: Array[CustomerOrder]): Array[CustomerOrder] = {
+        if (rs.next) {
+          val orderId = rs.getInt("CustomerOrderId")
+          val orderStatus = rs.getString("CustomerOrderStatus")
+          val deliveryAddress = rs.getString("AddressId")
+          val employeeId = rs.getInt("EmployeeId")
+          val newOrder = new CustomerOrder(orderId, orderStatus, deliveryAddress, employeeId)
+          createOrders(orders :+ newOrder)
+        } 
+        else {
+          orders
+        }
+      }
+      createOrders(Array[CustomerOrder]())
+    }
+    
+    def getDatabasePurchaseOrder: Array[PurchaseOrder] = {
+      val conn = DataConfig.connectionSQL
+      val stmt = conn.createStatement
+      val ps: PreparedStatement = conn.prepareStatement("SELECT * FROM purchaseorder")
+      logger.debug("Statement: " + ps)
+      val rs = ps.executeQuery
+      def createOrders(orders: Array[PurchaseOrder]): Array[PurchaseOrder] = {
+        if (rs.next) {
+          val orderId = rs.getInt("PurchaseOrderId")
+          val employeeId = rs.getInt("Employee_EmployeeId")
+          val orderStatus = rs.getString("OrderStatus")
+          val newOrder = new PurchaseOrder(orderId,employeeId,orderStatus)
+          createOrders(orders :+ newOrder)
+        } else {
+          orders
+        }
+      }
+      createOrders(Array[PurchaseOrder]())
+    }
+    
+    def getDatabaseEmployee: Array[Employee] = {
+      val conn = DataConfig.connectionSQL
+      val stmt = conn.createStatement
+      val ps: PreparedStatement = conn.prepareStatement("SELECT * FROM employee")
+      logger.debug("Statement: " + ps)
+      val rs = ps.executeQuery
+      def createEmployees(employees: Array[Employee]): Array[Employee] = {
+        if (rs.next) {
+          val employeeId = rs.getInt("EmployeeId")
+          val employeeName = rs.getString("EmployeeName")
+          val employeeUsername = rs.getString("EmployeeUsername")
+          val employeePassword = rs.getString("EmployeePassword")
+          val employeeAccessLevel = rs.getInt("AccessLevel")
+          val newEmployee = new Employee(employeeId, employeeName, employeeUsername, employeePassword, employeeAccessLevel)
+          createEmployees(employees :+ newEmployee)
+        } else {
+          employees
+        }
+      }
+      createEmployees(Array[Employee]())
+    }
+      
+    entity match{
+      case entity:CustomerOrder => getDatabaseCustomerOrder.asInstanceOf[Array[E]]
+      case entity:Employee => getDatabaseEmployee.asInstanceOf[Array[E]]
+      case entity:PurchaseOrder => getDatabasePurchaseOrder.asInstanceOf[Array[E]]
+      case _ =>{
+       logger.error("Entity of type {} not handled by findAll method",entity.getClass.getSimpleName)
+       logger.warn("Method will return null")
+       null.asInstanceOf[Array[E]]
       }
     }
-    createOrders(Array[CustomerOrder]())
   }
-  
-  def getDatabasePurchaseOrder: Array[PurchaseOrder] = {
-    val conn = DataConfig.connectionSQL
-    val stmt = conn.createStatement
-    val ps: PreparedStatement = conn.prepareStatement("SELECT * FROM purchaseorder")
-    logger.debug("Statement: " + ps)
-    val rs = ps.executeQuery
-    def createOrders(orders: Array[PurchaseOrder]): Array[PurchaseOrder] = {
-      if (rs.next) {
-        val orderId = rs.getInt("PurchaseOrderId")
-        val employeeId = rs.getInt("Employee_EmployeeId")
-        val orderStatus = rs.getString("OrderStatus")
-        val newOrder = new PurchaseOrder(orderId,employeeId,orderStatus)
-        createOrders(orders :+ newOrder)
-      } else {
-        orders
-      }
-    }
-    createOrders(Array[PurchaseOrder]())
-  }
-  
-  def getDatabaseEmployee: Array[Employee] = {
-    val conn = DataConfig.connectionSQL
-    val stmt = conn.createStatement
-    val ps: PreparedStatement = conn.prepareStatement("SELECT * FROM employee")
-    logger.debug("Statement: " + ps)
-    val rs = ps.executeQuery
-    def createEmployees(employees: Array[Employee]): Array[Employee] = {
-      if (rs.next) {
-        val employeeId = rs.getInt("EmployeeId")
-        val employeeName = rs.getString("EmployeeName")
-        val employeeUsername = rs.getString("EmployeeUsername")
-        val employeePassword = rs.getString("EmployeePassword")
-        val employeeAccessLevel = rs.getInt("AccessLevel")
-        val newEmployee = new Employee(employeeId, employeeName, employeeUsername, employeePassword, employeeAccessLevel)
-        createEmployees(employees :+ newEmployee)
-      } else {
-        employees
-      }
-    }
-    createEmployees(Array[Employee]())
-  }
-  def getDatabaseCustomerOrderLine(customerOrderId: Int): Array[CustomerOrderLine] = {
+
+  def getCustomerOrderLineByOrderId(customerOrderId: Int): Array[CustomerOrderLine] = {
     val conn = DataConfig.connectionSQL
     val stmt = conn.createStatement
     val ps: PreparedStatement = conn.prepareStatement("SELECT * FROM customerorderline WHERE CustomerOrder_CustomerOrderId="+customerOrderId)
@@ -130,11 +151,11 @@ object GenericRepositoryActual extends GenericRepository{
     findProduct(0)
   }
   
-  def persist[E:Manifest]: E => Unit = { entity =>
-    logger.debug("Persisting entity of type {}", entity.getClass.getSimpleName)
-    def postAppend(array: Array[E]): Array[E] = {
-      array :+ entity
-    }
+  /**
+   * This method persists a given entity in the corresponding database table
+   * @param E
+   */
+  def persist[E](entity: E) = {
     entity match {
       case entity: CustomerOrder =>
       case entity: Employee      =>
@@ -147,21 +168,13 @@ object GenericRepositoryActual extends GenericRepository{
       }
     }
   }
-  
-  def persistArray[E:Manifest]: Array[E] => Unit = { entityArray =>
-    def postAppendArray(count: Int, array: Array[E]): Array[E] = {
-      if (count < entityArray.length) {
-        val nextArray = array :+ entityArray(count)
-        postAppendArray(count + 1, nextArray)
-      } else {
-        array
-      }
-    }
-    val testEntity = entityArray.head
-    update
-  }
-  
-  def update[E:Manifest]: (E, Int) => Unit = { (entity, index) =>
+
+  /**
+   * This method updates an entity at the given index of the corresponding database table
+   * @param E
+   * @param Int
+   */
+  def update[E](entity:E, index:Int){
     entity match {
       case entity: CustomerOrder =>
       case entity: Employee      =>

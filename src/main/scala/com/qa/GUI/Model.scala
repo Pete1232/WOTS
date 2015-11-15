@@ -19,9 +19,9 @@ import com.qa.entities.CustomerOrderLine
 object Model {
   val logger = Logger(LoggerFactory.getLogger("Model.object"))
   //TODO Dummy/Actual implementation should be chosen automatically
-  val customerOrders = GenericRepositoryActual.getDatabaseCustomerOrder
-  val employees = GenericRepositoryActual.getDatabaseEmployee
-  val purchaseOrders = GenericRepositoryActual.getDatabasePurchaseOrder
+  val customerOrders = GenericRepositoryActual.get(new CustomerOrder)
+  val employees = GenericRepositoryActual.get(new Employee)
+  val purchaseOrders = GenericRepositoryActual.get(new PurchaseOrder)
 
   
   def populateOrder(orderLines:Array[CustomerOrderLine]):Array[Product]={
@@ -79,7 +79,7 @@ object Model {
   }
   
   def getOrderLineByOrderId(orderId:Int):Array[CustomerOrderLine]={
-    GenericRepositoryActual.getDatabaseCustomerOrderLine(orderId)
+    GenericRepositoryActual.getCustomerOrderLineByOrderId(orderId)
   }
 
   def getProductByOrderLine(orderLines:Array[CustomerOrderLine],productData:Array[Product]):Array[Product]={

@@ -10,30 +10,34 @@ import com.qa.entities.Product
 import com.qa.entities.PurchaseOrder
 
 /**
- * This class implements GenericRepository with CRUD methods for DummyData
+ * This object implements GenericRepository with CRUD methods for DummyData
  * @author pnewman
  */
 
 object GenericRepositoryDummy extends GenericRepository{
   val logger = Logger(LoggerFactory.getLogger("GenericRepositoryDummy.class"))
   
-  def getDatabaseCustomerOrder:Array[CustomerOrder]={
-    DummyData.databaseCustomerOrder.databaseArray
-  }
+  /**
+   * This method returns a dummy data array of the given entity type
+   * @param E
+   * @return Array[E]
+   */
+  def get[E](entity:E):Array[E]={
+    def getDatabaseCustomerOrder:Array[CustomerOrder]={
+      DummyData.databaseCustomerOrder.databaseArray
+    }
   
-  def getDatabaseEmployee:Array[Employee]={
-    DummyData.databaseEmployee.databaseArray
-  }
+    def getDatabaseEmployee:Array[Employee]={
+      DummyData.databaseEmployee.databaseArray
+    }
   
-  def getDatabaseProduct:Array[Product]={
-    DummyData.databaseProduct.databaseArray
-  }
+    def getDatabaseProduct:Array[Product]={
+      DummyData.databaseProduct.databaseArray
+    }
   
-  def getDatabasePurchaseOrder:Array[PurchaseOrder]={
-    DummyData.databasePurchaseOrder.databaseArray
-  }
-  
-  def findAll[E:Manifest]:E=>Array[E]={entity =>
+    def getDatabasePurchaseOrder:Array[PurchaseOrder]={
+      DummyData.databasePurchaseOrder.databaseArray
+    }
     entity match{
       case entity:CustomerOrder => getDatabaseCustomerOrder.asInstanceOf[Array[E]]
       case entity:Employee => getDatabaseEmployee.asInstanceOf[Array[E]]
@@ -47,16 +51,16 @@ object GenericRepositoryDummy extends GenericRepository{
     }
   }
   
-  def persist[E:Manifest]:E=>Unit={entity =>
-    logger.debug("Persisting entity of type {}",entity.getClass.getSimpleName)
-    def postAppend(array:Array[E]):Array[E]={
-      array:+entity
-    }
+  /**
+   * This method persists a given entity in the corresponding dummy data array
+   * @param E
+   */
+  def persist[E](entity:E){
     entity match{
-      case entity:CustomerOrder => DummyData.databaseCustomerOrder.databaseArray=postAppend(getDatabaseCustomerOrder.asInstanceOf[Array[E]]).asInstanceOf[Array[CustomerOrder]]
-      case entity:Employee => DummyData.databaseEmployee.databaseArray=postAppend(getDatabaseEmployee.asInstanceOf[Array[E]]).asInstanceOf[Array[Employee]]
-      case entity:Product => DummyData.databaseProduct.databaseArray=postAppend(getDatabaseProduct.asInstanceOf[Array[E]]).asInstanceOf[Array[Product]]
-      case entity:PurchaseOrder => DummyData.databasePurchaseOrder.databaseArray=postAppend(getDatabasePurchaseOrder.asInstanceOf[Array[E]]).asInstanceOf[Array[PurchaseOrder]]
+      case entity:CustomerOrder => DummyData.databaseCustomerOrder.databaseArray=(get(new CustomerOrder):+entity).asInstanceOf[Array[CustomerOrder]]
+      case entity:Employee => DummyData.databaseEmployee.databaseArray=(get(new Employee):+entity).asInstanceOf[Array[Employee]]
+      case entity:Product => DummyData.databaseProduct.databaseArray=(get(new Product):+entity).asInstanceOf[Array[Product]]
+      case entity:PurchaseOrder => DummyData.databasePurchaseOrder.databaseArray=(get(new PurchaseOrder):+entity).asInstanceOf[Array[PurchaseOrder]]
       case _ =>{
        logger.error("Entity of type {} not handled by persist method",entity.getClass.getSimpleName)
        logger.warn("Method will return null")
@@ -65,32 +69,12 @@ object GenericRepositoryDummy extends GenericRepository{
     }
   }
   
-  def persistArray[E:Manifest]:Array[E]=>Unit={entityArray =>
-    def postAppendArray(count:Int,array:Array[E]):Array[E]={
-      if(count<entityArray.length){
-      logger.debug("persistArray: start array length: {}",array.length+"")
-      val nextArray = array:+entityArray(count)
-      logger.debug("persistArray: end array length: {}",nextArray.length+"")
-      postAppendArray(count+1,nextArray)
-      }
-      else{
-        array
-      }
-    }
-    val testEntity = entityArray.head
-    testEntity match{
-      case testEntity:CustomerOrder =>  DummyData.databaseCustomerOrder.databaseArray=postAppendArray(0,getDatabaseCustomerOrder.asInstanceOf[Array[E]]).asInstanceOf[Array[CustomerOrder]]
-      case testEntity:Employee => DummyData.databaseEmployee.databaseArray=postAppendArray(0,getDatabaseEmployee.asInstanceOf[Array[E]]).asInstanceOf[Array[Employee]]
-      case testEntity:Product => DummyData.databaseProduct.databaseArray=postAppendArray(0,getDatabaseProduct.asInstanceOf[Array[E]]).asInstanceOf[Array[Product]]
-      case testEntity:PurchaseOrder => DummyData.databasePurchaseOrder.databaseArray=postAppendArray(0,getDatabasePurchaseOrder.asInstanceOf[Array[E]]).asInstanceOf[Array[PurchaseOrder]]
-      case _ =>{
-        logger.error("Entity of type {} not handled by persistArray method",entityArray.getClass.getSimpleName)
-        logger.warn("Method will return null")
-      }
-    } 
-  }
-  
-  def update[E:Manifest]:(E,Int)=>Unit = {(entity,index) =>
+  /**
+   * This method updates an entity at the given index of the corresponding dummy data array
+   * @param E
+   * @param Int
+   */
+  def update[E](entity:E,index:Int) {
     entity match{
       case entity:CustomerOrder =>  DummyData.databaseCustomerOrder.databaseArray(index)=entity
       case entity:Employee => DummyData.databaseEmployee.databaseArray(index)=entity
