@@ -14,7 +14,7 @@ import com.qa.repositories.GenericRepositoryActual
  * This object holds attributes and methods required for database connections
  */
 object DataConfig {
-  val attemptConnection = false
+  val online = false
   
   val driverSQL = "com.mysql.jdbc.Driver"
   val urlSQL = "jdbc:mysql://localhost/NBGardens"

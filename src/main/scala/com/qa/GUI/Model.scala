@@ -12,6 +12,7 @@ import com.qa.tsp.Population
 import com.qa.tsp.Algorithm
 import com.qa.entities.CustomerOrderLine
 import com.qa.data.DataConfig
+import com.qa.entities.CustomerOrderLine
 /**
  * This object contains the logic that retrieves information to display to the user
  * @author pnewman
@@ -78,8 +79,12 @@ object Model {
     populateList(0, productList)
   }
   
-  def getOrderLineByOrderId(orderId:Int):Array[CustomerOrderLine]={
-    repository.getCustomerOrderLineByOrderId(orderId)
+/*  def getOrderLineByOrderId(orderId:Int):Array[CustomerOrderLine]={
+    if(DataConfig.online)
+      repository.getCustomerOrderLineByOrderId(orderId)
+    else{
+      Array[CustomerOrderLine](new CustomerOrderLine(orderId,1,10),new CustomerOrderLine(orderId,2,20))
+    }
   }
 
   def getProductByOrderLine(orderLines:Array[CustomerOrderLine],productData:Array[Product]):Array[Product]={
@@ -110,7 +115,7 @@ object Model {
       }
     }
     iterateOrderLines(0, Array[Product]())
-  }
+  }*/
   
   /**
    *

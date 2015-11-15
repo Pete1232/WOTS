@@ -89,13 +89,27 @@ object GenericRepositoryDummy extends GenericRepository{
   }
   
   def getCustomerOrderLineByOrderId(customerOrderId: Int): Array[CustomerOrderLine] = {
-    null
+    Array[CustomerOrderLine](new CustomerOrderLine(customerOrderId,1,10),new CustomerOrderLine(customerOrderId,2,20))
   }
   /**
    * This method returns a product corresponding to the given CustomerOrderLine
    * @param CustomerOrderLine
    */
   def getProductByOrderLine(orderLine:CustomerOrderLine):Product={
-    null
+    val productData = get(new Product)
+    def populateProducts(count:Int,orderLine:CustomerOrderLine):Product={
+        if(productData(count).productId_ == orderLine.productId_){
+          productData(count)
+        }
+        else{
+          if(count<productData.length){
+            populateProducts(count.+(1),orderLine)
+          }
+          else{
+            null
+        }
+      }
+    }
+    populateProducts(0, orderLine)
   }
 }

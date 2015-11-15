@@ -27,7 +27,7 @@ object Controller {
   }
   
   def setTracking(orderId:Int){
-    val orderLines = Model.getOrderLineByOrderId(orderId)
+    val orderLines = Model.repository.getCustomerOrderLineByOrderId(orderId)
     val productsOnOrder = Model.populateOrder(orderLines)
     val order = Model.calculateRoute(10, 1000, productsOnOrder.toList) //TODO Replace all Lists with Arrays Model.getProductByOrderId(orderId,Model.products).toList
     WOTSMain.stage.scene_=(View.setTrackingScene(orderId,new Product,0,order))
