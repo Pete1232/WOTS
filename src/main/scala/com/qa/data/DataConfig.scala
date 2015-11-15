@@ -10,6 +10,9 @@ import com.qa.repositories.GenericRepository
 import com.qa.repositories.GenericRepositoryDummy
 import com.qa.repositories.GenericRepositoryActual
 
+/**
+ * This object holds attributes and methods required for database connections
+ */
 object DataConfig {
   val driverSQL = "com.mysql.jdbc.Driver"
   val urlSQL = "jdbc:mysql://localhost/NBGardens"
@@ -21,6 +24,13 @@ object DataConfig {
   val connectionSQL = establishSQLConnection(urlSQL,usernameSQL,passwordSQL)
   val connectionMongo = establishMongoConnection(mongoClient,mongoName)
   
+  /**
+   * This method attempts to establish a connection to the given SQL database
+   * @param String
+   * @param String
+   * @param String
+   * @return Connection
+   */
   def establishSQLConnection(url:String,user:String,pass:String):Connection = {
     try{
       DriverManager.getConnection(urlSQL,usernameSQL,passwordSQL)
@@ -29,7 +39,13 @@ object DataConfig {
       case e:SQLException => null
     }
   }
-  
+
+  /**
+   * This method attempts to establish a connection to the given Mongo database
+   * @param MongoClient
+   * @param String
+   * @return MongoDB
+   */
   def establishMongoConnection(client:MongoClient,database:String):MongoDB={
     if (client.getDatabaseNames.contains(database)){
       client(database)      
@@ -38,7 +54,12 @@ object DataConfig {
       null
     }
   }
-  
+
+  /**
+   * This method attempts to close the connection to a given SQL database
+   * @param Connection
+   * @return Boolean
+   */
   def closeSQLConnection(conn:Connection):Boolean = {
     try{
       conn.close()
@@ -48,7 +69,11 @@ object DataConfig {
       case sqle:SQLException => false
     }
   }
-  
+
+  /**
+   * This method returns the repository implementation corresponding to the database(s) currently in use
+   * @return GenericRepository
+   */
   def configureRepository:GenericRepository={
     if(connectionSQL == null || connectionMongo == null){
       GenericRepositoryDummy

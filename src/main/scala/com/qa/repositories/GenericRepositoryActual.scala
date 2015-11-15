@@ -114,6 +114,7 @@ object GenericRepositoryActual extends GenericRepository{
   /**
    * This method returns an array of CustomerOrderLine with the given orderId
    * @param Int
+   * @return Array[CustomerOrderLine]
    */
   def getCustomerOrderLineByOrderId(customerOrderId: Int): Array[CustomerOrderLine] = {
     val conn = DataConfig.connectionSQL
@@ -162,8 +163,9 @@ object GenericRepositoryActual extends GenericRepository{
    * This method persists a given entity in the corresponding database table
    * @param E
    */
-  def persist[E](entity: E) = {
-    entity match {
+    def persist[E](entity: E){
+/*    TODO Implement
+ *    entity match {
       case entity: CustomerOrder =>
       case entity: Employee      =>
       case entity: Product       =>
@@ -173,7 +175,7 @@ object GenericRepositoryActual extends GenericRepository{
         logger.warn("Method will return null")
         null.asInstanceOf[Array[E]]
       }
-    }
+    }*/
   }
 
   /**
@@ -181,8 +183,9 @@ object GenericRepositoryActual extends GenericRepository{
    * @param E
    * @param Int
    */
-  def update[E](entity:E, index:Int){
-    entity match {
+    def update[E](entity:E, index:Int){
+/*    TODO Implement
+ *    entity match {
       case entity: CustomerOrder =>
       case entity: Employee      =>
       case entity: Product       =>
@@ -191,6 +194,6 @@ object GenericRepositoryActual extends GenericRepository{
         logger.error("Entity of type {} not handled by update method", entity.getClass.getSimpleName)
         logger.warn("Method will return null")
       }
-    }
+    }*/
   }
 }
