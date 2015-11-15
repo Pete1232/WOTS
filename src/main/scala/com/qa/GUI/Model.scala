@@ -12,14 +12,14 @@ import com.qa.tsp.Population
 import com.qa.tsp.Algorithm
 import com.qa.repositories.GenericRepositoryActual
 import com.qa.entities.CustomerOrderLine
+import com.qa.repositories.GenericRepositoryDummy
 /**
  * This object contains the logic that retrieves information to display to the user
  * @author pnewman
  */
 object Model {
   val logger = Logger(LoggerFactory.getLogger("Model.object"))
-  //TODO Dummy/Actual implementation should be chosen automatically
-  val customerOrders = GenericRepositoryActual.get(new CustomerOrder)
+  val customerOrders = /*GenericRepositoryActual.get(new CustomerOrder)*/GenericRepositoryDummy.get(new CustomerOrder)
   val employees = GenericRepositoryActual.get(new Employee)
   val purchaseOrders = GenericRepositoryActual.get(new PurchaseOrder)
 
