@@ -10,24 +10,24 @@ import com.qa.entities.PurchaseOrder
 import com.qa.tsp.Tour
 import com.qa.tsp.Population
 import com.qa.tsp.Algorithm
-import com.qa.repositories.GenericRepositoryActual
 import com.qa.entities.CustomerOrderLine
-import com.qa.repositories.GenericRepositoryDummy
+import com.qa.data.DataConfig
 /**
  * This object contains the logic that retrieves information to display to the user
  * @author pnewman
  */
 object Model {
   val logger = Logger(LoggerFactory.getLogger("Model.object"))
-  val customerOrders = /*GenericRepositoryActual.get(new CustomerOrder)*/GenericRepositoryDummy.get(new CustomerOrder)
-  val employees = GenericRepositoryActual.get(new Employee)
-  val purchaseOrders = GenericRepositoryActual.get(new PurchaseOrder)
+  val repository = DataConfig.repository
+  val customerOrders = repository.get(new CustomerOrder)
+  val employees = repository.get(new Employee)
+  val purchaseOrders = repository.get(new PurchaseOrder)
 
   
   def populateOrder(orderLines:Array[CustomerOrderLine]):Array[Product]={
     def counter(count:Int,products:Array[Product]):Array[Product]={
       if(count<orderLines.length){
-        val newProduct = GenericRepositoryActual.getProductByOrderLine(orderLines(count))
+        val newProduct = repository.getProductByOrderLine(orderLines(count))
         counter(count.+(1),products:+newProduct)
       }
       else{
@@ -79,7 +79,7 @@ object Model {
   }
   
   def getOrderLineByOrderId(orderId:Int):Array[CustomerOrderLine]={
-    GenericRepositoryActual.getCustomerOrderLineByOrderId(orderId)
+    repository.getCustomerOrderLineByOrderId(orderId)
   }
 
   def getProductByOrderLine(orderLines:Array[CustomerOrderLine],productData:Array[Product]):Array[Product]={
@@ -124,15 +124,11 @@ object Model {
 
   /**
    * This method returns a function that returns information about the current user session
-   * @param user
-   * @param pass
+   * @param String
+   * @param String
+   * @return String=>E
    */
   def validateLogin[E](user: String, pass: String): String => E = {
-    /**
-     * This method checks the provided user and pass against each entity of the employee table until a match is found
-     * @param count
-     * @param employeeList
-     */
     def checkCredentials(count: Int, employeeList: Array[Employee]): Employee = {
       if (count < employees.length) {
         val storedUser = employeeList(count).employeeUsername_
@@ -146,11 +142,7 @@ object Model {
         null
       }
     }
-
-    /**
-     * This method returns session information based on the user request
-     * @param request
-     */
+    
     def requestSession(request: String): E = {
       val session = checkCredentials(0, employees)
       if (session != null) {

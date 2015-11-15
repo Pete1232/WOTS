@@ -1,5 +1,8 @@
 package com.qa.repositories
 
+import com.qa.entities.CustomerOrderLine
+import com.qa.entities.Product
+
 /**
  * This trait outlines CRUD methods to access data for the application
  * @author pnewman
@@ -25,4 +28,8 @@ trait GenericRepository{
    * @param Int
    */
   def update[E](entity:E,index:Int)
+  
+  
+  def getCustomerOrderLineByOrderId(customerOrderId: Int): Array[CustomerOrderLine]
+  def getProductByOrderLine(orderLine:CustomerOrderLine):Product
 }

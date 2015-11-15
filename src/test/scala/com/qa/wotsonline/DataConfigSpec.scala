@@ -70,21 +70,11 @@ class DataConfigSpec extends UnitSpec{
   }
   
   def testConfigureRepositories {
-    "The configureRepositories method" should "instantiate entity repositories using actual data if a connection is possible" in{
-      if((DataConfig.connectionMongo !== null) & (DataConfig.connectionSQL !== null)){
-        DataConfig.configureRepository should be (GenericRepositoryActual)
-      }
-      else{
-        cancel("Test cancelled - no database connection available")
-      }
+    "The configureRepositories method" should "instantiate entity repositories using actual data if the parameter online=true" in{
+      DataConfig.configureRepository(true) should be (GenericRepositoryActual)
     }
-    it should "instantiate the entity repositories with dummy data if a database connection hasn't been established" in{
-      if((DataConfig.connectionMongo !== null) & (DataConfig.connectionSQL !== null)){
-        cancel("Test cancelled - should not instantiate dummy data if connection is available")
-      }
-      else{
-        DataConfig.configureRepository should be (GenericRepositoryDummy)           
-      }
+    it should "instantiate the entity repositories with dummy data if the parameter online=false" in{
+      DataConfig.configureRepository(false) should be (GenericRepositoryDummy)           
     }
   }
   testConfigureRepositories

@@ -8,6 +8,7 @@ import com.qa.entities.Employee
 import com.qa.entities.CustomerOrder
 import com.qa.entities.Product
 import com.qa.entities.PurchaseOrder
+import com.qa.entities.CustomerOrderLine
 
 /**
  * This object implements GenericRepository with CRUD methods for DummyData
@@ -85,5 +86,16 @@ object GenericRepositoryDummy extends GenericRepository{
         logger.warn("Method will return null")
       }
     }      
+  }
+  
+  def getCustomerOrderLineByOrderId(customerOrderId: Int): Array[CustomerOrderLine] = {
+    null
+  }
+  /**
+   * This method returns a product corresponding to the given CustomerOrderLine
+   * @param CustomerOrderLine
+   */
+  def getProductByOrderLine(orderLine:CustomerOrderLine):Product={
+    null
   }
 }

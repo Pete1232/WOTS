@@ -14,15 +14,23 @@ import com.qa.repositories.GenericRepositoryActual
  * This object holds attributes and methods required for database connections
  */
 object DataConfig {
+  val attemptConnection = false
+  
   val driverSQL = "com.mysql.jdbc.Driver"
   val urlSQL = "jdbc:mysql://localhost/NBGardens"
   val usernameSQL = "root"
   val passwordSQL = "academy"
   val mongoClient = MongoClient("localhost",27017)
   val mongoName = "FreshTech"
+
+  val repository = configureRepository(false)
   
-  val connectionSQL = establishSQLConnection(urlSQL,usernameSQL,passwordSQL)
-  val connectionMongo = establishMongoConnection(mongoClient,mongoName)
+  def connectionSQL:Connection={
+    establishSQLConnection(urlSQL,usernameSQL,passwordSQL)
+  }
+  def connectionMongo:MongoDB={
+    establishMongoConnection(mongoClient,mongoName)
+  }
   
   /**
    * This method attempts to establish a connection to the given SQL database
@@ -74,12 +82,12 @@ object DataConfig {
    * This method returns the repository implementation corresponding to the database(s) currently in use
    * @return GenericRepository
    */
-  def configureRepository:GenericRepository={
-    if(connectionSQL == null || connectionMongo == null){
-      GenericRepositoryDummy
+  def configureRepository(online:Boolean):GenericRepository={
+    if(online){
+      GenericRepositoryActual
     }
     else{
-      GenericRepositoryActual
+      GenericRepositoryDummy
     }
   }
   
