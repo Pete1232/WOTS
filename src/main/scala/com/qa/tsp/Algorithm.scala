@@ -123,6 +123,9 @@ object Algorithm {
   
   /**
    * This method evolves the population over a given number of generations
+   * @param Int
+   * @param Int
+   * @param Population
    */
   def evolver(count:Int,generations:Int,pop:Population):Population={
     if(count<generations){

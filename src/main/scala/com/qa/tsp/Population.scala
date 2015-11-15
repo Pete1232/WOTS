@@ -26,6 +26,7 @@ object Population {
 }
 
 /**
+ * This class contains a population of tours
  * @author pnewman
  */
 class Population(val popSize:Int,val stops:List[Product]) {
@@ -33,7 +34,11 @@ class Population(val popSize:Int,val stops:List[Product]) {
   val population = createPopulation(0, popSize, Population.generateEmptyPop(popSize))
   
   /**
-   * 
+   * This method creates a population of tours for the given list of stops (products)
+   * @param Int
+   * @param Int
+   * @param Array[Tour]
+   * @return Array[Tour]
    */
   def createPopulation(count:Int,popSize:Int,tours:Array[Tour]):Array[Tour]={
     if(count<popSize){
@@ -47,6 +52,10 @@ class Population(val popSize:Int,val stops:List[Product]) {
     }
   }
   
+  /**
+   * This method returns the shortest route of all tours in the population
+   * @return Tour
+   */
   def getFittest:Tour={
     def findFittest(count:Int,fittest:Tour):Tour={
       if(count<population.length){
@@ -61,6 +70,12 @@ class Population(val popSize:Int,val stops:List[Product]) {
     findFittest(0,population.apply(0))
   }
   
+  /**
+   * This method updates the tour at the given index
+   * @param Int
+   * @param Tour
+   * @return Array[Tour]
+   */
   def saveTour(index:Int,tour:Tour):Array[Tour]={
     population.updated(index, tour)
   }
