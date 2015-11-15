@@ -1,17 +1,8 @@
-package com.qa.wotsunit
+package com.qa.wotsonline
 
 import com.qa.GUI.Model
-import com.qa.entities.CustomerOrder
-import com.qa.entities.Product
-import scala.util.Random
-import scalafx.collections.ObservableBuffer
-import org.scalatest.Suite
-import org.scalatest.Matchers
-import org.scalatest.Inspectors
-import org.scalatest.Inside
-import org.scalatest.FlatSpec
-import org.scalatest.Suites
 import com.qa.entities.CustomerOrderLine
+import com.qa.wotsunit.UnitSpec
 
 /**
  * @author pnewman

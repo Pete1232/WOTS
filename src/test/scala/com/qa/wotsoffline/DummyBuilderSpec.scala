@@ -1,4 +1,4 @@
-package com.qa.wotsunit
+package com.qa.wotsoffline
 
 import com.qa.data.DummyBuilder
 import scala.util.Random
@@ -6,6 +6,7 @@ import com.qa.entities.CustomerOrder
 import com.qa.entities.Employee
 import com.qa.entities.Product
 import com.qa.entities.PurchaseOrder
+import com.qa.wotsunit.UnitSpec
 
 /**
  * @author pnewman

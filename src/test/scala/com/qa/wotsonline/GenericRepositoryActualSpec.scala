@@ -1,12 +1,12 @@
-package com.qa.wotsunit
+package com.qa.wotsonline
 
 import com.qa.repositories.GenericRepositoryActual
 import com.qa.entities.CustomerOrder
 import com.qa.entities.Employee
-import com.qa.entities.Product
 import com.qa.entities.PurchaseOrder
 import com.qa.entities.CustomerOrderLine
 import com.qa.data.DataConfig
+import com.qa.wotsunit.UnitSpec
 
 /**
  * @author pnewman

@@ -1,7 +1,6 @@
-package com.qa.wotsunit
+package com.qa.wotsoffline
 import org.scalatest._
 import com.qa.repositories.GenericRepositoryDummy
-import com.qa.data.DummyBuilder
 import com.qa.entities.Product
 import com.qa.entities.Employee
 import com.qa.entities.CustomerOrder
@@ -9,8 +8,7 @@ import com.qa.entities.PurchaseOrder
 import com.qa.entities.CustomerOrder
 import com.qa.entities.Employee
 import com.qa.entities.PurchaseOrder
-import com.typesafe.scalalogging.Logger
-import org.slf4j.LoggerFactory
+import com.qa.wotsunit.UnitSpec
 
 class GenericRepositoryDummySpec extends UnitSpec{
       

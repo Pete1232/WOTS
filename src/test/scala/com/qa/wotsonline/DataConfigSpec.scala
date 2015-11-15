@@ -1,19 +1,13 @@
-package com.qa.wotsunit
+package com.qa.wotsonline
 
-//TODO Finish tests and create class - low priority
-
-import com.qa.entities.CustomerOrder
-import com.qa.entities.Employee
-import com.qa.entities.Product
-import com.qa.entities.PurchaseOrder
 import com.mongodb.casbah.MongoClient
 import com.mongodb.MongoException
 import java.sql.DriverManager
 import java.sql.SQLException
-import com.sun.corba.se.spi.servicecontext.UEInfoServiceContext
 import com.qa.data.DataConfig
 import com.qa.repositories.GenericRepositoryActual
 import com.qa.repositories.GenericRepositoryDummy
+import com.qa.wotsunit.UnitSpec
 
 class DataConfigSpec extends UnitSpec{
   def testEstablishSQLConnection{
