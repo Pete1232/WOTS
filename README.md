@@ -1,6 +1,5 @@
 # WOTS
 Warehouse Order Tracking System for Scala project.
-## Info
 This project was to create an application to allow warehouse workers to process customer orders.
 ### Key Features:
 * A ScalaFX GUI, designed with portable devices in mind.
@@ -12,4 +11,4 @@ This project was to create an application to allow warehouse workers to process 
 ### Running the application
 The project has been configured to run from dummy data, as no database will be available.
 If the databases were running a connection could be established by simply changing the 'online' boolean in
-com.qa.data.DataConfig to true.
+com.qa.data.DataConfig to true. Files to create the databases are contained in the database folder.
