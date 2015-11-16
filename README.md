@@ -6,6 +6,7 @@ This project was to create an application to allow warehouse workers to process 
 * A ScalaFX GUI, designed with portable devices in mind.
 * Ability to view information about both customer and purchase orders.
 * Persistence using both a MySQL and MongoDB database.
+* A genetic travelling salesman algorithm to allow for quick warehouse navigation
 * Please see scaladocs folder for full documentation.
 
 ### Running the application
