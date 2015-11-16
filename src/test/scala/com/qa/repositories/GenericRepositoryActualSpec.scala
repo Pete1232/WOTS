@@ -1,4 +1,4 @@
-package com.qa.wotsonline
+package com.qa.repositories
 
 import com.qa.repositories.GenericRepositoryActual
 import com.qa.entities.CustomerOrder

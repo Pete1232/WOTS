@@ -1,4 +1,4 @@
-package com.qa.wotsoffline
+package com.qa.tsp
 
 import com.qa.wotsunit.UnitSpec
 import com.qa.tsp.Population

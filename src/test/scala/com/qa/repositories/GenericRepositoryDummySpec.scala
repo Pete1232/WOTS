@@ -1,4 +1,4 @@
-package com.qa.wotsoffline
+package com.qa.repositories
 import org.scalatest._
 import com.qa.repositories.GenericRepositoryDummy
 import com.qa.entities.Product

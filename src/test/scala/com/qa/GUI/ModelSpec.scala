@@ -1,4 +1,4 @@
-package com.qa.wotsonline
+package com.qa.GUI
 
 import com.qa.GUI.Model
 import com.qa.entities.CustomerOrderLine

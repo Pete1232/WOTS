@@ -1,4 +1,4 @@
-package com.qa.wotsoffline
+package com.qa.data
 
 import com.qa.data.DummyBuilder
 import scala.util.Random

@@ -1,4 +1,4 @@
-package com.qa.wotsonline
+package com.qa.data
 
 import com.mongodb.casbah.MongoClient
 import com.mongodb.MongoException
