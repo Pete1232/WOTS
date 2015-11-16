@@ -14,6 +14,8 @@ import com.qa.repositories.GenericRepositoryActual
  * This object holds attributes and methods required for database connections
  */
 object DataConfig {
+  //Change this to true to use SQL and Mongo database (provided they are running).
+  //Leave as false to run using randomised dummy data.
   val online = false
   
   val driverSQL = "com.mysql.jdbc.Driver"
@@ -23,7 +25,7 @@ object DataConfig {
   val mongoClient = MongoClient("localhost",27017)
   val mongoName = "FreshTech"
 
-  val repository = configureRepository(false)
+  val repository = configureRepository(online)
   
   /**
    * This method attempts to establish a connection to the SQL database
