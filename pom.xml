@@ -42,6 +42,12 @@
 		  </execution>
 		</executions>
 	  </plugin>
+	  <!-- Allows Maven to generate ScalaDocs -->
+      <plugin>
+        <groupId>org.scala-tools</groupId>
+        <artifactId>maven-scala-plugin</artifactId>
+      </plugin>
+      
     </plugins>
   </build>
 
