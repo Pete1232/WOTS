@@ -40,7 +40,8 @@ object Controller {
   def setTracking(orderId:Int){
     val orderLines = Model.repository.getCustomerOrderLineByOrderId(orderId)
     val productsOnOrder = Model.populateOrder(orderLines)
-    val order = Model.calculateRoute(100, 1000, productsOnOrder.toList) //TODO Replace all Lists with Arrays Model.getProductByOrderId(orderId,Model.products).toList
+    //TODO An optimal population and number of generations should be chosen automatically
+    val order = Model.calculateRoute(100, 100, productsOnOrder.toList)
     WOTSMain.stage.scene_=(View.setTrackingScene(orderId,new Product,0,order))
   }
   

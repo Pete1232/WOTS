@@ -56,19 +56,6 @@ object Model {
     counter(0,Array[Product]())
   }
   
-/*  def populateOrder(orderLines:Array[CustomerOrderLine]):Array[Product]={
-    def beep(products:Array[Product],orderLines:Array[CustomerOrderLine]):Array[Product]={
-      if(orderLines.isEmpty){
-        products
-      }
-      else{
-        val newProduct = GenericRepositoryActual.getProductByOrderLine(orderLines.head)
-        beep(products:+newProduct,orderLines.tail)
-      }
-    }
-    beep(Array.empty,orderLines)
-}*/
-  
   /**
    *This method carries out a genetic travelling salesman algorithm on a list of products, returning an ordered ObservableBuffer
    * @param Int
@@ -77,6 +64,7 @@ object Model {
    * @return ObservableBuffer[Product]
    */
   def calculateRoute(pop: Int, generations: Int, products: List[Product]): ObservableBuffer[Product] = {
+    logger.debug("Running travelling salesman with a population of {} over {} generations",pop+"",generations+"")
     val tour = new Tour(products)
     val population = new Population(pop, tour.stops)
     val newPop = Algorithm.evolver(0, generations,population)

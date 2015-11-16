@@ -31,7 +31,7 @@ object Population {
  */
 class Population(val popSize:Int,val stops:List[Product]) {
   val logger = Logger(LoggerFactory.getLogger("Population.class"))
-  val population = createPopulation(0, popSize, Population.generateEmptyPop(popSize))
+  var population = createPopulation(0, popSize, Population.generateEmptyPop(popSize))
   
   /**
    * This method creates a population of tours for the given list of stops (products)
@@ -76,7 +76,7 @@ class Population(val popSize:Int,val stops:List[Product]) {
    * @param Tour
    * @return Array[Tour]
    */
-  def saveTour(index:Int,tour:Tour):Array[Tour]={
-    population.updated(index, tour)
+  def saveTour(index:Int,tour:Tour){
+    population = population.updated(index, tour)
   }
 }
