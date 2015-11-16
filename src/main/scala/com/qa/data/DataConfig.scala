@@ -23,7 +23,7 @@ object DataConfig {
   val usernameSQL = "root"
   val passwordSQL = "academy"
   val mongoClient = MongoClient("localhost",27017)
-  val mongoName = "FreshTech"
+  val mongoName = "NBGardens"
 
   val repository = configureRepository(online)
   
