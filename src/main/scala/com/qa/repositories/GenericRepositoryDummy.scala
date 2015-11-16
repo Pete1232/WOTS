@@ -94,6 +94,7 @@ object GenericRepositoryDummy extends GenericRepository{
    * @return Array[CustomerOrderLine]
    */
   def getCustomerOrderLineByOrderId(customerOrderId: Int): Array[CustomerOrderLine] = {
+    //TODO This list should be created in DummyBuilder
     Array[CustomerOrderLine](new CustomerOrderLine(customerOrderId,1,10),new CustomerOrderLine(customerOrderId,2,20))
   }
   /**
@@ -103,19 +104,14 @@ object GenericRepositoryDummy extends GenericRepository{
    */
   def getProductByOrderLine(orderLine:CustomerOrderLine):Product={
     val productData = get(new Product)
-    def populateProducts(count:Int,orderLine:CustomerOrderLine):Product={
-        if(productData(count).productId_ == orderLine.productId_){
-          productData(count)
+    def findProduct(productList:Array[Product]):Product={
+        if(productList.head.productId_ == orderLine.productId_){
+          productList.head
         }
         else{
-          if(count<productData.length){
-            populateProducts(count.+(1),orderLine)
-          }
-          else{
-            null
-        }
+          findProduct(productList.tail)
       }
     }
-    populateProducts(0, orderLine)
+    findProduct(productData)
   }
 }

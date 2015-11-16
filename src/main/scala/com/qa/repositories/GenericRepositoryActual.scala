@@ -20,6 +20,7 @@ import com.qa.entities.CustomerOrderLine
 import com.qa.entities.CustomerOrderLine
 import com.qa.data.DataConfig
 import java.sql.SQLException
+import com.mongodb.DBObject
 
 /**
  * This object implements GenericRepository with CRUD methods for SQL and Mongo databases (as applicable)
@@ -141,29 +142,24 @@ object GenericRepositoryActual extends GenericRepository{
    * @return Product
    */
   def getProductByOrderLine(orderLine:CustomerOrderLine):Product={
-    val productDoc = DataConfig.connectionMongo("Product").find.toArray
-    def findProduct(count:Int):Product = {
-      val productId = (productDoc(count).get("productID") + "").toInt
+    val productDB = DataConfig.connectionMongo("Product").find.toArray
+    def findProduct(productObjects:Array[DBObject]):Product = {
+      val productId = (productObjects.head.get("productID") + "").toInt
       if(productId==orderLine.productId_){
-        val productName = productDoc(count).get("productName") + ""
-        val image = productDoc(count).get("image") + ""
-        val porousware = (productDoc(count).get("porusware") + "").toBoolean
+        val productName = productObjects.head.get("productName") + ""
+        val image = productObjects.head.get("image") + ""
+        val porousware = (productObjects.head.get("porusware") + "").toBoolean
         val orderId = orderLine.orderId_
-        val aisle: Char = (productDoc(count).get("aisle") + "")(0)
-        val shelf = (productDoc(count).get("shelf") + "")toInt
+        val aisle: Char = (productObjects.head.get("aisle") + "")(0)
+        val shelf = (productObjects.head.get("shelf") + "")toInt
         val quantity = orderLine.quantity_
         new Product(productId, productName, image, porousware, orderId, aisle, shelf, quantity)
       }
       else{
-        if(count<productDoc.length-1){
-          findProduct(count.+(1))
-        }
-        else{
-          null
-        }
+        findProduct(productObjects.tail)
       }
     }
-    findProduct(0)
+    findProduct(productDB)
   }
   
   /**

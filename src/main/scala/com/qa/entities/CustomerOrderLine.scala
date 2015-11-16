@@ -9,7 +9,7 @@ class CustomerOrderLine (val orderId_ :Int, val productId_ :Int, val quantity_ :
   def this() = this(0,0,0)
   def this(productId:Int) = this(0,productId,0)
   
-  var orderId = new ObjectProperty(this,"orderId",orderId_)
-  var productId = new ObjectProperty(this,"productId",productId_)
-  var quantity = new ObjectProperty(this,"quantity",quantity_)
+  val orderId = new ObjectProperty(this,"orderId",orderId_)
+  val productId = new ObjectProperty(this,"productId",productId_)
+  val quantity = new ObjectProperty(this,"quantity",quantity_)
 }
